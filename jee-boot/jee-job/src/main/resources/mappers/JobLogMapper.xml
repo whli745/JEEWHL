@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.whli.jee.job.dao.IJobLogDao">
+
+	<resultMap id="RM_JobLog" type="com.whli.jee.job.entity.JobLog">
+				<id property="id" column="tl_job_log_id"/>
+        		<result property="jobName" column="job_name"/>
+        		<result property="jobGroup" column="job_group"/>
+        		<result property="jobClass" column="job_class"/>
+        		<result property="dateTime" column="date_time"/>
+        		<result property="duration" column="duration"/>
+        		<result property="msg" column="msg"/>
+        		<result property="createBy" column="create_by"/>
+        		<result property="createDate" column="create_date"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		tl_job_log_id,job_name,job_group,job_class,date_time,duration,msg,create_by,create_date
+	    ]]>
+	</sql>
+
+	<!-- 增加 -->
+	<insert id="add" parameterType="com.whli.jee.job.entity.JobLog">
+		INSERT INTO tl_job_log
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="entity.id != null">
+				tl_job_log_id,
+			</if>
+			<if test="entity.jobName != null">
+				job_name,
+			</if>
+			<if test="entity.jobGroup != null">
+				job_group,
+			</if>
+			<if test="entity.jobClass != null">
+				job_class,
+			</if>
+			<if test="entity.dateTime != null">
+				date_time,
+			</if>
+			<if test="entity.duration != null">
+				duration,
+			</if>
+			<if test="entity.msg != null">
+				msg,
+			</if>
+			<if test="entity.createBy != null">
+				create_by,
+			</if>
+			<if test="entity.createDate != null">
+				create_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="entity.id != null">
+				#{entity.id},
+			</if>
+			<if test="entity.jobName != null">
+				#{entity.jobName},
+			</if>
+			<if test="entity.jobGroup != null">
+				#{entity.jobGroup},
+			</if>
+			<if test="entity.jobClass != null">
+				#{entity.jobClass},
+			</if>
+			<if test="entity.dateTime != null">
+				#{entity.dateTime},
+			</if>
+			<if test="entity.duration != null">
+				#{entity.duration},
+			</if>
+			<if test="entity.msg != null">
+				#{entity.msg},
+			</if>
+			<if test="entity.createBy != null">
+				#{entity.createBy},
+			</if>
+			<if test="entity.createDate != null">
+				#{entity.createDate},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 批量增加 -->
+	<insert id="addMore" parameterType="java.util.List">
+		INSERT INTO tl_job_log
+			(
+				tl_job_log_id,
+				job_name,
+				job_group,
+				job_class,
+				date_time,
+				duration,
+				msg,
+				create_by,
+				create_date
+			) VALUES
+		<foreach collection="entities" item="entity" index="index" open="" close="" separator=",">
+			(
+				#{entity.id},
+				#{entity.jobName},
+				#{entity.jobGroup},
+				#{entity.jobClass},
+				#{entity.dateTime},
+				#{entity.duration},
+				#{entity.msg},
+				#{entity.createBy},
+				#{entity.createDate}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="com.whli.jee.job.entity.JobLog">
+		UPDATE tl_job_log
+		<set>
+			<if test="entity.jobName != null">
+				job_name = #{entity.jobName},
+			</if>
+			<if test="entity.jobGroup != null">
+				job_group = #{entity.jobGroup},
+			</if>
+			<if test="entity.jobClass != null">
+				job_class = #{entity.jobClass},
+			</if>
+			<if test="entity.dateTime != null">
+				date_time = #{entity.dateTime},
+			</if>
+			<if test="entity.duration != null">
+				duration = #{entity.duration},
+			</if>
+			<if test="entity.msg != null">
+				msg = #{entity.msg},
+			</if>
+			<if test="entity.createBy != null">
+				create_by = #{entity.createBy},
+			</if>
+			<if test="entity.createDate != null">
+				create_date = #{entity.createDate},
+			</if>
+		</set>
+		WHERE tl_job_log_id = #{entity.id}  
+	</update>
+
+	<!-- 批量更新 -->
+	<update id="updateMore" parameterType="java.util.List">
+		<foreach collection="entities" item="entity" index="index" open="" close="" separator=";">
+		UPDATE tl_job_log
+		<set>
+			<if test="entity.jobName != null">
+				job_name = #{entity.jobName},
+			</if>
+			<if test="entity.jobGroup != null">
+				job_group = #{entity.jobGroup},
+			</if>
+			<if test="entity.jobClass != null">
+				job_class = #{entity.jobClass},
+			</if>
+			<if test="entity.dateTime != null">
+				date_time = #{entity.dateTime},
+			</if>
+			<if test="entity.duration != null">
+				duration = #{entity.duration},
+			</if>
+			<if test="entity.msg != null">
+				msg = #{entity.msg},
+			</if>
+			<if test="entity.createBy != null">
+				create_by = #{entity.createBy},
+			</if>
+			<if test="entity.createDate != null">
+				create_date = #{entity.createDate},
+			</if>
+		</set>
+		WHERE tl_job_log_id = #{entity.id}  
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+    <delete id="delete" parameterType="java.lang.String">
+		<![CDATA[
+			DELETE FROM tl_job_log WHERE
+			tl_job_log_id = #{id} 
+		]]>
+    </delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteMore" parameterType="java.util.List">
+		DELETE FROM tl_job_log WHERE
+		tl_job_log_id in
+		<foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+			#{id} 
+		</foreach>
+	</delete>
+
+	<!-- 根据主键查询 -->
+    <select id="findByPK" resultMap="RM_JobLog">
+		SELECT <include refid="columns" />
+	    <![CDATA[
+		    FROM tl_job_log 
+	        WHERE 
+		        tl_job_log_id = #{id} 
+	    ]]>
+	</select>
+
+	<!-- 根据ID查询 -->
+	<select id="findByPKs" resultMap="RM_JobLog">
+		SELECT <include refid="columns" />
+		FROM tl_job_log
+		WHERE
+		tl_job_log_id IN
+		<foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</select>
+	
+	<!-- 根据编码查询 -->
+	<select id="findByNo" resultMap="RM_JobLog">
+		SELECT <include refid="columns" />
+		<![CDATA[
+		    FROM tl_job_log
+	        WHERE
+		        no = #{no}
+	    ]]>
+	</select>
+
+	<!-- 根据名称查询 -->
+	<select id="findByName" resultMap="RM_JobLog">
+		SELECT <include refid="columns" />
+		<![CDATA[
+		    FROM tl_job_log
+	        WHERE
+		        name = #{no}
+	    ]]>
+	</select>
+	
+	<sql id="findByPageWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="entity.id != null and entity.id !=''">
+				AND tl_job_log_id = #{entity.id}
+			</if>
+			<if test="entity.jobName != null and entity.jobName !=''">
+				AND job_name = #{entity.jobName}
+			</if>
+			<if test="entity.jobGroup != null and entity.jobGroup !=''">
+				AND job_group = #{entity.jobGroup}
+			</if>
+			<if test="entity.jobClass != null and entity.jobClass !=''">
+				AND job_class = #{entity.jobClass}
+			</if>
+			<if test="entity.dateTime != null and entity.dateTime !=''">
+				AND date_time = #{entity.dateTime}
+			</if>
+			<if test="entity.duration != null and entity.duration !=''">
+				AND duration = #{entity.duration}
+			</if>
+			<if test="entity.msg != null and entity.msg !=''">
+				AND msg = #{entity.msg}
+			</if>
+			<if test="entity.createBy != null and entity.createBy !=''">
+				AND create_by = #{entity.createBy}
+			</if>
+			<if test="entity.createDate != null and entity.createDate !=''">
+				AND create_date = #{entity.createDate}
+			</if>
+		</where>
+	</sql>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findByPage" resultMap="RM_JobLog">
+    	SELECT <include refid="columns" />
+	    FROM tl_job_log 
+		<include refid="findByPageWhere"/>
+		ORDER BY date_time DESC
+    </select>
+
+	<!-- 查询所有数据 -->
+	<select id="findAll" resultMap="RM_JobLog">
+		SELECT <include refid="columns" />
+		FROM tl_job_log
+		<include refid="findByPageWhere"/>
+	</select>
+	
+</mapper>
+

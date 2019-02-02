@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta charset="utf-8" />
+	<title></title>
+
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+	<!-- bootstrap & fontawesome -->
+	<link rel="stylesheet" href="../../../static/bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="../../../static/bootstrap/css/bootstrap-table.min.css" />
+	<link rel="stylesheet" href="../../../static/bootstrap/css/bootstrap-switch.min.css" />
+	<!-- text fonts -->
+	<link rel="stylesheet" href="../../../static/content/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="../../../static/bootstrap/css/fonts.googleapis.com.css" />
+	<!-- ace styles -->
+	<link rel="stylesheet" href="../../../static/ace/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+	<!-- other -->
+	<link rel="stylesheet" href="../../../static/content/css/select2.min.css" />
+	<link rel="stylesheet" href="../../../static/content/css/select2-bootstrap.min.css" />
+	<link rel="stylesheet" href="../../../static/content/ztree/metroStyle/metroStyle.css" />
+	<link rel="stylesheet" href="../../../static/bootstrap/css/bootstrap-switch.min.css" />
+</head>
+
+<body class="no-skin">
+	<div class="main-container ace-save-state" id="main-container">
+		<div class="main-content">
+			<div class="main-content-inner">
+				<div class="page-content">
+					<!-- PAGE CONTENT BEGINS -->
+					<!-- search begin -->
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="panel panel-default" id="searchPanel">
+							</div>
+						</div>
+					</div>
+					<!-- search end -->
+					<!-- main content begin -->
+					<div class="row">
+						<div class="col-xs-9">
+							<table id="tb_data"></table>
+						</div>
+						<div class="col-xs-3">
+							<div class="tabbable">
+								<ul class="nav nav-tabs" id="myTab">
+									<li class="active">
+										<a data-toggle="tab" href="#menu">
+											<i class="green ace-icon fa fa-home bigger-120"></i>
+											菜单
+										</a>
+									</li>
+								</ul>
+
+								<div class="tab-content">
+									<div id="menu" class="tab-pane fade in active">
+										<div class="row">
+											<button style="margin-left: 10px;" type="button" id="btn_grant_menu" class="btn btn-xs btn-primary">授权</button>
+										</div>
+										<div class="row">
+											<ul id="menuTree" class="ztree"></ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /.col -->
+					</div>
+					<!-- main content end -->
+					<!-- /.row -->
+					<!-- PAGE CONTENT ENDS -->
+				</div>
+				<!-- /.page-content -->
+			</div>
+			<!-- /.main-content-inner -->
+		</div>
+		<!-- /.main-content -->
+
+		<!-- 弹出框 -->
+		<div class="modal" id="myModal" role="dialog" aria-hidden="true"></div>
+
+		<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+			<i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+		</a>
+	</div>
+	<!-- /.main-container -->
+
+	<!-- basic scripts -->
+	<script src="../../../static/content/js/jquery-2.1.4.min.js"></script>
+	<script src="../../../static/content/js/global.js"></script>
+	<script src="../../../static/content/js/common.js"></script>
+	<script src="../../../static/content/js/jquery-extension.js"></script>
+	<script src="../../../static/ace/js/ace.min.js"></script>
+	<script src="../../../static/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../../static/bootstrap/js/bootstrap-table.min.js"></script>
+	<script src="../../../static/bootstrap/js/bootstrap-table-zh-CN.min.js"></script>
+	<script src="../../../static/bootstrap/js/bootstrap-table-treeview.js"></script>
+	<script src="../../../static/bootstrap/js/bootstrap-switch.min.js"></script>
+	<script src="../../../static/content/layer/layer.js"></script>
+	<script src="../../../static/content/js/jquery.validate.min.js"></script>
+	<script src="../../../static/content/js/messages_zh.js"></script>
+	<script src="../../../static/content/js/select2.min.js"></script>
+	<script src="../../../static/content/js/select2tree.js"></script>
+	<script src="../../../static/bootstrap/js/bootstrap-switch.min.js"></script>
+	<script src="../../../static/content/ztree/jquery.ztree.all.min.js"></script>
+	<script src="SysRoleList.js"></script>
+
+</body>
+
+</html>

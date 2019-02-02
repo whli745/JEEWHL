@@ -1,0 +1,36 @@
+server:
+  port: 8088
+  session:
+    timeout: 1000
+  context-path: /jee
+  connection-timeout: 300000 #单位毫秒
+  tomcat:
+    max-threads: 500
+    min-spare-threads: 20
+    max-processors: 500
+    accept-count: 600
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/jee?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    defaultExpire: 43200 #单位秒
+    timeout: 60000 #单位毫秒
+    pool:
+      max-active: 8
+      max-idle: 8
+      max-wait: -1
+      min-idle: 0
+    cluster:
+      nodes: #192.168.23.128:6380,192.168.23.128:6381,192.168.23.128:6382,192.168.23.128:6383,192.168.23.128:6384,192.168.23.128:6385
+  rabbitmq:
+    addresses: 127.0.0.1:5672
+    username: guest
+    password: guest
+    virtual-host: /
+    connection-timeout: 15000 #单位毫秒

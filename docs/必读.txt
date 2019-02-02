@@ -1,0 +1,41 @@
+Maven 设置
+将settings-github.xml文件拷贝至Maven目录/conf/文件夹下，并在IDE里指定该文件为默认Maven配置文件。
+
+
+
+
+
+
+==========================================================================================
+如须一键生成代码，请将code目录下的所有文件拷贝至工程resources资源文件下,并按以下代码执行
+/**
+         *  basePackage 包名
+         *  namespace 静态html文件所在文件夹
+         *  outRoot  代码生成输出路径，默认D:\generator\
+         *  dataUsername 数据库用户名
+         *  dataPassword 数据库密码
+         *  dataUrl 数据库url，默认mysql JDBC驱动(com.mysql.jdbc.Driver)
+         *  dataDriver  数据库驱动（默认mysql）
+         *  dataSchema  数据库为Oracle时必须填写
+         *  dataCatalog 数据库为Oracle时必须填写
+         *  tableRemovePrefixes  忽略表前缀，多个以','分隔(ts_,tm_)
+         *  tableNames 需要生成代码的表名
+         */
+        Generator generator = new Generator();
+        generator.setBasePackage("com.whli.jee.job");
+        generator.setNamespace("scheduler");
+        generator.setOutRoot(null);
+        generator.setDataUsername("root");
+        generator.setDataPassword("root");
+        generator.setDataUrl("jdbc:mysql://localhost:3306/jee?useUnicode=true&amp;characterEncoding=UTF-8");
+        generator.setDataDriver("com.mysql.jdbc.Driver");
+        generator.setTableRemovePrefixes("tl_");
+	List<String> tableNames = new ArrayList<String>();
+        tableNames.add("tl_job_log");
+        generator.setTableNames(tableNames);
+        /**
+         * all 是否整个数据库表都生成代码
+         * Generator 配置类
+         */
+        CodeGenerator.generatorCode(false,generator);
+    }

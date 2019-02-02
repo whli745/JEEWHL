@@ -1,0 +1,49 @@
+spring:
+  profiles:
+    active: @profilesActive@
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    filters: stat
+    logSlowSql: true
+    tomcat:
+      initial-size: 30
+      max-active: 100
+      min-idle: 30
+      max-wait: 20
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      test-while-idle: true
+      test-on-borrow: true
+      test-on-return: false
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+  http:
+    multipart:
+      max-file-size: 100Mb
+      max-request-size: 1000Mb
+  rabbitmq:
+    publisher-confirms: true
+    publisher-returns: true
+    template:
+      mandatory: true
+  freemarker:
+    check-template-location: false
+mybatis:
+  mapper-locations: classpath*:mappers/*Mapper.xml
+  type-aliases-package: com.**.entity
+  config-location: classpath:spring/mybatis-config.xml

@@ -1,0 +1,23 @@
+.tabbable {
+    left: -1px;
+    top: 43px;
+    right: 0px;
+    bottom: 0px;
+    margin-left: inherit;
+    position: absolute;
+}
+
+.nav-tabs li a .glyphicon-remove-sign{
+    visibility:hidden;
+}
+
+.nav-tabs li a:hover .glyphicon-remove-sign{
+    color:red;
+    cursor: pointer;
+    visibility:visible;
+}
+
+#sidebar{
+    overflow-x: hidden;
+    overflow-y: auto;
+}

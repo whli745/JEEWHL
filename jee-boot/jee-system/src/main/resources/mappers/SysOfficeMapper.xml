@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.whli.jee.system.dao.ISysOfficeDao">
+
+	<resultMap id="RM_SysOffice" type="com.whli.jee.system.entity.SysOffice">
+				<id property="id" column="ts_ts_sys_office_id"/>
+        		<result property="parentId" column="parent_id"/>
+        		<result property="name" column="name"/>
+        		<result property="sort" column="sort"/>
+        		<result property="type" column="type"/>
+        		<result property="master" column="master"/>
+        		<result property="phone" column="phone"/>
+        		<result property="fax" column="fax"/>
+        		<result property="email" column="email"/>
+        		<result property="deputyPerson" column="deputy_person"/>
+        		<result property="createBy" column="create_by"/>
+        		<result property="createDate" column="create_date"/>
+        		<result property="updateBy" column="update_by"/>
+        		<result property="updateDate" column="update_date"/>
+        		<result property="remark" column="remark"/>
+        		<result property="enable" column="enable"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		ts_sys_office_id,parent_id,name,sort,type,master,phone,fax,email,deputy_person,create_by,create_date,update_by,update_date,remark,enable
+	    ]]>
+	</sql>
+
+	<!-- 增加 -->
+	<insert id="add" parameterType="com.whli.jee.system.entity.SysOffice">
+		INSERT INTO ts_sys_office
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="entity.id != null">
+				ts_sys_office_id,
+			</if>
+			<if test="entity.parentId != null">
+				parent_id,
+			</if>
+			<if test="entity.name != null">
+				name,
+			</if>
+			<if test="entity.sort != null">
+				sort,
+			</if>
+			<if test="entity.type != null">
+				type,
+			</if>
+			<if test="entity.master != null">
+				master,
+			</if>
+			<if test="entity.phone != null">
+				phone,
+			</if>
+			<if test="entity.fax != null">
+				fax,
+			</if>
+			<if test="entity.email != null">
+				email,
+			</if>
+			<if test="entity.deputyPerson != null">
+				deputy_person,
+			</if>
+			<if test="entity.createBy != null">
+				create_by,
+			</if>
+			<if test="entity.createDate != null">
+				create_date,
+			</if>
+			<if test="entity.updateBy != null">
+				update_by,
+			</if>
+			<if test="entity.updateDate != null">
+				update_date,
+			</if>
+			<if test="entity.remark != null">
+				remark,
+			</if>
+			<if test="entity.enable != null">
+				enable,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="entity.id != null">
+				#{entity.id},
+			</if>
+			<if test="entity.parentId != null">
+				#{entity.parentId},
+			</if>
+			<if test="entity.name != null">
+				#{entity.name},
+			</if>
+			<if test="entity.sort != null">
+				#{entity.sort},
+			</if>
+			<if test="entity.type != null">
+				#{entity.type},
+			</if>
+			<if test="entity.master != null">
+				#{entity.master},
+			</if>
+			<if test="entity.phone != null">
+				#{entity.phone},
+			</if>
+			<if test="entity.fax != null">
+				#{entity.fax},
+			</if>
+			<if test="entity.email != null">
+				#{entity.email},
+			</if>
+			<if test="entity.deputyPerson != null">
+				#{entity.deputyPerson},
+			</if>
+			<if test="entity.createBy != null">
+				#{entity.createBy},
+			</if>
+			<if test="entity.createDate != null">
+				#{entity.createDate},
+			</if>
+			<if test="entity.updateBy != null">
+				#{entity.updateBy},
+			</if>
+			<if test="entity.updateDate != null">
+				#{entity.updateDate},
+			</if>
+			<if test="entity.remark != null">
+				#{entity.remark},
+			</if>
+			<if test="entity.enable != null">
+				#{entity.enable},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="com.whli.jee.system.entity.SysOffice">
+		UPDATE ts_sys_office
+		<set>
+			<if test="entity.parentId != null">
+				parent_id = #{entity.parentId},
+			</if>
+			<if test="entity.name != null">
+				name = #{entity.name},
+			</if>
+			<if test="entity.sort != null">
+				sort = #{entity.sort},
+			</if>
+			<if test="entity.type != null">
+				type = #{entity.type},
+			</if>
+			<if test="entity.master != null">
+				master = #{entity.master},
+			</if>
+			<if test="entity.phone != null">
+				phone = #{entity.phone},
+			</if>
+			<if test="entity.fax != null">
+				fax = #{entity.fax},
+			</if>
+			<if test="entity.email != null">
+				email = #{entity.email},
+			</if>
+			<if test="entity.deputyPerson != null">
+				deputy_person = #{entity.deputyPerson},
+			</if>
+			<if test="entity.createBy != null">
+				create_by = #{entity.createBy},
+			</if>
+			<if test="entity.createDate != null">
+				create_date = #{entity.createDate},
+			</if>
+			<if test="entity.updateBy != null">
+				update_by = #{entity.updateBy},
+			</if>
+			<if test="entity.updateDate != null">
+				update_date = #{entity.updateDate},
+			</if>
+			<if test="entity.remark != null">
+				remark = #{entity.remark},
+			</if>
+			<if test="entity.enable != null">
+				enable = #{entity.enable},
+			</if>
+		</set>
+		WHERE ts_sys_office_id = #{entity.id}
+	</update>
+
+	<!-- 删除 -->
+    <delete id="delete" parameterType="java.lang.String">
+		<![CDATA[
+			DELETE FROM ts_sys_office WHERE
+			ts_sys_office_id = #{id}
+		]]>
+    </delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteMore" parameterType="java.util.List">
+		DELETE FROM ts_sys_office WHERE
+		ts_sys_office_id in
+		<foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+			#{id} 
+		</foreach>
+	</delete>
+
+	<!-- 根据ID查询 -->
+    <select id="findByPK" resultMap="RM_SysOffice">
+		SELECT <include refid="columns" />
+	    <![CDATA[
+		    FROM ts_sys_office
+	        WHERE 
+		        ts_sys_office_id = #{id}
+	    ]]>
+	</select>
+
+	<!-- 根据ID查询 -->
+	<select id="findByPKs" resultMap="RM_SysOffice">
+		SELECT <include refid="columns" />
+		FROM ts_sys_office
+		WHERE
+		ts_sys_office_id IN
+		<foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</select>
+
+	<!-- 根据编码查询 -->
+	<select id="findByNo" resultMap="RM_SysOffice">
+
+	</select>
+
+	<!-- 根据名称查询 -->
+	<select id="findByName" resultMap="RM_SysOffice">
+		SELECT <include refid="columns" />
+		<![CDATA[
+		    FROM ts_sys_office
+	        WHERE
+		        name = #{name}
+	    ]]>
+	</select>
+	
+	<sql id="findByPageWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+	       	<if test="entity.id != null and entity.id !=''">
+				AND ts_sys_office_id = #{entity.id}
+			</if>
+	       	<if test="entity.parentId != null and entity.parentId !=''">
+				AND parent_id = #{entity.parentId}
+			</if>
+			<if test="entity.parentId == null or entity.parentId ==''">
+				AND parent_id IS NULL
+			</if>
+			<if test="entity.name != null and entity.name !=''">
+				AND name LIKE '%${entity.name}%'
+			</if>
+	       	<if test="entity.sort != null and entity.sort !=''">
+				AND sort = #{entity.sort}
+			</if>
+	       	<if test="entity.type != null and entity.type !=''">
+				AND type = #{entity.type}
+			</if>
+	       	<if test="entity.master != null and entity.master !=''">
+				AND master = #{entity.master}
+			</if>
+	       	<if test="entity.phone != null and entity.phone !=''">
+				AND phone = #{entity.phone}
+			</if>
+	       	<if test="entity.fax != null and entity.fax !=''">
+				AND fax = #{entity.fax}
+			</if>
+	       	<if test="entity.email != null and entity.email !=''">
+				AND email = #{entity.email}
+			</if>
+	       	<if test="entity.deputyPerson != null and entity.deputyPerson !=''">
+				AND deputy_person = #{entity.deputyPerson}
+			</if>
+	       	<if test="entity.createBy != null and entity.createBy !=''">
+				AND create_by = #{entity.createBy}
+			</if>
+	       	<if test="entity.createDate != null and entity.createDate !=''">
+				AND create_date = #{entity.createDate}
+			</if>
+	       	<if test="entity.updateBy != null and entity.updateBy !=''">
+				AND update_by = #{entity.updateBy}
+			</if>
+	       	<if test="entity.updateDate != null and entity.updateDate !=''">
+				AND update_date = #{entity.updateDate}
+			</if>
+	       	<if test="entity.remark != null and entity.remark !=''">
+				AND remark = #{entity.remark}
+			</if>
+	       	<if test="entity.enable != null and entity.enable !=''">
+				AND enable = #{entity.enable}
+			</if>
+		</where>
+	</sql>
+
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findByPage" resultMap="RM_SysOffice">
+    	SELECT <include refid="columns" />
+	    FROM ts_sys_office
+		<include refid="findByPageWhere"/>
+		ORDER BY sort
+    </select>
+
+		<!-- 查询所有数据 -->
+	<select id="findAll" resultMap="RM_SysOffice">
+		SELECT <include refid="columns" />
+		FROM ts_sys_office
+		<where>
+			<if test="entity.id != null and entity.id !=''">
+				AND ts_sys_office_id = #{entity.id}
+			</if>
+			<if test="entity.parentId != null and entity.parentId !=''">
+				AND parent_id = #{entity.parentId}
+			</if>
+			<if test="entity.name != null and entity.name !=''">
+				AND name LIKE '%${entity.name}%'
+			</if>
+			<if test="entity.sort != null and entity.sort !=''">
+				AND sort = #{entity.sort}
+			</if>
+			<if test="entity.type != null and entity.type !=''">
+				AND type = #{entity.type}
+			</if>
+			<if test="entity.master != null and entity.master !=''">
+				AND master = #{entity.master}
+			</if>
+			<if test="entity.phone != null and entity.phone !=''">
+				AND phone = #{entity.phone}
+			</if>
+			<if test="entity.fax != null and entity.fax !=''">
+				AND fax = #{entity.fax}
+			</if>
+			<if test="entity.email != null and entity.email !=''">
+				AND email = #{entity.email}
+			</if>
+			<if test="entity.deputyPerson != null and entity.deputyPerson !=''">
+				AND deputy_person = #{entity.deputyPerson}
+			</if>
+			<if test="entity.createBy != null and entity.createBy !=''">
+				AND create_by = #{entity.createBy}
+			</if>
+			<if test="entity.createDate != null and entity.createDate !=''">
+				AND create_date = #{entity.createDate}
+			</if>
+			<if test="entity.updateBy != null and entity.updateBy !=''">
+				AND update_by = #{entity.updateBy}
+			</if>
+			<if test="entity.updateDate != null and entity.updateDate !=''">
+				AND update_date = #{entity.updateDate}
+			</if>
+			<if test="entity.remark != null and entity.remark !=''">
+				AND remark = #{entity.remark}
+			</if>
+			<if test="entity.enable != null and entity.enable !=''">
+				AND enable = #{entity.enable}
+			</if>
+		</where>
+		ORDER BY sort
+	</select>
+
+	<!-- 依据父ID及序号查询菜单 -->
+	<select id="findByParentIdAndSort" parameterType="com.whli.jee.system.entity.SysMenu" resultMap="RM_SysOffice">
+		SELECT * FROM ts_sys_office WHERE 1=1
+		<if test="entity.parentId == null or entity.parentId == ''">
+			AND parent_id IS NULL
+		</if>
+		<if test="entity.parentId != null and entity.parentId != ''">
+			AND parent_id = #{entity.parentId}
+		</if>
+		<if test="entity.id != null and entity.id !=''">
+			AND ts_sys_office_id != #{entity.id}
+		</if>
+		AND sort = #{entity.sort}
+	</select>
+</mapper>
+

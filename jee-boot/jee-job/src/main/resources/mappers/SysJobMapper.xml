@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.whli.jee.job.dao.ISysJobDao">
+
+    <sql id="findByPageWhere">
+        <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+        <where>
+            <if test="entity.jobName != null and entity.jobName !=''">
+                AND a.JOB_NAME LIKE '%${entity.jobName}%'
+            </if>
+            <if test="entity.jobGroup != null and entity.jobGroup !=''">
+                AND a.JOB_GROUP = #{entity.jobGroup}
+            </if>
+            <if test="entity.state != null and entity.state !=''">
+                AND b.TRIGGER_STATE = #{entity.state}
+            </if>
+        </where>
+    </sql>
+
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findByPage" resultType="com.whli.jee.job.entity.SysJob">
+        SELECT
+        a.JOB_NAME AS jobName,
+        a.JOB_GROUP AS jobGroup,
+        a.JOB_CLASS_NAME AS jobClass,
+        c.CRON_EXPRESSION AS cronExpression,
+        a.DESCRIPTION AS jobDescription,
+        b.START_TIME AS startTime,
+        b.PREV_FIRE_TIME AS prevTime,
+        b.NEXT_FIRE_TIME as nextTime,
+        b.TRIGGER_STATE AS state
+        FROM
+        QRTZ_JOB_DETAILS a
+        JOIN QRTZ_TRIGGERS b ON a.JOB_NAME = b.JOB_NAME
+        JOIN QRTZ_CRON_TRIGGERS c ON (b.TRIGGER_NAME = c.TRIGGER_NAME AND b.TRIGGER_GROUP = c.TRIGGER_GROUP)
+        <include refid="findByPageWhere"/>
+        ORDER BY jobName
+    </select>
+
+    <select id="findByName" resultType="com.whli.jee.job.entity.SysJob">
+        SELECT
+        a.JOB_NAME AS jobName,
+        a.JOB_GROUP AS jobGroup,
+        a.JOB_CLASS_NAME AS jobClass,
+        c.CRON_EXPRESSION AS cronExpression,
+        b.DESCRIPTION AS jobDescription,
+        b.START_TIME AS startTime,
+        b.PREV_FIRE_TIME AS prevTime,
+        b.NEXT_FIRE_TIME as nextTime,
+        b.TRIGGER_STATE AS state
+        FROM
+        QRTZ_JOB_DETAILS a
+        JOIN QRTZ_TRIGGERS b ON a.JOB_NAME = b.JOB_NAME
+        JOIN QRTZ_CRON_TRIGGERS c ON (b.TRIGGER_NAME = c.TRIGGER_NAME AND b.TRIGGER_GROUP = c.TRIGGER_GROUP)
+        WHERE a.JOB_NAME = #{name}
+        ORDER BY jobName
+    </select>
+</mapper>
+
