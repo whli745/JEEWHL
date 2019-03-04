@@ -19,8 +19,11 @@ import java.util.*;
  */
 public class ExcelUtils {
     private static Logger logger = LoggerFactory.getLogger(ExcelUtils.class);
-    private final static String excel2003L = ".xls";    //2003- 版本的excel
-    private final static String excel2007U = ".xlsx";
+    /**
+     *  //2003- 版本的excel
+     */
+    private final static String EXCEL2003L = ".xls";
+    private final static String EXCEL2007U = ".xlsx";
 
     /**
      * 导出Excel
@@ -127,7 +130,7 @@ public class ExcelUtils {
 
         String fileSuffix = file.getName().substring(file.getName().lastIndexOf("."));
 
-        if (!excel2003L.equals(fileSuffix)){
+        if (!EXCEL2003L.equals(fileSuffix)){
             throw new BusinessException("-01080603","导入的文件格式有误！");
         }
 
@@ -201,29 +204,29 @@ public class ExcelUtils {
         if (s.endsWith(".0")) {
             s = s.substring(0, s.length() - 2);
         }
-        if (className.equals("java.lang.Integer"))
+        if ("java.lang.Integer".equals(className)) {
             obj = new Integer(s);
-        else if (className.equals("int"))
+        }else if ("int".equals(className)) {
             obj = Integer.valueOf(Integer.parseInt(s));
-        else if (className.equals("java.lang.String"))
+        }else if ("java.lang.String".equals(className)) {
             obj = s;
-        else if (className.equals("java.lang.Double"))
+        }else if ("java.lang.Double".equals(className)) {
             obj = new Double(s);
-        else if (className.equals("double"))
+        }else if ("double".equals(className)) {
             obj = Double.valueOf(new Double(s).doubleValue());
-        else if (className.equals("java.lang.Float"))
+        }else if ("java.lang.Float".equals(className)) {
             obj = new Float(s);
-        else if (className.equals("float"))
+        }else if ("float".equals(className)) {
             obj = Float.valueOf(new Float(s).floatValue());
-        else if (className.equals("java.util.Date"))
+        }else if ("java.util.Date".equals(className)) {
             obj = DateUtil.getJavaDate(cell.getNumericCellValue());
-        else if (className.equals("long"))
+        }else if ("long".equals(className)) {
             obj = Long.valueOf(Long.parseLong(s));
-        else if (className.equals("java.util.Long"))
+        }else if ("java.util.Long".equals(className)) {
             obj = new Long(s);
-        else if (className.equals("boolean"))
+        }else if ("boolean".equals(className)) {
             obj = Boolean.valueOf(Boolean.parseBoolean(s));
-        else if (className.equals("java.lang.Boolean")) {
+        }else if ("java.lang.Boolean".equals(className)) {
             obj = new Boolean(s);
         }
         return obj;

@@ -162,6 +162,7 @@ public class SysDictController extends BaseController<SysDict> {
      */
     @PostMapping(value = "/findAll")
     @ApiOperation("查询所有字典")
+    @Override
     public List<SysDict> findAll(@RequestBody SysDict entity, HttpServletRequest req) throws Exception {
         return sysDictService.findAll(entity);
     }

@@ -107,7 +107,7 @@ public class WebUtils {
         }
         if(ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
             ipAddress = request.getRemoteAddr();
-            if(ipAddress.equals("127.0.0.1") || ipAddress.equals("0:0:0:0:0:0:0:1")){
+            if("127.0.0.1".equals(ipAddress) || "0:0:0:0:0:0:0:1".equals(ipAddress)){
                 //根据网卡取本机配置的IP
                 InetAddress inet=null;
                 try {
@@ -145,8 +145,9 @@ public class WebUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (writer != null)
+            if (writer != null) {
                 writer.close();
+            }
         }
     }
 
@@ -199,7 +200,7 @@ public class WebUtils {
 
     public static boolean isAjax(HttpServletRequest request){
         return !StringUtils.isNotNullOrBlank(request.getHeader("x-requested-with"))
-                && request.getHeader("x-requested-with").equals("XMLHttpRequest");
+                && "XMLHttpRequest".equals(request.getHeader("x-requested-with"));
     }
 
     /**

@@ -1,21 +1,14 @@
 package com.whli.jee.core.generatorcode;
 
 import cn.org.rapid_framework.generator.GeneratorFacade;
-import cn.org.rapid_framework.generator.util.ClassHelper;
 import com.whli.jee.core.util.CollectionUtils;
 import com.whli.jee.core.util.StringUtils;
 import com.whli.jee.core.util.XMLUtils;
 import org.dom4j.Element;
 
 import java.awt.*;
-import java.io.*;
-import java.net.MalformedURLException;
+import java.io.File;
 import java.net.URL;
-import java.net.URLDecoder;
-import java.util.*;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.jar.JarOutputStream;
 
 /**
  * <b><em>代码一键生成</em></b>

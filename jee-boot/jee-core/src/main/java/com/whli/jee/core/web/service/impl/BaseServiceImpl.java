@@ -17,13 +17,10 @@ import java.util.List;
 /**
  * Created by whli on 2017/10/29.
  */
-public class BaseServiceImpl<T extends BaseEntity> implements IBaseService<T> {
+public abstract class BaseServiceImpl<T extends BaseEntity> implements IBaseService<T> {
 
-    private IBaseDao<T> dao;
 
-    public IBaseDao<T> getDao(){
-        return  dao;
-    }
+    public abstract IBaseDao<T> getDao();
 
     /**
      * 增加
@@ -153,11 +150,11 @@ public class BaseServiceImpl<T extends BaseEntity> implements IBaseService<T> {
     }
 
     @Override
-    public T findByNo(String No) {
-        if(StringUtils.isNullOrBlank(No)){
+    public T findByNo(String no) {
+        if(StringUtils.isNullOrBlank(no)){
             throw new BusinessException("请选择需要查询的数据！");
         }
-        T entity = getDao().findByNo(No);
+        T entity = getDao().findByNo(no);
         if(BeanUtils.isNull(entity)){
             throw  new BusinessException("查询的数据不存在或已删除！");
         }

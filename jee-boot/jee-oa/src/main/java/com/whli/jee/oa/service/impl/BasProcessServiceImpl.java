@@ -116,9 +116,9 @@ public class BasProcessServiceImpl implements IBasProcessService {
                 .processDefinitionId(processDefinitionId).singleResult();
 
         String resourceName = "";
-        if (resourceType.equals("image")) {
+        if ("image".equals(resourceType)) {
             resourceName = processDefinition.getDiagramResourceName();
-        } else if (resourceType.equals("xml")) {
+        } else if ("xml".equals(resourceType)) {
             resourceName = processDefinition.getResourceName();
         }
         InputStream resourceAsStream = repositoryService.getResourceAsStream(processDefinition.getDeploymentId(),

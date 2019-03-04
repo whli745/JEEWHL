@@ -23,6 +23,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements ISys
 		return sysRoleDao;
 	}
 
+	@Override
 	public List<SysRole> findRolesByUserId(String userId) {
 		List<SysRole> roles = null;
 		if(StringUtils.isNotNullOrBlank(userId)){

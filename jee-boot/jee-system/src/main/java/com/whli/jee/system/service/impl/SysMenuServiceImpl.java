@@ -100,6 +100,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
      * @param parentId
      * @return
      */
+    @Override
     public List<SysMenu> findMenusByUserId(String userId, String parentId) {
         List<SysMenu> menus = null;
         if (StringUtils.isNotNullOrBlank(userId)) {

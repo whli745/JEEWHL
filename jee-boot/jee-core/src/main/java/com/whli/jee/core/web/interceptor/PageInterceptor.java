@@ -127,8 +127,9 @@ public class PageInterceptor implements Interceptor {
                 if (rs != null) {
                     rs.close();
                 }
-                if (pstmt != null)
+                if (pstmt != null) {
                     pstmt.close();
+                }
             }
             catch (Exception e) {
                 logger.error("setTotalRecord;bug:{}", e);
@@ -142,12 +143,12 @@ public class PageInterceptor implements Interceptor {
             StringBuilder countSql = new StringBuilder(sql);
             int distinct = countSql.toString().toUpperCase().indexOf("DISTINCT");
             if (distinct > 0) {
-                if (distinct < 20)
+                if (distinct < 20) {
                     countSql = countSql.insert(distinct + 8, " top 100 percent ");
-                else
+                }else {
                     countSql = countSql.insert(7, " top 100 percent ");
-            }
-            else {
+                }
+            }else {
                 countSql = countSql.insert(7, " top 100 percent ");
             }
             return new StringBuilder().append("select count(1) from (").append(countSql.toString()).append(") tmp").toString();
@@ -159,11 +160,11 @@ public class PageInterceptor implements Interceptor {
     private String getPageSql(Page page, String sql){
         StringBuilder sqlBuffer = new StringBuilder(sql);
         String resultSql = null;
-        if ("mysql".equalsIgnoreCase(dialect))
+        if ("mysql".equalsIgnoreCase(dialect)) {
             resultSql = getMysqlPageSql(page, sqlBuffer);
-        else if ("oracle".equalsIgnoreCase(dialect))
+        }else if ("oracle".equalsIgnoreCase(dialect)) {
             resultSql = getOraclePageSql(page, sqlBuffer);
-        else if ("sqlServer".equalsIgnoreCase(dialect)) {
+        }else if ("sqlServer".equalsIgnoreCase(dialect)) {
             resultSql = getSqlServerPageSql(page, sqlBuffer);
         }
         return resultSql;
@@ -173,9 +174,9 @@ public class PageInterceptor implements Interceptor {
     private String getMysqlPageSql(Page page, StringBuilder sqlBuffer)
     {
         int offset = (page.getCurrentPage() - 1) * page.getPageSize();
-        if (offset < 0)
+        if (offset < 0) {
             sqlBuffer.append(" limit ").append(0).append(",").append(0);
-        else {
+        }else {
             sqlBuffer.append(" limit ").append(offset).append(",").append(page.getPageSize());
         }
         return sqlBuffer.toString();
@@ -194,9 +195,9 @@ public class PageInterceptor implements Interceptor {
     private String getSqlServerPageSql(Page page, StringBuilder sqlBuffer)
     {
         int offset = (page.getCurrentPage() - 1) * page.getPageSize();
-        if (offset < 0)
+        if (offset < 0) {
             sqlBuffer.append(" offset ").append(0).append(",").append(0);
-        else {
+        }else {
             sqlBuffer.append(" offset ").append(offset).append(" rows fetch next ").append(page.getPageSize()).append(" rows only ");
         }
         return sqlBuffer.toString();

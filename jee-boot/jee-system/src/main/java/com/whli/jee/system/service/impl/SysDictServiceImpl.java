@@ -29,6 +29,7 @@ public class SysDictServiceImpl extends BaseServiceImpl<SysDict> implements ISys
 		return sysDictDao;
 	}
 
+	@Override
 	public List<SysDict> findByParentValue(String value) {
 		if(StringUtils.isNullOrBlank(value)){
 			throw  new BusinessException("-02060201","父字典值不能为空！");

@@ -31,8 +31,3 @@ spring:
       min-idle: 0
     cluster:
       nodes: #192.168.23.128:6380,192.168.23.128:6381,192.168.23.128:6382,192.168.23.128:6383,192.168.23.128:6384,192.168.23.128:6385
-#设置服务注册中心地址
-eureka:
-  client:
-    service-url:
-      default-zone: http://localhost:8761/eureka
