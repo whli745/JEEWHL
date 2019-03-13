@@ -16,7 +16,7 @@
 	    DATELOG_DEBUG对应debug级别，文件名以mes-base.debug.log形式命名
 	    STDOUT将日志信息输出到控制上，为方便开发测试使用
     -->
-	<property name="LOG_HOME" value="D:/logs/" />
+	<property name="LOG_HOME" value="logs/" />
 	
 	<!--设置系统日志目录-->
 	<property name="APP_DIR" value="jee_web_logs" />

@@ -222,12 +222,14 @@
             <if test="entity.id != null and entity.id !=''">
                 AND ts_sys_dict_id = #{entity.id}
             </if>
-            <if test="entity.parentId != null and entity.parentId !=''">
-                AND parent_id = #{entity.parentId}
-            </if>
-            <if test="entity.parentId == null or entity.parentId ==''">
-                AND parent_id IS NULL
-            </if>
+            <choose>
+                <when test="entity.parentId != null and entity.parentId !=''">
+                    AND parent_id = #{entity.parentId}
+                </when>
+                <otherwise>
+                    AND parent_id IS NULL
+                </otherwise>
+            </choose>
             <if test="entity.name != null and entity.name !=''">
                 AND name LIKE '%${entity.name}%'
             </if>

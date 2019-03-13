@@ -271,7 +271,7 @@ public class PageInterceptor implements Interceptor {
             pstmt.setString(6,WebUtils.getRemoteIp(request));
             pstmt.setString(7,request.getLocalName());
             pstmt.setString(8,WebUtils.getLoginName(request));
-            pstmt.setTimestamp(9,new Timestamp(SysConstants.currentTimeMillis));
+            pstmt.setTimestamp(9,new Timestamp(SysConstants.CURRENT_TIME_MILLIS));
             pstmt.executeUpdate();
         } catch (SQLException e) {
             logger.error("addSysLog;bug:{}", e);
