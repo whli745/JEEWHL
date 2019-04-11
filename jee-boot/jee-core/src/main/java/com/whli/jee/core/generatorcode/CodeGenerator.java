@@ -1,9 +1,9 @@
 package com.whli.jee.core.generatorcode;
 
 import cn.org.rapid_framework.generator.GeneratorFacade;
-import com.whli.jee.core.util.CollectionUtils;
-import com.whli.jee.core.util.StringUtils;
 import com.whli.jee.core.util.XMLUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
 
 import java.awt.*;
@@ -41,52 +41,52 @@ public class CodeGenerator {
             Element rootElement = XMLUtils.getRootElement();
             //设置basePackage
             Element packageElement = XMLUtils.getChildElementByAttribute(rootElement,"key","basepackage");
-            if (packageElement != null && StringUtils.isNotNullOrBlank(basePackage)){
+            if (packageElement != null && StringUtils.isNotBlank(basePackage)){
                 XMLUtils.updateElement(packageElement,basePackage);
             }
             //设置namespace
             Element spaceElement = XMLUtils.getChildElementByAttribute(rootElement,"key","namespace");
-            if (spaceElement != null && StringUtils.isNotNullOrBlank(namespace)){
+            if (spaceElement != null && StringUtils.isNotBlank(namespace)){
                 XMLUtils.updateElement(spaceElement,namespace);
             }
             //设置outRoot
             Element outElement = XMLUtils.getChildElementByAttribute(rootElement,"key","outRoot");
-            if (outElement != null && StringUtils.isNotNullOrBlank(outRoot)){
+            if (outElement != null && StringUtils.isNotBlank(outRoot)){
                 XMLUtils.updateElement(outElement,outRoot);
             }
             //设置username
             Element userNameElement = XMLUtils.getChildElementByAttribute(rootElement,"key","jdbc_username");
-            if (userNameElement != null && StringUtils.isNotNullOrBlank(dataUsername)){
+            if (userNameElement != null && StringUtils.isNotBlank(dataUsername)){
                 XMLUtils.updateElement(userNameElement,dataUsername);
             }
             //设置password
             Element pwdElement = XMLUtils.getChildElementByAttribute(rootElement,"key","jdbc_password");
-            if (pwdElement != null && StringUtils.isNotNullOrBlank(dataPassword)){
+            if (pwdElement != null && StringUtils.isNotBlank(dataPassword)){
                 XMLUtils.updateElement(pwdElement,dataPassword);
             }
             //设置data_url
             Element urlElement = XMLUtils.getChildElementByAttribute(rootElement,"key","jdbc_url");
-            if (urlElement != null && StringUtils.isNotNullOrBlank(dataUrl)){
+            if (urlElement != null && StringUtils.isNotBlank(dataUrl)){
                 XMLUtils.updateElement(urlElement,dataUrl);
             }
             //设置data_driver
             Element driverElement = XMLUtils.getChildElementByAttribute(rootElement,"key","jdbc_driver");
-            if (driverElement != null && StringUtils.isNotNullOrBlank(dataDriver)){
+            if (driverElement != null && StringUtils.isNotBlank(dataDriver)){
                 XMLUtils.updateElement(driverElement,dataDriver);
             }
             //设置data_schema
             Element schemaElement = XMLUtils.getChildElementByAttribute(rootElement,"key","jdbc_schema");
-            if (schemaElement != null && StringUtils.isNotNullOrBlank(dataSchema)){
+            if (schemaElement != null && StringUtils.isNotBlank(dataSchema)){
                 XMLUtils.updateElement(schemaElement,dataSchema);
             }
             //设置data_catalog
             Element catalogElement = XMLUtils.getChildElementByAttribute(rootElement,"key","jdbc_catalog");
-            if (catalogElement != null && StringUtils.isNotNullOrBlank(dataCatalog)){
+            if (catalogElement != null && StringUtils.isNotBlank(dataCatalog)){
                 XMLUtils.updateElement(catalogElement,dataCatalog);
             }
             //设置tableRemovePrefixes
             Element prefixesElement = XMLUtils.getChildElementByAttribute(rootElement,"key","tableRemovePrefixes");
-            if (prefixesElement != null && StringUtils.isNotNullOrBlank(tableRemovePrefixes)){
+            if (prefixesElement != null && StringUtils.isNotBlank(tableRemovePrefixes)){
                 XMLUtils.updateElement(prefixesElement,tableRemovePrefixes);
             }
             //保存XML文件
@@ -104,7 +104,7 @@ public class CodeGenerator {
     public static void generatorCode(boolean all,Generator ge){
         try {
 
-            if (StringUtils.isNullOrBlank(ge.getOutRoot())){
+            if (StringUtils.isNotBlank(ge.getOutRoot())){
                 ge.setOutRoot("D:/generator/");
             }
 
@@ -119,7 +119,7 @@ public class CodeGenerator {
             if (all){
                 g.generateByAllTable();
             }else {
-                if (CollectionUtils.isNotNullOrEmpty(ge.getTableNames())){
+                if (CollectionUtils.isNotEmpty(ge.getTableNames())){
                     for (String tableName : ge.getTableNames()){
                         g.generateByTable(tableName);
                     }

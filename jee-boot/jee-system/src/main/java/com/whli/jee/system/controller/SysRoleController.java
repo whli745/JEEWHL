@@ -1,7 +1,6 @@
 package com.whli.jee.system.controller;
 
 import com.whli.jee.core.page.Page;
-import com.whli.jee.core.util.CollectionUtils;
 import com.whli.jee.core.web.controller.BaseController;
 import com.whli.jee.core.web.entity.ResponseBean;
 import com.whli.jee.system.entity.SysRole;
@@ -9,6 +8,7 @@ import com.whli.jee.system.service.ISysRoleMenuService;
 import com.whli.jee.system.service.ISysRoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,6 +47,8 @@ public class SysRoleController extends BaseController<SysRole> {
         if (entity != null) {
             Page<SysRole> page = new Page<SysRole>(entity.getCurrentPage(),entity.getPageSize());
             page = sysRoleService.findByPage(entity, page);
+
+            responseBean.setSucceed(true);
             responseBean.setCount(page.getTotal());
             responseBean.setResults(page.getPageRecords());
         }
@@ -66,7 +68,7 @@ public class SysRoleController extends BaseController<SysRole> {
         entity.setEnable(1);
         int rows = sysRoleService.add(entity);
         if (rows > 0) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("新增角色成功！");
         }
         return responseBean;
@@ -86,7 +88,7 @@ public class SysRoleController extends BaseController<SysRole> {
         ResponseBean responseBean = new ResponseBean();
         int rows = sysRoleService.update(entity);
         if (rows > 0) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("修改角色成功！");
         }
         return responseBean;
@@ -103,7 +105,7 @@ public class SysRoleController extends BaseController<SysRole> {
     public ResponseBean delete(@RequestBody SysRole entity, HttpServletRequest req) throws Exception {
         ResponseBean responseBean = new ResponseBean();
         sysRoleService.deleteMore(entity);
-        responseBean.setResults(true);
+        responseBean.setSucceed(true);
         responseBean.setMessage("删除角色成功！");
         return responseBean;
     }
@@ -203,7 +205,7 @@ public class SysRoleController extends BaseController<SysRole> {
     public ResponseBean findRolesByUserId(@RequestBody SysRole entity, HttpServletRequest req) throws Exception{
         ResponseBean responseBean = new ResponseBean();
         List<SysRole> roles = sysRoleService.findRolesByUserId(entity.getUserId());
-        if (CollectionUtils.isNotNullOrEmpty(roles)){
+        if (CollectionUtils.isNotEmpty(roles)){
             responseBean.setResults(roles);
         }
         return responseBean;

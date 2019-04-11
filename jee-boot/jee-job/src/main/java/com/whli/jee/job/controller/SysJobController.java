@@ -37,6 +37,8 @@ public class SysJobController extends BaseController<SysJob>{
         if (entity != null) {
             Page<SysJob> page = new Page<SysJob>(entity.getCurrentPage(),entity.getPageSize());
             page = sysJobService.findByPage(entity,page);
+
+            responseBean.setSucceed(true);
             responseBean.setCount(page.getTotal());
             responseBean.setResults(page.getPageRecords());
         }
@@ -49,7 +51,7 @@ public class SysJobController extends BaseController<SysJob>{
         ResponseBean responseBean = new ResponseBean();
         Boolean rows = sysJobService.triggerJob(entity);
         if (rows) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("立即执行定时任务成功！");
         }
         return responseBean;
@@ -62,7 +64,7 @@ public class SysJobController extends BaseController<SysJob>{
         ResponseBean responseBean = new ResponseBean();
         int rows = sysJobService.add(entity);
         if (rows > 0) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("新增定时任务成功！");
         }
         return responseBean;
@@ -75,7 +77,7 @@ public class SysJobController extends BaseController<SysJob>{
         ResponseBean responseBean = new ResponseBean();
         int rows = sysJobService.update(entity);
         if (rows > 0) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("修改定时任务成功！");
         }
         return responseBean;
@@ -87,7 +89,7 @@ public class SysJobController extends BaseController<SysJob>{
     public ResponseBean delete(@RequestBody SysJob entity, HttpServletRequest req) throws Exception {
         ResponseBean responseBean = new ResponseBean();
         sysJobService.delete(entity);
-        responseBean.setResults(true);
+        responseBean.setSucceed(true);
         responseBean.setMessage("删除定时任务成功！");
         return responseBean;
     }
@@ -150,7 +152,7 @@ public class SysJobController extends BaseController<SysJob>{
         ResponseBean responseBean = new ResponseBean();
         Boolean rows = sysJobService.resumeJob(entity);
         if (rows != null && rows) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("恢复定时任务成功！");
         }
         return responseBean;
@@ -167,7 +169,7 @@ public class SysJobController extends BaseController<SysJob>{
         ResponseBean responseBean = new ResponseBean();
         Boolean rows = sysJobService.resumeAll();
         if (rows != null && rows) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("恢复定时任务成功！");
         }
         return responseBean;
@@ -184,7 +186,7 @@ public class SysJobController extends BaseController<SysJob>{
         ResponseBean responseBean = new ResponseBean();
         Boolean rows = sysJobService.pauseJob(entity);
         if (rows != null && rows) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("暂停定时任务成功！");
         }
         return responseBean;
@@ -201,7 +203,7 @@ public class SysJobController extends BaseController<SysJob>{
         ResponseBean responseBean = new ResponseBean();
         Boolean rows = sysJobService.pauseAll();
         if (rows != null && rows) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("暂停定时任务成功！");
         }
         return responseBean;

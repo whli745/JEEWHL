@@ -1,11 +1,11 @@
 package com.whli.jee.system.service.impl;
 
-import com.whli.jee.core.util.StringUtils;
 import com.whli.jee.core.web.dao.IBaseDao;
 import com.whli.jee.core.web.service.impl.BaseServiceImpl;
 import com.whli.jee.system.dao.ISysRoleDao;
 import com.whli.jee.system.entity.SysRole;
 import com.whli.jee.system.service.ISysRoleService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements ISys
 	@Override
 	public List<SysRole> findRolesByUserId(String userId) {
 		List<SysRole> roles = null;
-		if(StringUtils.isNotNullOrBlank(userId)){
+		if(StringUtils.isNotBlank(userId)){
 			roles = sysRoleDao.findRolesByUserId(userId);
 		}
 		return roles;

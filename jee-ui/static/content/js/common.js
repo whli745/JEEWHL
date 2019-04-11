@@ -121,15 +121,9 @@ common.prototype.initTable = function (options) {
 			}
 		},
 		responseHandler: function (res) {
-			if (res && res.results) {
-				return {
-					total: res.count, //总页数,前面的key必须为"total"
-					rows: res.results //行数据，前面的key要与之前设置的dataField的值一致.
-				};
-			}
 			return {
-				total: 0, //总页数,前面的key必须为"total"
-				rows: [] //行数据，前面的key要与之前设置的dataField的值一致.
+				total: res && res.results ? res.count : 0, //总页数,前面的key必须为"total"
+				rows: res && res.results ? res.results : [] //行数据，前面的key要与之前设置的dataField的值一致.
 			};
 		}
 	});
@@ -528,6 +522,7 @@ common.prototype.initIcon = function (selector) {
  */
 common.prototype.myAjax = function (url, data, contentType, method, async) {
 	var def = $.Deferred();
+	var _this = this;
 	
 	if (url.indexOf("http") == -1 &&  url.indexOf("https") == -1) {
 		url = apiUrl + url;
@@ -546,33 +541,25 @@ common.prototype.myAjax = function (url, data, contentType, method, async) {
 		success: function (data) {
 			if (data instanceof Array) {
 				def.resolve(data);
-			} else if (data.results) {
-				if (data.message) {
-					layer.msg(data.message, {
-						icon: 6,
-						time: 1000
-					});
-				}
-				def.resolve(data.results);
 			} else {
-				if("-10005" == data.code){
-					JEE.confirmMsg(data.message,function(){
-						window.open("../../../page/login.html","_top"); 
-					});
+				if(data.succeed){
+					if (data.message) {
+						_this.successMsg(data.message);
+					}
+					def.resolve(data.results ? data.results : "true");
 				}else{
-					layer.msg(data.message, {
-						icon: 5,
-						time: 1000
-					});
+					if("-10005" == data.code){
+						_this.confirmMsg(data.message,function(){
+							window.open("../../../page/login.html","_top"); 
+						});
+					}else{
+						_this.errMsg(data.message);
+					}
 				}
-				
 			}
 		},
 		error: function (XMLHttpRequest, textStatus, errorThrown) {
-			layer.msg("请求错误！", {
-				icon: 5,
-				time: 1000
-			});
+			_this.errMsg("请求错误");
 		}
 	});
 	return def.promise();
@@ -738,8 +725,9 @@ common.prototype.successMsg = function (successMsg) {
  * @param {Object} errMsg  错误信息
  */
 common.prototype.errMsg = function (errMsg) {
-	layer.alert(errMsg, {
-		icon: 5
+	layer.msg(errMsg, {
+		icon: 5,
+		time: 1000
 	});
 }
 

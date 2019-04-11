@@ -4,9 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.whli.jee.core.anotation.AuthorPermit;
 import com.whli.jee.core.constant.SysConstants;
-import com.whli.jee.core.util.StringUtils;
 import com.whli.jee.core.util.WebUtils;
 import com.whli.jee.core.web.entity.ResponseBean;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -50,7 +50,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter{
         //获取前台传递的token
         String token = request.getHeader(SysConstants.AUTHORIZATION);
 
-        if (StringUtils.isNullOrBlank(token)){
+        if (StringUtils.isNotBlank(token)){
             getReturnJson(response);
             return false;
         }
@@ -61,7 +61,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter{
         }
 
         String loginUserId = WebUtils.getLoginUserId();
-        if (StringUtils.isNullOrBlank(loginUserId)){
+        if (StringUtils.isNotBlank(loginUserId)){
             getReturnJson(response);
             return false;
         }

@@ -1,7 +1,5 @@
 package com.whli.jee.system.service.impl;
 
-import com.whli.jee.core.util.CollectionUtils;
-import com.whli.jee.core.util.StringUtils;
 import com.whli.jee.core.web.dao.IBaseDao;
 import com.whli.jee.core.web.entity.BaseTree;
 import com.whli.jee.core.web.service.impl.BaseServiceImpl;
@@ -10,6 +8,8 @@ import com.whli.jee.system.dao.ISysRoleMenuDao;
 import com.whli.jee.system.entity.SysMenu;
 import com.whli.jee.system.entity.SysRoleMenu;
 import com.whli.jee.system.service.ISysMenuService;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,7 +76,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
     public void delete(SysMenu entity) {
         super.delete(entity);
         List<SysMenu> menus = sysMenuDao.findByParentId(entity.getId());
-        if (CollectionUtils.isNotNullOrEmpty(menus)){
+        if (CollectionUtils.isNotEmpty(menus)){
             for (SysMenu menu : menus){
                 delete(menu);
             }
@@ -86,7 +86,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
     @Override
     public void deleteMore(SysMenu entity) {
         List<SysMenu> menus = sysMenuDao.findByPKs(entity.getIds());
-        if (CollectionUtils.isNotNullOrEmpty(menus)){
+        if (CollectionUtils.isNotEmpty(menus)){
             for (SysMenu menu : menus){
                 delete(menu);
             }
@@ -103,7 +103,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
     @Override
     public List<SysMenu> findMenusByUserId(String userId, String parentId) {
         List<SysMenu> menus = null;
-        if (StringUtils.isNotNullOrBlank(userId)) {
+        if (StringUtils.isNotBlank(userId)) {
             menus = sysMenuDao.findMenusByUserId(userId, parentId);
             addChild(userId, menus);
         }
@@ -113,7 +113,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
     private void addChild(String userId, List<SysMenu> parents) {
         for (int i = 0, m = parents.size(); i < m; i++) {
             List<SysMenu> childrens = sysMenuDao.findMenusByUserId(userId, parents.get(i).getId());
-            if (CollectionUtils.isNotNullOrEmpty(childrens)) {
+            if (CollectionUtils.isNotEmpty(childrens)) {
                 parents.get(i).setMenus(childrens);
                 addChild(userId, childrens);
             }
@@ -129,7 +129,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
     @Override
     public List<SysMenu> findButtonsByParentUrlAndUserId(String userId, String parentUrl) {
         List<SysMenu> menus = null;
-        if (StringUtils.isNotNullOrBlank(userId)) {
+        if (StringUtils.isNotBlank(userId)) {
             menus = sysMenuDao.findButtonsByParentUrlAndUserId(userId, parentUrl);
         }
         return menus;
@@ -145,7 +145,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
         List<BaseTree> trees = new ArrayList<BaseTree>();
 
         List<SysMenu> sysMenus = sysMenuDao.findByParentId("");
-        if (CollectionUtils.isNotNullOrEmpty(sysMenus)) {
+        if (CollectionUtils.isNotEmpty(sysMenus)) {
             for (SysMenu sysMenu : sysMenus) {
                 BaseTree tree = new BaseTree();
                 tree.setId(sysMenu.getId());
@@ -165,7 +165,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
      */
     private void addChildrenNode(BaseTree parent,String roleId){
         parent.setOpen(true);
-        if(StringUtils.isNotNullOrBlank(roleId)){
+        if(StringUtils.isNotBlank(roleId)){
             SysRoleMenu roleMenu = sysRoleMenuDao.findByRoleIdAndMenuId(roleId,parent.getId());
             if (roleMenu != null){
                 parent.setChecked(true);
@@ -173,7 +173,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
         }
 
         List<SysMenu> childMenus = sysMenuDao.findByParentId(parent.getId());
-        if (CollectionUtils.isNotNullOrEmpty(childMenus)) {
+        if (CollectionUtils.isNotEmpty(childMenus)) {
             parent.setIsParent(true);
             for (SysMenu childMenu : childMenus){
                 BaseTree childTree = new BaseTree();

@@ -1,13 +1,21 @@
 package com.whli.jee.core.util;
 
 import com.whli.jee.core.exception.BusinessException;
-import org.apache.poi.hssf.usermodel.*;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -32,7 +40,7 @@ public class ExcelUtils {
      */
     public static void exportExcel(HttpServletResponse response,BaseExcel excel) throws Exception{
         List<Map<String,Object>> dataMaps = excel.datas();
-        if (CollectionUtils.isNullOrEmpty(dataMaps)){
+        if (CollectionUtils.isEmpty(dataMaps)){
             throw new BusinessException("-01080601","不存在需要导出的数据！");
         }
         //创建Excel
@@ -108,7 +116,7 @@ public class ExcelUtils {
      * @return
      */
     public static <T> List<T> importExcel(String filePath, Class<T> c, String[] headers) throws Exception{
-        if (StringUtils.isNullOrBlank(filePath)){
+        if (StringUtils.isBlank(filePath)){
             throw new BusinessException("-01080602","文件不存在或该文件已被删除！");
         }
 

@@ -1,13 +1,13 @@
 package com.whli.jee.oa.service.impl;
 
 import com.whli.jee.core.exception.BusinessException;
-import com.whli.jee.core.util.CollectionUtils;
 import com.whli.jee.oa.entity.BasProcess;
 import com.whli.jee.oa.service.IBasProcessService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,16 +38,16 @@ public class BasProcessServiceImpl implements IBasProcessService {
         int firstResult = (entity.getCurrentPage()-1)*entity.getPageSize();
         int maxResult = entity.getPageSize();
         ProcessDefinitionQuery query = repositoryService.createProcessDefinitionQuery();
-        if (StringUtils.isNotEmpty(entity.getKey()) && StringUtils.isNotEmpty(entity.getName())){
+        if (StringUtils.isNotBlank(entity.getKey()) && StringUtils.isNotBlank(entity.getName())){
             processes = query.processDefinitionKeyLike(entity.getKey())
                     .processDefinitionNameLike(entity.getName())
                     .orderByProcessDefinitionVersion().desc()
                     .latestVersion().listPage(firstResult,maxResult);
-        }else if (StringUtils.isNotEmpty(entity.getKey())){
+        }else if (StringUtils.isNotBlank(entity.getKey())){
             processes = query.processDefinitionKeyLike(entity.getKey())
                     .orderByProcessDefinitionVersion().desc()
                     .latestVersion().listPage(firstResult,maxResult);
-        }else if (StringUtils.isNotEmpty(entity.getName())){
+        }else if (StringUtils.isNotBlank(entity.getName())){
             processes = query.processDefinitionNameLike(entity.getName())
                     .orderByProcessDefinitionVersion().desc()
                     .latestVersion().listPage(firstResult,maxResult);
@@ -67,14 +67,14 @@ public class BasProcessServiceImpl implements IBasProcessService {
     @Override
     public int getCount(BasProcess entity) {
         ProcessDefinitionQuery query = repositoryService.createProcessDefinitionQuery();
-        if (StringUtils.isNotEmpty(entity.getKey()) && StringUtils.isNotEmpty(entity.getName())){
+        if (StringUtils.isNotBlank(entity.getKey()) && StringUtils.isNotBlank(entity.getName())){
             return new Long(query.processDefinitionKeyLike(entity.getKey())
                     .processDefinitionNameLike(entity.getName())
                     .latestVersion().count()).intValue();
-        }else if (StringUtils.isNotEmpty(entity.getKey())){
+        }else if (StringUtils.isNotBlank(entity.getKey())){
             return new Long(query.processDefinitionKeyLike(entity.getKey())
                     .latestVersion().count()).intValue();
-        }else if (StringUtils.isNotEmpty(entity.getName())){
+        }else if (StringUtils.isNotBlank(entity.getName())){
             return new Long(query.processDefinitionNameLike(entity.getName()).count()).intValue();
         }
         return new Long(query.latestVersion().count()).intValue();
@@ -87,7 +87,7 @@ public class BasProcessServiceImpl implements IBasProcessService {
         List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery()
                                         .processDefinitionKey(entity.getKey())
                                         .list();// 使用流程定义的key查询
-        if (CollectionUtils.isNotNullOrEmpty(processDefinitions)){
+        if (CollectionUtils.isNotEmpty(processDefinitions)){
             for (ProcessDefinition processDefinition : processDefinitions){
                 repositoryService.deleteDeployment(processDefinition.getDeploymentId(),true);
                 rows +=1;
@@ -136,7 +136,7 @@ public class BasProcessServiceImpl implements IBasProcessService {
 
     @Override
     public int activateProcessDefinition(BasProcess entity) {
-        if (entity == null || com.whli.jee.core.util.StringUtils.isNullOrBlank(entity.getId())){
+        if (entity == null || StringUtils.isBlank(entity.getId())){
             throw new BusinessException("请选择需要激活的流程！");
         }
         repositoryService.activateProcessDefinitionById(entity.getId(),true,null);
@@ -145,7 +145,7 @@ public class BasProcessServiceImpl implements IBasProcessService {
 
     @Override
     public int suspendProcessDefinition(BasProcess entity) {
-        if (entity == null || com.whli.jee.core.util.StringUtils.isNullOrBlank(entity.getId())){
+        if (entity == null || StringUtils.isBlank(entity.getId())){
             throw new BusinessException("请选择需要挂起的流程！");
         }
         repositoryService.suspendProcessDefinitionById(entity.getId(),true,null);
