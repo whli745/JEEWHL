@@ -106,7 +106,7 @@ public class BasModelServiceImpl implements IBasModelService {
             ObjectNode stencilSetNode = objectMapper.createObjectNode();
             stencilSetNode.put("namespace",
                     "http://b3mn.org/stencilset/bpmn2.0#");
-            editorNode.put("stencilset", stencilSetNode);
+            editorNode.set("stencilset", stencilSetNode);
             repositoryService.addModelEditorSource(id,editorNode.toString().getBytes("utf-8"));
             return id;
         } catch (Exception e) {

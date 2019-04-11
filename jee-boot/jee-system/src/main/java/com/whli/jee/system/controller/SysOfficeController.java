@@ -42,6 +42,8 @@ public class SysOfficeController extends BaseController<SysOffice> {
         if (entity != null) {
             Page<SysOffice> page = new Page<SysOffice>(entity.getCurrentPage(),entity.getPageSize());
             page = sysOfficeService.findByPage(entity, page);
+
+            responseBean.setSucceed(true);
             responseBean.setCount(page.getTotal());
             responseBean.setResults(page.getPageRecords());
         }
@@ -62,7 +64,7 @@ public class SysOfficeController extends BaseController<SysOffice> {
         entity.setEnable(1);
         int rows = sysOfficeService.add(entity);
         if (rows > 0) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("新增部门成功");
         }
         return responseBean;
@@ -80,7 +82,7 @@ public class SysOfficeController extends BaseController<SysOffice> {
         ResponseBean responseBean = new ResponseBean();
         int rows = sysOfficeService.update(entity);
         if (rows > 0) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("修改部门成功！");
         }
         return responseBean;
@@ -97,7 +99,7 @@ public class SysOfficeController extends BaseController<SysOffice> {
     public ResponseBean delete(@RequestBody SysOffice entity, HttpServletRequest req) throws Exception {
         ResponseBean responseBean = new ResponseBean();
         sysOfficeService.deleteMore(entity);
-        responseBean.setResults(true);
+        responseBean.setSucceed(true);
         responseBean.setMessage("删除部门成功！");
         return responseBean;
     }

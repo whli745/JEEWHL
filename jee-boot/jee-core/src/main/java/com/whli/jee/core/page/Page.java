@@ -177,7 +177,7 @@ public class Page<T> {
      * @return if next page's is exist,return true else not
      */
     public boolean isHasNextPage() {
-        hasNextPage = (currentPage == getPageCount()) ? false : true;
+        hasNextPage = (currentPage.equals(getPageCount())) ? false : true;
         return hasNextPage;
     }
 

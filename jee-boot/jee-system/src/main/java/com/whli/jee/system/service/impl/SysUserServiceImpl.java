@@ -15,6 +15,8 @@ import com.whli.jee.system.entity.SysUser;
 import com.whli.jee.system.entity.SysUserRole;
 import com.whli.jee.system.service.ISysRoleService;
 import com.whli.jee.system.service.ISysUserService;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,8 +54,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
 
     @Override
     public int add(SysUser entity) {
-        if (StringUtils.isNullOrBlank(entity.getLoginName()) || StringUtils.isNullOrBlank(entity.getEmail())
-                || StringUtils.isNullOrBlank(entity.getPhone())){
+        if (StringUtils.isBlank(entity.getLoginName()) || StringUtils.isBlank(entity.getEmail())
+                || StringUtils.isBlank(entity.getPhone())){
             throw new BusinessException("用户名、邮箱、联系方式不能为空！");
         }
 
@@ -98,7 +100,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
 
     @Override
     public void deleteMore(SysUser entity) {
-        if (entity == null || CollectionUtils.isNullOrEmpty(entity.getIds())){
+        if (entity == null || CollectionUtils.isEmpty(entity.getIds())){
             throw new BusinessException("修改数据不能为空！");
         }
         List<SysUser> users = sysUserDao.findByPKs(entity.getIds());
@@ -118,7 +120,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
      */
     @Override
     public SysUser login(String loginName, String password) {
-        if (StringUtils.isNullOrBlank(loginName) || StringUtils.isNullOrBlank(password)){
+        if (StringUtils.isBlank(loginName) || StringUtils.isBlank(password)){
             throw new BusinessException("用户名或密码不能为空！");
         }
 
@@ -137,7 +139,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
         }
         String token = BeanUtils.getUUID();
 
-        if (StringUtils.isNotNullOrBlank(RedisConfig.clusterNodes)){
+        if (StringUtils.isNotBlank(RedisConfig.clusterNodes)){
             JedisClusterUtils.hSet(token, SysConstants.LOGIN_NAME, sysUser.getLoginName());
             JedisClusterUtils.hSet(token, SysConstants.LOGIN_USERID, sysUser.getId());
             JedisClusterUtils.expireDefault(token);
@@ -163,7 +165,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
     @Override
     public boolean logout(HttpServletRequest request) {
         String token = request.getHeader(SysConstants.AUTHORIZATION);
-        if (StringUtils.isNotNullOrBlank(RedisConfig.clusterNodes)){
+        if (StringUtils.isNotBlank(RedisConfig.clusterNodes)){
             return JedisClusterUtils.delete(token);
         }
         return JedisUtils.delete(token);
@@ -178,7 +180,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
     @Override
     public SysUser findByLoginNameOrEmailOrPhone(String loginName) {
         SysUser currentUser = null;
-        if (StringUtils.isNotNullOrBlank(loginName)) {
+        if (StringUtils.isNotBlank(loginName)) {
             currentUser = sysUserDao.findByLoginNameOrEmailOrPhone(loginName);
         }
         return currentUser;
@@ -186,7 +188,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
 
     @Override
     public SysUser findByEmail(String email) {
-        if(StringUtils.isNullOrBlank(email)){
+        if(StringUtils.isBlank(email)){
             throw new BusinessException("请选择需要查询的数据！");
         }
         SysUser entity = sysUserDao.findByEmail(email);
@@ -198,7 +200,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
 
     @Override
     public SysUser findByPhone(String phone) {
-        if(StringUtils.isNullOrBlank(phone)){
+        if(StringUtils.isBlank(phone)){
             throw new BusinessException("请选择需要查询的数据！");
         }
         SysUser entity = sysUserDao.findByPhone(phone);
@@ -211,19 +213,19 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
     @Override
     public int grantByUser(String userId, List<String> roleIds) {
 
-        if (StringUtils.isNullOrBlank(userId)){
+        if (StringUtils.isBlank(userId)){
             throw new BusinessException("请选择需要授权的用户！");
         }
 
         int rows = 0;
-        if (CollectionUtils.isNotNullOrEmpty(roleIds)) {
+        if (CollectionUtils.isNotEmpty(roleIds)) {
             List<SysUserRole> userRoles = new ArrayList<SysUserRole>();
             for (String roleId : roleIds) {
                 SysUserRole userRole = new SysUserRole();
                 userRole.setRoleId(roleId);
                 userRole.setUserId(userId);
                 List<SysUserRole> sysUserRoles = sysUserRoleDao.findAll(userRole);
-                if (CollectionUtils.isNotNullOrEmpty(sysUserRoles)){
+                if (CollectionUtils.isNotEmpty(sysUserRoles)){
                     SysRole role = sysRoleService.findByPK(roleId);
                     throw new BusinessException("角色【"+role.getName()+"】已存在！");
                 }
@@ -243,7 +245,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
     @Override
     public int resetPassword(SysUser entity) {
         int rows = 0;
-        if (CollectionUtils.isNullOrEmpty(entity.getIds())){
+        if (CollectionUtils.isEmpty(entity.getIds())){
             throw new BusinessException("请选择需要重置密码的用户！");
         }
         for (String id : entity.getIds()){
@@ -262,7 +264,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
         try {
             List<SysUser> users = ExcelUtils.importExcel(stream,SysUser.class,new String[]{"loginName",
                     "no","name","email","phone"});
-            if (CollectionUtils.isNotNullOrEmpty(users)){
+            if (CollectionUtils.isNotEmpty(users)){
                 for (SysUser entity : users){
                     rows += this.add(entity);
                 }

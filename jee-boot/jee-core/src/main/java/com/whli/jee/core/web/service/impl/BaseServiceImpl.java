@@ -7,6 +7,8 @@ import com.whli.jee.core.util.*;
 import com.whli.jee.core.web.dao.IBaseDao;
 import com.whli.jee.core.web.entity.BaseEntity;
 import com.whli.jee.core.web.service.IBaseService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -17,13 +19,10 @@ import java.util.List;
 /**
  * Created by whli on 2017/10/29.
  */
-public class BaseServiceImpl<T extends BaseEntity> implements IBaseService<T> {
+public abstract class BaseServiceImpl<T extends BaseEntity> implements IBaseService<T> {
 
-    private IBaseDao<T> dao;
 
-    public IBaseDao<T> getDao(){
-        return  dao;
-    }
+    public abstract IBaseDao<T> getDao();
 
     /**
      * 增加
@@ -36,7 +35,7 @@ public class BaseServiceImpl<T extends BaseEntity> implements IBaseService<T> {
             throw new BusinessException("新增数据不能为空！");
         }
         entity.setId(BeanUtils.getUUID());
-        entity.setCreateBy(StringUtils.isNullOrBlank(WebUtils.getLoginName()) ? "anonymous" : WebUtils.getLoginName());
+        entity.setCreateBy(WebUtils.getLoginName());
         entity.setCreateDate(new Date());
         return getDao().add(entity);
     }
@@ -48,13 +47,13 @@ public class BaseServiceImpl<T extends BaseEntity> implements IBaseService<T> {
      */
     @Override
     public int addMore(List<T> entities){
-        if(CollectionUtils.isNullOrEmpty(entities)){
+        if(CollectionUtils.isEmpty(entities)){
             throw new BusinessException("新增数据不能为空！");
         }
         int rows = 0;
         for(T entity:entities){
             entity.setId(BeanUtils.getUUID());
-            entity.setCreateBy(StringUtils.isNullOrBlank(WebUtils.getLoginName()) ? "anonymous" : WebUtils.getLoginName());
+            entity.setCreateBy(WebUtils.getLoginName());
             entity.setCreateDate(new Date());
             getDao().add(entity);
             rows++;
@@ -72,7 +71,7 @@ public class BaseServiceImpl<T extends BaseEntity> implements IBaseService<T> {
         if(BeanUtils.isNull(entity)){
             throw new BusinessException("修改数据不能为空！");
         }
-        entity.setUpdateBy(StringUtils.isNullOrBlank(WebUtils.getLoginName()) ? "anonymous" : WebUtils.getLoginName());
+        entity.setUpdateBy(WebUtils.getLoginName());
         entity.setUpdateDate(new Date());
         return getDao().update(entity);
     }
@@ -84,12 +83,12 @@ public class BaseServiceImpl<T extends BaseEntity> implements IBaseService<T> {
      */
     @Override
     public int updateMore(List<T> entities){
-        if(CollectionUtils.isNullOrEmpty(entities)){
+        if(CollectionUtils.isEmpty(entities)){
             throw new BusinessException("修改数据不能为空！");
         }
         int rows = 0;
         for(T entity:entities){
-            entity.setUpdateBy(StringUtils.isNullOrBlank(WebUtils.getLoginName()) ? "anonymous" : WebUtils.getLoginName());
+            entity.setUpdateBy(WebUtils.getLoginName());
             entity.setUpdateDate(new Date());
             getDao().update(entity);
             rows++;
@@ -103,7 +102,7 @@ public class BaseServiceImpl<T extends BaseEntity> implements IBaseService<T> {
      */
     @Override
     public void delete(T entity){
-        if(StringUtils.isNullOrBlank(entity.getId())){
+        if(StringUtils.isBlank(entity.getId())){
             throw new BusinessException("请选择需要删除的数据！");
         }
         getDao().delete(entity.getId());
@@ -116,7 +115,7 @@ public class BaseServiceImpl<T extends BaseEntity> implements IBaseService<T> {
      */
     @Override
     public void deleteMore(T entity){
-        if(CollectionUtils.isNullOrEmpty(entity.getIds())){
+        if(CollectionUtils.isEmpty(entity.getIds())){
             throw new BusinessException("请选择需要删除的数据！");
         }
         getDao().deleteMore(entity.getIds());
@@ -129,7 +128,7 @@ public class BaseServiceImpl<T extends BaseEntity> implements IBaseService<T> {
      */
     @Override
     public T findByPK(String id){
-        if(StringUtils.isNullOrBlank(id)){
+        if(StringUtils.isBlank(id)){
             throw new BusinessException("请选择需要查询的数据！");
         }
         T entity = getDao().findByPK(id);
@@ -141,11 +140,11 @@ public class BaseServiceImpl<T extends BaseEntity> implements IBaseService<T> {
 
     @Override
     public List<T> findByPKs(List<String> ids) {
-        if (CollectionUtils.isNullOrEmpty(ids)){
+        if (CollectionUtils.isEmpty(ids)){
             throw new BusinessException("请选择需要查询的数据！");
         }
         List<T> entities = getDao().findByPKs(ids);
-        if (CollectionUtils.isNullOrEmpty(entities)){
+        if (CollectionUtils.isEmpty(entities)){
             throw  new BusinessException("查询的数据不存在或已删除！");
         }
 
@@ -153,11 +152,11 @@ public class BaseServiceImpl<T extends BaseEntity> implements IBaseService<T> {
     }
 
     @Override
-    public T findByNo(String No) {
-        if(StringUtils.isNullOrBlank(No)){
+    public T findByNo(String no) {
+        if(StringUtils.isBlank(no)){
             throw new BusinessException("请选择需要查询的数据！");
         }
-        T entity = getDao().findByNo(No);
+        T entity = getDao().findByNo(no);
         if(BeanUtils.isNull(entity)){
             throw  new BusinessException("查询的数据不存在或已删除！");
         }
@@ -166,7 +165,7 @@ public class BaseServiceImpl<T extends BaseEntity> implements IBaseService<T> {
 
     @Override
     public T findByName(String name) {
-        if(StringUtils.isNullOrBlank(name)){
+        if(StringUtils.isBlank(name)){
             throw new BusinessException("请选择需要查询的数据！");
         }
         T entity = getDao().findByName(name);

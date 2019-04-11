@@ -44,10 +44,10 @@ public interface IBaseDao<T> {
 
     /**
      * 根据编码查询
-     * @param No
+     * @param no
      * @return
      */
-    public T findByNo(@Param("no") String No);
+    public T findByNo(@Param("no") String no);
 
     /**
      * 根据名称查询

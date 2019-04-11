@@ -1,10 +1,10 @@
 package com.whli.jee.oa.controller;
 
-import com.whli.jee.core.util.StringUtils;
 import com.whli.jee.core.web.entity.ResponseBean;
 import com.whli.jee.oa.entity.BasProcess;
 import com.whli.jee.oa.service.IBasProcessService;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -79,7 +79,7 @@ public class BasProcessController {
                                       @RequestParam(value = "uploadFile", required = false) MultipartFile file) throws Exception {
         ResponseBean responseBean = new ResponseBean();
 
-        if (StringUtils.isNotNullOrBlank(name) && StringUtils.isNotNullOrBlank(key) && file != null){
+        if (StringUtils.isNotBlank(name) && StringUtils.isNotBlank(key) && file != null){
             int rows = processService.importExcel(name,key,file.getInputStream());
             if (rows > 0) {
                 responseBean.setResults(true);

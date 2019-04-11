@@ -1,7 +1,5 @@
 package com.whli.jee.core.constant;
 
-import java.util.Date;
-
 /**
  * @Desc 类作用描述
  * @Author whli
@@ -28,5 +26,5 @@ public class SysConstants {
     public static final String TOKEN_FAIL_CODE = "-10005";
     public static final String TOKEN_FAIL_MESSAGE ="token过期,请重新登陆";
 
-    public static final Long currentTimeMillis = new Date().getTime();
+    public static final Long CURRENT_TIME_MILLIS = System.currentTimeMillis();
 }

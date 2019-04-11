@@ -20,12 +20,12 @@ public class LogInterceptor implements HandlerInterceptor {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final ThreadLocal<Long> startTimeThreadLocal = new NamedThreadLocal("ThreadLocal StartTime");
+    private static final ThreadLocal<Long> START_TIME_THREADLOCAL = new NamedThreadLocal("ThreadLocal StartTime");
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         long beginTime = System.currentTimeMillis();
-        startTimeThreadLocal.set(Long.valueOf(beginTime));
+        START_TIME_THREADLOCAL.set(Long.valueOf(beginTime));
         logger.debug("开始记时: {}  URI: {}",
                 new SimpleDateFormat("hh:mm:ss.SSS").format(Long.valueOf(beginTime)),
                 request.getRequestURI());
@@ -51,7 +51,7 @@ public class LogInterceptor implements HandlerInterceptor {
 
         logger.info(builder.toString());
 
-        long beginTime = ((Long)startTimeThreadLocal.get()).longValue();
+        long beginTime = ((Long)START_TIME_THREADLOCAL.get()).longValue();
         long endTime = System.currentTimeMillis();
         Runtime runtime = Runtime.getRuntime();
 
@@ -62,6 +62,6 @@ public class LogInterceptor implements HandlerInterceptor {
                 Long.valueOf(runtime.totalMemory() / 1024L / 1024L),
                 Long.valueOf((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024L / 1024L) });
 
-        startTimeThreadLocal.remove();
+        START_TIME_THREADLOCAL.remove();
     }
 }

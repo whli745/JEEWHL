@@ -43,6 +43,8 @@ public class SysAreaController extends BaseController<SysArea> {
         if (entity != null) {
             Page<SysArea> page = new Page<SysArea>(entity.getCurrentPage(),entity.getPageSize());
             page = sysAreaService.findByPage(entity, page);
+
+            responseBean.setSucceed(true);
             responseBean.setCount(page.getTotal());
             responseBean.setResults(page.getPageRecords());
         }
@@ -61,7 +63,7 @@ public class SysAreaController extends BaseController<SysArea> {
         entity.setEnable(1);
         int rows = sysAreaService.add(entity);
         if (rows > 0) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("新增区域成功！");
         }
         return responseBean;
@@ -78,7 +80,7 @@ public class SysAreaController extends BaseController<SysArea> {
         ResponseBean responseBean = new ResponseBean();
         int rows = sysAreaService.update(entity);
         if (rows > 0) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("修改区域成功！");
         }
         return responseBean;
@@ -94,7 +96,7 @@ public class SysAreaController extends BaseController<SysArea> {
     public ResponseBean delete(@RequestBody SysArea entity, HttpServletRequest req) throws Exception {
         ResponseBean responseBean = new ResponseBean();
         sysAreaService.deleteMore(entity);
-        responseBean.setResults(true);
+        responseBean.setSucceed(true);
         responseBean.setMessage( "删除区域成功！");
         return responseBean;
     }

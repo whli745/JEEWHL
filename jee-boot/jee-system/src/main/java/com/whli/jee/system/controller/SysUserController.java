@@ -48,6 +48,8 @@ public class SysUserController extends BaseController<SysUser> {
         if (entity != null) {
             Page<SysUser> page = new Page<SysUser>(entity.getCurrentPage(),entity.getPageSize());
             page = sysUserService.findByPage(entity,page);
+
+            responseBean.setSucceed(true);
             responseBean.setCount(page.getTotal());
             responseBean.setResults(page.getPageRecords());
         }
@@ -66,7 +68,7 @@ public class SysUserController extends BaseController<SysUser> {
         ResponseBean responseBean = new ResponseBean();
         int rows = sysUserService.add(entity);
         if (rows > 0) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("新增用户成功！");
         }
         return responseBean;
@@ -84,7 +86,7 @@ public class SysUserController extends BaseController<SysUser> {
         ResponseBean responseBean = new ResponseBean();
         int rows = sysUserService.update(entity);
         if (rows > 0) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("修改用户成功！");
         }
         return responseBean;
@@ -101,7 +103,7 @@ public class SysUserController extends BaseController<SysUser> {
     public ResponseBean delete(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
         ResponseBean responseBean = new ResponseBean();
         sysUserService.deleteMore(entity);
-        responseBean.setResults(true);
+        responseBean.setSucceed(true);
         responseBean.setMessage("删除用户成功！");
         return responseBean;
     }
@@ -214,7 +216,7 @@ public class SysUserController extends BaseController<SysUser> {
         if (file != null){
             int rows = sysUserService.importExcel(file.getInputStream());
             if (rows > 0) {
-                responseBean.setResults(true);
+                responseBean.setSucceed(true);
                 responseBean.setMessage("导入用户成功！");
             }
         }
@@ -241,7 +243,7 @@ public class SysUserController extends BaseController<SysUser> {
         ResponseBean responseBean = new ResponseBean();
         int rows = sysUserService.grantByUser(entity.getId(),entity.getRoleIds());
         if (rows > 0){
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("授权用户成功！");
         }
         return responseBean;
@@ -259,7 +261,7 @@ public class SysUserController extends BaseController<SysUser> {
     public ResponseBean deleteRoleByUser(@RequestBody SysUserRole entity, HttpServletRequest req) throws Exception {
         ResponseBean responseBean = new ResponseBean();
         sysUserRoleService.deleteByUser(entity);
-        responseBean.setResults(true);
+        responseBean.setSucceed(true);
         responseBean.setMessage("删除角色成功！");
         return responseBean;
     }
@@ -275,7 +277,7 @@ public class SysUserController extends BaseController<SysUser> {
         ResponseBean responseBean = new ResponseBean();
         int rows = sysUserService.resetPassword(entity);
         if (rows > 0) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("重置密码成功！");
         }
         return responseBean;

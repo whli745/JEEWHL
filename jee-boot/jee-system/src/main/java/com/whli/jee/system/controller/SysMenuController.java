@@ -2,7 +2,6 @@ package com.whli.jee.system.controller;
 
 import com.whli.jee.core.page.Page;
 import com.whli.jee.core.util.BeanUtils;
-import com.whli.jee.core.util.StringUtils;
 import com.whli.jee.core.util.WebUtils;
 import com.whli.jee.core.web.controller.BaseController;
 import com.whli.jee.core.web.entity.BaseTree;
@@ -11,6 +10,7 @@ import com.whli.jee.system.entity.SysMenu;
 import com.whli.jee.system.service.ISysMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,11 +46,13 @@ public class SysMenuController extends BaseController<SysMenu> {
     public ResponseBean findByPage(@RequestBody SysMenu entity, HttpServletRequest req) throws Exception {
         ResponseBean responseBean = new ResponseBean();
         if (BeanUtils.isNotNull(entity)){
-            if (StringUtils.isNullOrBlank(entity.getParentId())){
+            if (StringUtils.isBlank(entity.getParentId())){
                 entity.setParentId("");
             }
             Page<SysMenu> page = new Page<SysMenu>(entity.getCurrentPage(),entity.getPageSize());
             page = sysMenuService.findByPage(entity, page);
+
+            responseBean.setSucceed(true);
             responseBean.setCount(page.getTotal());
             responseBean.setResults(page.getPageRecords());
         }
@@ -70,7 +72,7 @@ public class SysMenuController extends BaseController<SysMenu> {
         entity.setEnable(1);
         int rows = sysMenuService.add(entity);
         if (rows > 0) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage( "新增系统资源成功！");
         }
         return responseBean;
@@ -88,7 +90,7 @@ public class SysMenuController extends BaseController<SysMenu> {
         ResponseBean responseBean = new ResponseBean();
         int rows = sysMenuService.update(entity);
         if (rows > 0) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("修改系统资源成功！");
         }
         return responseBean;
@@ -105,7 +107,7 @@ public class SysMenuController extends BaseController<SysMenu> {
     public ResponseBean delete(@RequestBody SysMenu entity, HttpServletRequest req) throws Exception {
         ResponseBean responseBean = new ResponseBean();
         sysMenuService.deleteMore(entity);
-        responseBean.setResults(true);
+        responseBean.setSucceed(true);
         responseBean.setMessage( "删除系统资源成功！");
         return responseBean;
     }

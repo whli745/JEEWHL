@@ -26,9 +26,11 @@ public class BusinessExceptionHandler {
         if(e instanceof DataIntegrityViolationException){ //数据库异常
             String msg = e.getMessage();
             if(msg.indexOf("Cannot delete or update a parent row: a foreign key constraint fails") > 0){
+                responseBean.setSucceed(false);
                 responseBean.setCode("-10001");
                 responseBean.setMessage("数据被引用，不能删除！");
             } else {
+                responseBean.setSucceed(false);
                 responseBean.setCode("-10002");
                 responseBean.setMessage("数据库异常！！");
             }
@@ -36,11 +38,13 @@ public class BusinessExceptionHandler {
         }else if (e instanceof BusinessException) {  //自定义异常
             BusinessException applicationException = (BusinessException)e;
             //返回前台
+            responseBean.setSucceed(false);
             responseBean.setCode(applicationException.getErrorCode());
             responseBean.setMessage(applicationException.getMessage());
 
         } else { //其它异常
             //返回前台
+            responseBean.setSucceed(false);
             responseBean.setCode("-10000");
             responseBean.setMessage("应用错误，请联系管理员！"+e.getMessage());
         }

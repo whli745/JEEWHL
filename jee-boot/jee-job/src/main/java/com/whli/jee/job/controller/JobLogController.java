@@ -48,6 +48,8 @@ public class JobLogController extends BaseController<JobLog>{
         if (entity != null) {
             Page<JobLog> page = new Page<JobLog>(entity.getCurrentPage(),entity.getPageSize());
             page = jobLogService.findByPage(entity, page);
+
+            responseBean.setSucceed(true);
             responseBean.setCount(page.getTotal());
             responseBean.setResults(page.getPageRecords());
         }
@@ -68,7 +70,7 @@ public class JobLogController extends BaseController<JobLog>{
         ResponseBean responseBean = new ResponseBean();
         int rows = jobLogService.add(entity);
         if (rows > 0) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("新增定时任务日志成功！");
         }
         return responseBean;
@@ -88,7 +90,7 @@ public class JobLogController extends BaseController<JobLog>{
         ResponseBean responseBean = new ResponseBean();
         int rows = jobLogService.update(entity);
         if (rows > 0) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("更新定时任务日志成功！");
         }
         return responseBean;
@@ -108,7 +110,7 @@ public class JobLogController extends BaseController<JobLog>{
         throws Exception {
         ResponseBean responseBean = new ResponseBean();
         jobLogService.deleteMore(entity);
-        responseBean.setResults(true);
+        responseBean.setSucceed(true);
         responseBean.setMessage("删除定时任务成功！");
         return responseBean;
     }

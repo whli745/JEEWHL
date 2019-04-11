@@ -1,10 +1,11 @@
 package com.whli.jee.core.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 反射工具类
@@ -34,8 +35,9 @@ public class ReflectUtils
       }
       method.invoke(target, new Object[] { value });
     } catch (Exception e) {
-      if (logger.isDebugEnabled())
+      if (logger.isDebugEnabled()) {
         logger.debug(e.toString());
+      }
       try
       {
         Field field = clazz.getDeclaredField(name);
@@ -44,8 +46,9 @@ public class ReflectUtils
         }
         field.set(target, value);
       } catch (Exception fe) {
-        if (logger.isDebugEnabled())
+        if (logger.isDebugEnabled()) {
           logger.debug(fe.toString());
+        }
       }
     }
   }

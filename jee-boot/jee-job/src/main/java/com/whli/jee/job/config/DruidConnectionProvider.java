@@ -25,7 +25,7 @@ public class DruidConnectionProvider implements ConnectionProvider {
     //JDBC驱动
     public String driver;
     //JDBC连接串
-    public String URL;
+    public String url;
     //数据库用户名
     public String user;
     //数据库用户密码
@@ -62,8 +62,8 @@ public class DruidConnectionProvider implements ConnectionProvider {
 
     @Override
     public void initialize() throws SQLException {
-        if (this.URL == null) {
-            throw new SQLException("DBPool could not be created: DB URL cannot be null");
+        if (this.url == null) {
+            throw new SQLException("DBPool could not be created: DB url cannot be null");
         }
 
         if (this.driver == null) {
@@ -84,20 +84,21 @@ public class DruidConnectionProvider implements ConnectionProvider {
             }
         }
 
-        datasource.setUrl(this.URL);
+        datasource.setUrl(this.url);
         datasource.setUsername(this.user);
         datasource.setPassword(this.password);
         datasource.setMaxActive(this.maxConnections);
         datasource.setMinIdle(1);
         datasource.setMaxWait(0);
-        datasource.setMaxPoolPreparedStatementPerConnectionSize(this.DEFAULT_DB_MAX_CACHED_STATEMENTS_PER_CONNECTION);
+        datasource.setMaxPoolPreparedStatementPerConnectionSize(DEFAULT_DB_MAX_CACHED_STATEMENTS_PER_CONNECTION);
 
         if (this.validationQuery != null) {
             datasource.setValidationQuery(this.validationQuery);
-            if(!this.validateOnCheckout)
+            if(!this.validateOnCheckout) {
                 datasource.setTestOnReturn(true);
-            else
+            }else {
                 datasource.setTestOnBorrow(true);
+            }
             datasource.setValidationQueryTimeout(this.idleConnectionValidationSeconds);
         }
     }
@@ -110,12 +111,12 @@ public class DruidConnectionProvider implements ConnectionProvider {
         this.driver = driver;
     }
 
-    public String getURL() {
-        return URL;
+    public String getUrl() {
+        return url;
     }
 
-    public void setURL(String URL) {
-        this.URL = URL;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getUser() {

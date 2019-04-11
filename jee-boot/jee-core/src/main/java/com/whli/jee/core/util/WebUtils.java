@@ -2,6 +2,7 @@ package com.whli.jee.core.util;
 
 import com.whli.jee.core.cache.RedisConfig;
 import com.whli.jee.core.constant.SysConstants;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -32,10 +33,12 @@ public class WebUtils {
         }
         String token = (String)request.getHeader(SysConstants.AUTHORIZATION);
 
-        if (StringUtils.isNotNullOrBlank(RedisConfig.clusterNodes)){
+        if (StringUtils.isNotBlank(RedisConfig.clusterNodes)){
             return JedisClusterUtils.hGet(token,SysConstants.LOGIN_NAME);
         }
-        return JedisUtils.hGet(token, SysConstants.LOGIN_NAME);
+        String loginName = JedisUtils.hGet(token, SysConstants.LOGIN_NAME);
+
+        return StringUtils.isNotBlank(loginName) ? loginName : "anonymous";
     }
 
     /**
@@ -45,10 +48,13 @@ public class WebUtils {
     public static String getLoginName(HttpServletRequest request){
         String token = (String)request.getHeader(SysConstants.AUTHORIZATION);
 
-        if (StringUtils.isNotNullOrBlank(RedisConfig.clusterNodes)){
+        if (StringUtils.isNotBlank(RedisConfig.clusterNodes)){
             return JedisClusterUtils.hGet(token,SysConstants.LOGIN_NAME);
         }
-        return JedisUtils.hGet(token, SysConstants.LOGIN_NAME);
+
+        String loginName = JedisUtils.hGet(token, SysConstants.LOGIN_NAME);
+
+        return StringUtils.isNotBlank(loginName) ? loginName : "anonymous";
     }
 
     /**
@@ -62,7 +68,7 @@ public class WebUtils {
         }
         String token = (String)request.getHeader(SysConstants.AUTHORIZATION);
 
-        if (StringUtils.isNotNullOrBlank(RedisConfig.clusterNodes)){
+        if (StringUtils.isNotBlank(RedisConfig.clusterNodes)){
             return JedisClusterUtils.hGet(token,SysConstants.LOGIN_USERID);
         }
         return JedisUtils.hGet(token, SysConstants.LOGIN_USERID);
@@ -77,7 +83,7 @@ public class WebUtils {
             return  null;
         }
         String token = (String)request.getHeader(SysConstants.AUTHORIZATION);
-        if (StringUtils.isNotNullOrBlank(RedisConfig.clusterNodes)){
+        if (StringUtils.isNotBlank(RedisConfig.clusterNodes)){
             return JedisClusterUtils.hGet(token,SysConstants.LOGIN_USERID);
         }
         return JedisUtils.hGet(token, SysConstants.LOGIN_USERID);
@@ -97,7 +103,7 @@ public class WebUtils {
      * @param request
      * @return
      */
-    public static String getRemoteIp(HttpServletRequest request){
+    public static String getRemoteIP(HttpServletRequest request){
         String ipAddress = request.getHeader("x-forwarded-for");
         if(ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
             ipAddress = request.getHeader("Proxy-Client-IP");
@@ -107,7 +113,7 @@ public class WebUtils {
         }
         if(ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
             ipAddress = request.getRemoteAddr();
-            if(ipAddress.equals("127.0.0.1") || ipAddress.equals("0:0:0:0:0:0:0:1")){
+            if("127.0.0.1".equals(ipAddress) || "0:0:0:0:0:0:0:1".equals(ipAddress)){
                 //根据网卡取本机配置的IP
                 InetAddress inet=null;
                 try {
@@ -125,6 +131,10 @@ public class WebUtils {
             }
         }
         return ipAddress;
+    }
+
+    public static String getRemoteHostName(HttpServletRequest request){
+        return request.getRemoteHost();
     }
 
     /**
@@ -145,8 +155,9 @@ public class WebUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (writer != null)
+            if (writer != null) {
                 writer.close();
+            }
         }
     }
 
@@ -198,8 +209,8 @@ public class WebUtils {
     }
 
     public static boolean isAjax(HttpServletRequest request){
-        return !StringUtils.isNotNullOrBlank(request.getHeader("x-requested-with"))
-                && request.getHeader("x-requested-with").equals("XMLHttpRequest");
+        return !StringUtils.isNotBlank(request.getHeader("x-requested-with"))
+                && "XMLHttpRequest".equals(request.getHeader("x-requested-with"));
     }
 
     /**
@@ -208,7 +219,7 @@ public class WebUtils {
      * @return
      */
     public static boolean isExistsToken(String token){
-        if (StringUtils.isNotNullOrBlank(RedisConfig.clusterNodes)){
+        if (StringUtils.isNotBlank(RedisConfig.clusterNodes)){
             return JedisClusterUtils.exists(token);
         }
         return JedisUtils.exists(token);

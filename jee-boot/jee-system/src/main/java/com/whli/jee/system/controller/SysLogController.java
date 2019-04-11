@@ -45,6 +45,8 @@ public class SysLogController extends BaseController<SysLog> {
         if (entity != null) {
             Page<SysLog> page = new Page<SysLog>(entity.getCurrentPage(),entity.getPageSize());
             page = sysLogService.findByPage(entity, page);
+
+            responseBean.setSucceed(true);
             responseBean.setCount(page.getTotal());
             responseBean.setResults(page.getPageRecords());
         }
@@ -64,7 +66,7 @@ public class SysLogController extends BaseController<SysLog> {
         ResponseBean responseBean = new ResponseBean();
         int rows = sysLogService.add(entity);
         if (rows > 0) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("新增操作日志成功！");
         }
         return responseBean;
@@ -83,7 +85,7 @@ public class SysLogController extends BaseController<SysLog> {
         ResponseBean responseBean = new ResponseBean();
         int rows = sysLogService.update(entity);
         if (rows > 0) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("修改操作日志成功！");
         }
         return responseBean;
@@ -101,7 +103,7 @@ public class SysLogController extends BaseController<SysLog> {
     public ResponseBean delete(@RequestBody SysLog entity, HttpServletRequest req) {
         ResponseBean responseBean = new ResponseBean();
         sysLogService.deleteMore(entity);
-        responseBean.setResults(true);
+        responseBean.setSucceed(true);
         responseBean.setMessage("删除操作日志成功！");
         return responseBean;
     }

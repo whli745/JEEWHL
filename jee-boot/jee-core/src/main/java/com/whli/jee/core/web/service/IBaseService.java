@@ -68,10 +68,10 @@ public interface IBaseService<T> {
 
     /**
      * 根据编码查询
-     * @param No
+     * @param no
      * @return
      */
-    public T findByNo(String No);
+    public T findByNo(String no);
 
     /**
      * 根据名称查询

@@ -2,13 +2,13 @@ package com.whli.jee.system.controller;
 
 import com.whli.jee.core.page.Page;
 import com.whli.jee.core.util.BeanUtils;
-import com.whli.jee.core.util.StringUtils;
 import com.whli.jee.core.web.controller.BaseController;
 import com.whli.jee.core.web.entity.ResponseBean;
 import com.whli.jee.system.entity.SysDict;
 import com.whli.jee.system.service.ISysDictService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,11 +43,13 @@ public class SysDictController extends BaseController<SysDict> {
     public ResponseBean findByPage(@RequestBody SysDict entity, HttpServletRequest req) throws Exception {
         ResponseBean responseBean = new ResponseBean();
         if (BeanUtils.isNotNull(entity)){
-            if (StringUtils.isNullOrBlank(entity.getParentId())){
+            if (StringUtils.isBlank(entity.getParentId())){
                 entity.setParentId("");
             }
             Page<SysDict> page = new Page<SysDict>(entity.getCurrentPage(),entity.getPageSize());
             page = sysDictService.findByPage(entity, page);
+
+            responseBean.setSucceed(true);
             responseBean.setCount(page.getTotal());
             responseBean.setResults(page.getPageRecords());
         }
@@ -67,7 +69,7 @@ public class SysDictController extends BaseController<SysDict> {
         entity.setEnable(1);
         int rows = sysDictService.add(entity);
         if (rows > 0) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("新增数据字典成功！");
         }
         return responseBean;
@@ -85,7 +87,7 @@ public class SysDictController extends BaseController<SysDict> {
         ResponseBean responseBean = new ResponseBean();
         int rows = sysDictService.update(entity);
         if (rows > 0) {
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
             responseBean.setMessage("修改数据字典成功！");
         }
         return responseBean;
@@ -102,7 +104,7 @@ public class SysDictController extends BaseController<SysDict> {
     public ResponseBean delete(@RequestBody SysDict entity, HttpServletRequest req) throws Exception {
         ResponseBean responseBean = new ResponseBean();
         sysDictService.deleteMore(entity);
-        responseBean.setResults(true);
+        responseBean.setSucceed(true);
         responseBean.setMessage("删除数据字典成功！");
         return responseBean;
     }
@@ -162,6 +164,7 @@ public class SysDictController extends BaseController<SysDict> {
      */
     @PostMapping(value = "/findAll")
     @ApiOperation("查询所有字典")
+    @Override
     public List<SysDict> findAll(@RequestBody SysDict entity, HttpServletRequest req) throws Exception {
         return sysDictService.findAll(entity);
     }

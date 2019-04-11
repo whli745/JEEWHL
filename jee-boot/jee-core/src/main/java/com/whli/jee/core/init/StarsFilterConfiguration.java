@@ -21,7 +21,7 @@ public class StarsFilterConfiguration extends SpringBootServletInitializer {
     @Bean
     public FilterRegistrationBean someFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(AuthFilter());
+        registration.setFilter(authFilter());
         registration.addUrlPatterns("/*");
         registration.setOrder(1);
         return registration;
@@ -29,7 +29,7 @@ public class StarsFilterConfiguration extends SpringBootServletInitializer {
 
     /*使用annotation tag来取代<bean></bean>*/
     @Bean
-    public CorsFilter AuthFilter() {
+    public CorsFilter authFilter() {
         return new CorsFilter();
     }
 }

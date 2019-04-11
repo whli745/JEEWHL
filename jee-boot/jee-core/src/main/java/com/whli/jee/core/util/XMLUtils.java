@@ -1,7 +1,9 @@
 package com.whli.jee.core.util;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
-import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
@@ -80,7 +82,7 @@ public class XMLUtils {
      */
     public static List<Element> getChildElements(Element element){
         List<Element> childElements = element.elements();
-        if (CollectionUtils.isNotNullOrEmpty(childElements)){
+        if (CollectionUtils.isNotEmpty(childElements)){
             return childElements;
         }
         return null;
@@ -94,7 +96,7 @@ public class XMLUtils {
      */
     public static Element getChildElementByName(Element parentElement,String nodeName){
         List<Element> childElements = getChildElements(parentElement);
-        if (CollectionUtils.isNotNullOrEmpty(childElements)){
+        if (CollectionUtils.isNotEmpty(childElements)){
             for (Element childElement : childElements){
                 if (nodeName.equals(childElement.getName())){
                     return childElement;
@@ -136,21 +138,21 @@ public class XMLUtils {
      */
     public static Element getChildElementByAttribute(Element root,String attributeKey,String attributeValue){
         List<Element> childrenElements = getChildElements(root);
-        if (CollectionUtils.isNotNullOrEmpty(childrenElements)){
+        if (CollectionUtils.isNotEmpty(childrenElements)){
             for (Element childrenElement : childrenElements){
                 List<DefaultAttribute> attributes = childrenElement.attributes();
-                if (CollectionUtils.isNotNullOrEmpty(attributes)){
+                if (CollectionUtils.isNotEmpty(attributes)){
                     for (int i = 0;i < attributes.size();i++){
                         DefaultAttribute attribute = attributes.get(i);
-                        if (StringUtils.isNotNullOrBlank(attributeKey) && StringUtils.isNotNullOrBlank(attributeValue)){
+                        if (StringUtils.isNotBlank(attributeKey) && StringUtils.isNotBlank(attributeValue)){
                             if (attributeKey.equals(attribute.getName()) && attributeValue.equals(attribute.getValue())){
                                 return childrenElement;
                             }
-                        }else if (StringUtils.isNotNullOrBlank(attributeKey)){
+                        }else if (StringUtils.isNotBlank(attributeKey)){
                             if (attributeKey.equals(attribute.getName())){
                                 return childrenElement;
                             }
-                        }else if (StringUtils.isNotNullOrBlank(attributeValue)){
+                        }else if (StringUtils.isNotBlank(attributeValue)){
                             if (attributeValue.equals(attribute.getName())){
                                 return childrenElement;
                             }
@@ -210,12 +212,12 @@ public class XMLUtils {
      * @param attributes
      */
     public static void addChildElement(Element parentElement,String nodeName,String nodeText,Map<String,String> attributes){
-        if (StringUtils.isNotNullOrBlank(nodeName)){
+        if (StringUtils.isNotBlank(nodeName)){
             Element childElement = parentElement.addElement(nodeName);
-            if (StringUtils.isNotNullOrBlank(nodeText)){
+            if (StringUtils.isNotBlank(nodeText)){
                 childElement.setText(nodeText);
             }
-            if (MapUtils.isNotNullOrEmpty(attributes)){
+            if (MapUtils.isNotEmpty(attributes)){
                 Iterator<Map.Entry<String,String>> attribute = attributes.entrySet().iterator();
                 while (attribute.hasNext()){
                     Map.Entry<String,String> entry = attribute.next();

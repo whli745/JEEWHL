@@ -2,7 +2,11 @@ package com.whli.jee.core.web.interceptor;
 
 import com.whli.jee.core.constant.SysConstants;
 import com.whli.jee.core.page.Page;
-import com.whli.jee.core.util.*;
+import com.whli.jee.core.util.BeanUtils;
+import com.whli.jee.core.util.DateUtils;
+import com.whli.jee.core.util.ReflectUtils;
+import com.whli.jee.core.util.WebUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.executor.statement.RoutingStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
@@ -127,8 +131,9 @@ public class PageInterceptor implements Interceptor {
                 if (rs != null) {
                     rs.close();
                 }
-                if (pstmt != null)
+                if (pstmt != null) {
                     pstmt.close();
+                }
             }
             catch (Exception e) {
                 logger.error("setTotalRecord;bug:{}", e);
@@ -142,12 +147,12 @@ public class PageInterceptor implements Interceptor {
             StringBuilder countSql = new StringBuilder(sql);
             int distinct = countSql.toString().toUpperCase().indexOf("DISTINCT");
             if (distinct > 0) {
-                if (distinct < 20)
+                if (distinct < 20) {
                     countSql = countSql.insert(distinct + 8, " top 100 percent ");
-                else
+                }else {
                     countSql = countSql.insert(7, " top 100 percent ");
-            }
-            else {
+                }
+            }else {
                 countSql = countSql.insert(7, " top 100 percent ");
             }
             return new StringBuilder().append("select count(1) from (").append(countSql.toString()).append(") tmp").toString();
@@ -159,11 +164,11 @@ public class PageInterceptor implements Interceptor {
     private String getPageSql(Page page, String sql){
         StringBuilder sqlBuffer = new StringBuilder(sql);
         String resultSql = null;
-        if ("mysql".equalsIgnoreCase(dialect))
+        if ("mysql".equalsIgnoreCase(dialect)) {
             resultSql = getMysqlPageSql(page, sqlBuffer);
-        else if ("oracle".equalsIgnoreCase(dialect))
+        }else if ("oracle".equalsIgnoreCase(dialect)) {
             resultSql = getOraclePageSql(page, sqlBuffer);
-        else if ("sqlServer".equalsIgnoreCase(dialect)) {
+        }else if ("sqlServer".equalsIgnoreCase(dialect)) {
             resultSql = getSqlServerPageSql(page, sqlBuffer);
         }
         return resultSql;
@@ -173,9 +178,9 @@ public class PageInterceptor implements Interceptor {
     private String getMysqlPageSql(Page page, StringBuilder sqlBuffer)
     {
         int offset = (page.getCurrentPage() - 1) * page.getPageSize();
-        if (offset < 0)
+        if (offset < 0) {
             sqlBuffer.append(" limit ").append(0).append(",").append(0);
-        else {
+        }else {
             sqlBuffer.append(" limit ").append(offset).append(",").append(page.getPageSize());
         }
         return sqlBuffer.toString();
@@ -194,9 +199,9 @@ public class PageInterceptor implements Interceptor {
     private String getSqlServerPageSql(Page page, StringBuilder sqlBuffer)
     {
         int offset = (page.getCurrentPage() - 1) * page.getPageSize();
-        if (offset < 0)
+        if (offset < 0) {
             sqlBuffer.append(" offset ").append(0).append(",").append(0);
-        else {
+        }else {
             sqlBuffer.append(" offset ").append(offset).append(" rows fetch next ").append(page.getPageSize()).append(" rows only ");
         }
         return sqlBuffer.toString();
@@ -217,7 +222,7 @@ public class PageInterceptor implements Interceptor {
     }
 
     public void setDialect(String dialect) {
-        if(StringUtils.isNullOrBlank(dialect)) {
+        if(StringUtils.isBlank(dialect)) {
             this.dialect = "mysql";
         }
         this.dialect = dialect.toLowerCase();
@@ -230,7 +235,7 @@ public class PageInterceptor implements Interceptor {
      */
     @Async
     void addSysLog(Connection connection,String sqlId,BoundSql boundSql,Configuration configuration) {
-        if (StringUtils.isNullOrBlank(sqlId)){
+        if (StringUtils.isBlank(sqlId)){
             return;
         }
 
@@ -253,7 +258,7 @@ public class PageInterceptor implements Interceptor {
             type = "DELETE";
         }
 
-        if(StringUtils.isNullOrBlank(type)){
+        if(StringUtils.isBlank(type)){
             return;
         }
 
@@ -267,10 +272,10 @@ public class PageInterceptor implements Interceptor {
             pstmt.setString(3,boundSql.getSql());
             pstmt.setString(4,msg);
             pstmt.setString(5,WebUtils.getRequestURI(request));
-            pstmt.setString(6,WebUtils.getRemoteIp(request));
-            pstmt.setString(7,request.getLocalName());
+            pstmt.setString(6,WebUtils.getRemoteIP(request));
+            pstmt.setString(7,WebUtils.getRemoteHostName(request));
             pstmt.setString(8,WebUtils.getLoginName(request));
-            pstmt.setTimestamp(9,new Timestamp(SysConstants.currentTimeMillis));
+            pstmt.setTimestamp(9,new Timestamp(SysConstants.CURRENT_TIME_MILLIS));
             pstmt.executeUpdate();
         } catch (SQLException e) {
             logger.error("addSysLog;bug:{}", e);

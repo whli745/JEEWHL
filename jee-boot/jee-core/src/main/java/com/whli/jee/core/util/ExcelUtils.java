@@ -1,13 +1,21 @@
 package com.whli.jee.core.util;
 
 import com.whli.jee.core.exception.BusinessException;
-import org.apache.poi.hssf.usermodel.*;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -19,8 +27,11 @@ import java.util.*;
  */
 public class ExcelUtils {
     private static Logger logger = LoggerFactory.getLogger(ExcelUtils.class);
-    private final static String excel2003L = ".xls";    //2003- 版本的excel
-    private final static String excel2007U = ".xlsx";
+    /**
+     *  //2003- 版本的excel
+     */
+    private final static String EXCEL2003L = ".xls";
+    private final static String EXCEL2007U = ".xlsx";
 
     /**
      * 导出Excel
@@ -29,7 +40,7 @@ public class ExcelUtils {
      */
     public static void exportExcel(HttpServletResponse response,BaseExcel excel) throws Exception{
         List<Map<String,Object>> dataMaps = excel.datas();
-        if (CollectionUtils.isNullOrEmpty(dataMaps)){
+        if (CollectionUtils.isEmpty(dataMaps)){
             throw new BusinessException("-01080601","不存在需要导出的数据！");
         }
         //创建Excel
@@ -105,7 +116,7 @@ public class ExcelUtils {
      * @return
      */
     public static <T> List<T> importExcel(String filePath, Class<T> c, String[] headers) throws Exception{
-        if (StringUtils.isNullOrBlank(filePath)){
+        if (StringUtils.isBlank(filePath)){
             throw new BusinessException("-01080602","文件不存在或该文件已被删除！");
         }
 
@@ -127,7 +138,7 @@ public class ExcelUtils {
 
         String fileSuffix = file.getName().substring(file.getName().lastIndexOf("."));
 
-        if (!excel2003L.equals(fileSuffix)){
+        if (!EXCEL2003L.equals(fileSuffix)){
             throw new BusinessException("-01080603","导入的文件格式有误！");
         }
 
@@ -201,29 +212,29 @@ public class ExcelUtils {
         if (s.endsWith(".0")) {
             s = s.substring(0, s.length() - 2);
         }
-        if (className.equals("java.lang.Integer"))
+        if ("java.lang.Integer".equals(className)) {
             obj = new Integer(s);
-        else if (className.equals("int"))
+        }else if ("int".equals(className)) {
             obj = Integer.valueOf(Integer.parseInt(s));
-        else if (className.equals("java.lang.String"))
+        }else if ("java.lang.String".equals(className)) {
             obj = s;
-        else if (className.equals("java.lang.Double"))
+        }else if ("java.lang.Double".equals(className)) {
             obj = new Double(s);
-        else if (className.equals("double"))
+        }else if ("double".equals(className)) {
             obj = Double.valueOf(new Double(s).doubleValue());
-        else if (className.equals("java.lang.Float"))
+        }else if ("java.lang.Float".equals(className)) {
             obj = new Float(s);
-        else if (className.equals("float"))
+        }else if ("float".equals(className)) {
             obj = Float.valueOf(new Float(s).floatValue());
-        else if (className.equals("java.util.Date"))
+        }else if ("java.util.Date".equals(className)) {
             obj = DateUtil.getJavaDate(cell.getNumericCellValue());
-        else if (className.equals("long"))
+        }else if ("long".equals(className)) {
             obj = Long.valueOf(Long.parseLong(s));
-        else if (className.equals("java.util.Long"))
+        }else if ("java.util.Long".equals(className)) {
             obj = new Long(s);
-        else if (className.equals("boolean"))
+        }else if ("boolean".equals(className)) {
             obj = Boolean.valueOf(Boolean.parseBoolean(s));
-        else if (className.equals("java.lang.Boolean")) {
+        }else if ("java.lang.Boolean".equals(className)) {
             obj = new Boolean(s);
         }
         return obj;
