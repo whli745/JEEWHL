@@ -1,9 +1,8 @@
 package com.whli.jee.system.controller;
 
-import com.whli.jee.core.anotation.AuthorPermit;
-import com.whli.jee.core.page.Page;
 import com.whli.jee.core.web.controller.BaseController;
 import com.whli.jee.core.web.entity.ResponseBean;
+import com.whli.jee.core.web.service.IBaseService;
 import com.whli.jee.system.entity.SysUser;
 import com.whli.jee.system.entity.SysUserRole;
 import com.whli.jee.system.service.ISysUserRoleService;
@@ -11,13 +10,12 @@ import com.whli.jee.system.service.ISysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import springfox.documentation.annotations.ApiIgnore;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * <p>用户管理</p>
@@ -34,102 +32,10 @@ public class SysUserController extends BaseController<SysUser> {
     @Autowired
     private ISysUserRoleService sysUserRoleService;
 
-    /**
-     * 分页查询
-     *
-     * @param entity
-     * @return
-     */
-    @PostMapping(value = "/findByPage")
-    @ApiOperation("分页查询用户")
-    @Override
-    public ResponseBean findByPage(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
-        ResponseBean responseBean = new ResponseBean();
-        if (entity != null) {
-            Page<SysUser> page = new Page<SysUser>(entity.getCurrentPage(),entity.getPageSize());
-            page = sysUserService.findByPage(entity,page);
 
-            responseBean.setSucceed(true);
-            responseBean.setCount(page.getTotal());
-            responseBean.setResults(page.getPageRecords());
-        }
-        return responseBean;
-    }
-
-    /**
-     * 添加entity
-     *
-     * @return
-     */
-    @PostMapping(value = "/add")
-    @ApiOperation("新增用户")
     @Override
-    public ResponseBean add(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
-        ResponseBean responseBean = new ResponseBean();
-        int rows = sysUserService.add(entity);
-        if (rows > 0) {
-            responseBean.setSucceed(true);
-            responseBean.setMessage("新增用户成功！");
-        }
-        return responseBean;
-    }
-
-    /**
-     * 更新entity
-     *
-     * @return
-     */
-    @PostMapping(value = "/update")
-    @ApiOperation("修改用户")
-    @Override
-    public ResponseBean update(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
-        ResponseBean responseBean = new ResponseBean();
-        int rows = sysUserService.update(entity);
-        if (rows > 0) {
-            responseBean.setSucceed(true);
-            responseBean.setMessage("修改用户成功！");
-        }
-        return responseBean;
-    }
-
-    /**
-     * 删除entity
-     *
-     * @return
-     */
-    @PostMapping(value = "/delete")
-    @ApiOperation("删除用户")
-    @Override
-    public ResponseBean delete(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
-        ResponseBean responseBean = new ResponseBean();
-        sysUserService.deleteMore(entity);
-        responseBean.setSucceed(true);
-        responseBean.setMessage("删除用户成功！");
-        return responseBean;
-    }
-
-    /**
-     * 根据主键查询entity
-     *
-     * @return
-     */
-    @PostMapping(value = "/findByPK")
-    @ApiOperation("根据用户ID查询")
-    @Override
-    public SysUser findByPK(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
-        return sysUserService.findByPK(entity.getId());
-    }
-
-    /**
-     * 根据主键查询entity
-     *
-     * @return
-     */
-    @PostMapping(value = "/findByPKs")
-    @ApiOperation("根据用户ID查询")
-    @Override
-    public List<SysUser> findByPKs(SysUser entity, HttpServletRequest req) throws Exception {
-        return sysUserService.findByPKs(entity.getIds());
+    public IBaseService<SysUser> getService() {
+        return sysUserService;
     }
 
     /**
@@ -139,7 +45,6 @@ public class SysUserController extends BaseController<SysUser> {
      */
     @PostMapping(value = "/findByNo")
     @ApiOperation("根据用户登录名查询")
-    @Override
     public SysUser findByNo(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
         return sysUserService.findByNo(entity.getLoginName());
     }
@@ -150,7 +55,7 @@ public class SysUserController extends BaseController<SysUser> {
      * @return
      */
     @PostMapping(value = "/findByEmail")
-    @ApiOperation("根据用户登录名查询")
+    @ApiOperation("根据用户邮箱查询")
     public SysUser findByEmail(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
         return sysUserService.findByEmail(entity.getEmail());
     };
@@ -161,7 +66,7 @@ public class SysUserController extends BaseController<SysUser> {
      * @return
      */
     @PostMapping(value = "/findByPhone")
-    @ApiOperation("根据用户登录名查询")
+    @ApiOperation("根据用户联系方式查询")
     public SysUser findByPhone(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
         return sysUserService.findByPhone(entity.getPhone());
     };
@@ -173,7 +78,6 @@ public class SysUserController extends BaseController<SysUser> {
      */
     @PostMapping(value = "/findByName")
     @ApiOperation("根据用户姓名查询")
-    @Override
     public SysUser findByName(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
         return sysUserService.findByName(entity.getName());
     }
@@ -184,52 +88,11 @@ public class SysUserController extends BaseController<SysUser> {
      * @return
      */
     @PostMapping(value = "/findByLoginNameOrEmailOrPhone")
-    @ApiOperation("根据用户姓名查询")
+    @ApiOperation("根据用户名或邮箱或联系方式查询")
     public SysUser findByLoginNameOrEmailOrPhone(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
         return sysUserService.findByLoginNameOrEmailOrPhone(entity.getLoginName());
     }
 
-    /**
-     * 查询所有数据
-     *
-     * @return
-     */
-    @PostMapping(value = "/findAll")
-    @ApiOperation("查找所有用户")
-    @Override
-    public List<SysUser> findAll(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
-        return sysUserService.findAll(entity);
-    }
-
-    @ApiIgnore
-    @Override
-    public void exportExcel(SysUser entity, HttpServletResponse response) throws Exception {
-
-    }
-
-    @PostMapping(value = "/importExcel")
-    @AuthorPermit
-    @ApiIgnore
-    @Override
-    public ResponseBean importExcel(@RequestParam(value = "uploadFile", required = false) MultipartFile file) throws Exception {
-        ResponseBean responseBean = new ResponseBean();
-        if (file != null){
-            int rows = sysUserService.importExcel(file.getInputStream());
-            if (rows > 0) {
-                responseBean.setSucceed(true);
-                responseBean.setMessage("导入用户成功！");
-            }
-        }
-        return responseBean;
-    }
-
-    @GetMapping(value = "/exportTemplate")
-    @AuthorPermit
-    @ApiIgnore
-    @Override
-    public void exportTemplate(SysUser entity,HttpServletResponse response) throws Exception{
-        sysUserService.exportTemplate(entity,response);
-    }
 
     /**
      * 授权用户角色

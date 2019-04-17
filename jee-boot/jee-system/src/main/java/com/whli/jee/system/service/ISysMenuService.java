@@ -46,4 +46,6 @@ public interface ISysMenuService extends IBaseService<SysMenu> {
      * @return
      */
     public SysMenu findByParentIdAndSort(SysMenu entity);
+
+    public SysMenu findByName(String name);
 }

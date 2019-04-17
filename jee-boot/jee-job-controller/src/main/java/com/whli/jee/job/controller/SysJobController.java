@@ -1,20 +1,19 @@
 package com.whli.jee.job.controller;
 
-import com.whli.jee.core.page.Page;
 import com.whli.jee.core.web.controller.BaseController;
 import com.whli.jee.core.web.entity.ResponseBean;
+import com.whli.jee.core.web.service.IBaseService;
 import com.whli.jee.job.entity.SysJob;
 import com.whli.jee.job.service.ISysJobService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import springfox.documentation.annotations.ApiIgnore;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * <p>类功能<p>
@@ -30,19 +29,8 @@ public class SysJobController extends BaseController<SysJob>{
     private ISysJobService sysJobService;
 
     @Override
-    @PostMapping("/findByPage")
-    @ApiOperation("分页查询定时任务")
-    public ResponseBean findByPage(@RequestBody SysJob entity, HttpServletRequest req) throws Exception {
-        ResponseBean responseBean = new ResponseBean();
-        if (entity != null) {
-            Page<SysJob> page = new Page<SysJob>(entity.getCurrentPage(),entity.getPageSize());
-            page = sysJobService.findByPage(entity,page);
-
-            responseBean.setSucceed(true);
-            responseBean.setCount(page.getTotal());
-            responseBean.setResults(page.getPageRecords());
-        }
-        return responseBean;
+    public IBaseService<SysJob> getService() {
+        return sysJobService;
     }
 
     @PostMapping("/triggerJob")
@@ -55,90 +43,6 @@ public class SysJobController extends BaseController<SysJob>{
             responseBean.setMessage("立即执行定时任务成功！");
         }
         return responseBean;
-    }
-
-    @Override
-    @PostMapping("/add")
-    @ApiOperation("增加定时任务")
-    public ResponseBean add(@RequestBody SysJob entity, HttpServletRequest req) throws Exception {
-        ResponseBean responseBean = new ResponseBean();
-        int rows = sysJobService.add(entity);
-        if (rows > 0) {
-            responseBean.setSucceed(true);
-            responseBean.setMessage("新增定时任务成功！");
-        }
-        return responseBean;
-    }
-
-    @Override
-    @PostMapping("/update")
-    @ApiOperation("修改定时任务")
-    public ResponseBean update(@RequestBody SysJob entity, HttpServletRequest req) throws Exception {
-        ResponseBean responseBean = new ResponseBean();
-        int rows = sysJobService.update(entity);
-        if (rows > 0) {
-            responseBean.setSucceed(true);
-            responseBean.setMessage("修改定时任务成功！");
-        }
-        return responseBean;
-    }
-
-    @Override
-    @PostMapping("/delete")
-    @ApiOperation("删除定时任务")
-    public ResponseBean delete(@RequestBody SysJob entity, HttpServletRequest req) throws Exception {
-        ResponseBean responseBean = new ResponseBean();
-        sysJobService.delete(entity);
-        responseBean.setSucceed(true);
-        responseBean.setMessage("删除定时任务成功！");
-        return responseBean;
-    }
-
-    @ApiIgnore
-    @Override
-    public SysJob findByPK(@RequestBody SysJob entity, HttpServletRequest req) throws Exception {
-        return null;
-    }
-
-    @Override
-    public List<SysJob> findByPKs(SysJob entity, HttpServletRequest req) throws Exception {
-        return null;
-    }
-
-    @ApiIgnore
-    @Override
-    public SysJob findByNo(@RequestBody SysJob entity, HttpServletRequest req) throws Exception {
-        return null;
-    }
-
-    @ApiIgnore
-    @Override
-    public SysJob findByName(@RequestBody SysJob entity, HttpServletRequest req) throws Exception {
-        return sysJobService.findByName(entity.getJobName());
-    }
-
-    @ApiIgnore
-    @Override
-    public List<SysJob> findAll(@RequestBody SysJob entity, HttpServletRequest req) throws Exception {
-        return null;
-    }
-
-    @ApiIgnore
-    @Override
-    public void exportExcel(SysJob entity, HttpServletResponse response) throws Exception {
-
-    }
-
-    @ApiIgnore
-    @Override
-    public ResponseBean importExcel(@RequestParam(value = "uploadFile",required = false) MultipartFile file) throws Exception {
-        return null;
-    }
-
-    @ApiIgnore
-    @Override
-    public void exportTemplate(SysJob entity, HttpServletResponse response) throws Exception {
-
     }
 
     /**

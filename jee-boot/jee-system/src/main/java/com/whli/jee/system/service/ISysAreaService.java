@@ -16,4 +16,8 @@ public interface ISysAreaService extends IBaseService<SysArea> {
      * @return
      */
     public SysArea findByParentIdAndSort(SysArea entity);
+
+    public SysArea findByCode(String code);
+
+    public SysArea findByName(String name);
 }

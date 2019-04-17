@@ -227,14 +227,9 @@
             <if test="entity.id != null and entity.id !=''">
                 AND ts_sys_menu_id = #{entity.id}
             </if>
-            <choose>
-                <when test="entity.parentId != null and entity.parentId !=''">
-                    AND parent_id = #{entity.parentId}
-                </when>
-                <otherwise>
-                    AND parent_id IS NULL
-                </otherwise>
-            </choose>
+            <if test="entity.parentId != null">
+                AND parent_id = #{entity.parentId}
+            </if>
             <if test="entity.name != null and entity.name !=''">
                 AND name LIKE '%${entity.name}%'
             </if>
@@ -292,7 +287,7 @@
             <if test="entity.id != null and entity.id !=''">
                 AND ts_sys_menu_id = #{entity.id}
             </if>
-            <if test="entity.parentId != null and entity.parentId != ''">
+            <if test="entity.parentId != null">
                 AND parent_id = #{entity.parentId}
             </if>
             <if test="entity.name != null and entity.name !=''">
@@ -364,10 +359,7 @@
         SELECT *
         FROM ts_sys_menu
         WHERE 1=1
-        <if test="parentId == null or parentId == ''">
-            AND parent_id IS NULL
-        </if>
-        <if test="parentId != null and parentId != ''">
+        <if test="parentId != null">
             AND parent_id = #{parentId}
         </if>
         ORDER BY sort
@@ -376,10 +368,7 @@
     <!-- 依据父ID及序号查询菜单 -->
     <select id="findByParentIdAndSort" parameterType="com.whli.jee.system.entity.SysMenu" resultMap="RM_SysMenu">
         SELECT * FROM ts_sys_menu WHERE 1=1
-        <if test="entity.parentId == null or entity.parentId == ''">
-            AND parent_id IS NULL
-        </if>
-        <if test="entity.parentId != null and entity.parentId != ''">
+        <if test="entity.parentId != null">
             AND parent_id = #{entity.parentId}
         </if>
         <if test="entity.id != null and entity.id !=''">
