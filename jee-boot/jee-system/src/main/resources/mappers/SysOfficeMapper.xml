@@ -250,11 +250,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	       	<if test="entity.id != null and entity.id !=''">
 				AND ts_sys_office_id = #{entity.id}
 			</if>
-	       	<if test="entity.parentId != null and entity.parentId !=''">
+	       	<if test="entity.parentId != null">
 				AND parent_id = #{entity.parentId}
-			</if>
-			<if test="entity.parentId == null or entity.parentId ==''">
-				AND parent_id IS NULL
 			</if>
 			<if test="entity.name != null and entity.name !=''">
 				AND name LIKE '%${entity.name}%'
@@ -320,7 +317,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="entity.id != null and entity.id !=''">
 				AND ts_sys_office_id = #{entity.id}
 			</if>
-			<if test="entity.parentId != null and entity.parentId !=''">
+			<if test="entity.parentId != null">
 				AND parent_id = #{entity.parentId}
 			</if>
 			<if test="entity.name != null and entity.name !=''">
@@ -372,10 +369,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<!-- 依据父ID及序号查询菜单 -->
 	<select id="findByParentIdAndSort" parameterType="com.whli.jee.system.entity.SysMenu" resultMap="RM_SysOffice">
 		SELECT * FROM ts_sys_office WHERE 1=1
-		<if test="entity.parentId == null or entity.parentId == ''">
-			AND parent_id IS NULL
-		</if>
-		<if test="entity.parentId != null and entity.parentId != ''">
+		<if test="entity.parentId != null">
 			AND parent_id = #{entity.parentId}
 		</if>
 		<if test="entity.id != null and entity.id !=''">

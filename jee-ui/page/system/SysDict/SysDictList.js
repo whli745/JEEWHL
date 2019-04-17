@@ -112,7 +112,7 @@ $(function () {
 		treeView: true,
 		//treeField: 'value',
 		searchParams: function () {
-			var temp = {};
+			var temp = {parentId:""};
 			return temp;
 		},
 		columns: [{

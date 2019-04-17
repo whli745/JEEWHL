@@ -25,4 +25,8 @@ public interface ISysDictService extends IBaseService<SysDict> {
      * @return
      */
     public SysDict findByParentIdAndSort(SysDict entity);
+
+    public SysDict findByValue(String value);
+
+    public SysDict findByName(String name);
 }

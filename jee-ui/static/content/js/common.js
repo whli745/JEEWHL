@@ -547,14 +547,16 @@ common.prototype.myAjax = function (url, data, contentType, method, async) {
 						_this.successMsg(data.message);
 					}
 					def.resolve(data.results ? data.results : "true");
-				}else{
+				}else if(data.message){
 					if("-10005" == data.code){
 						_this.confirmMsg(data.message,function(){
-							window.open("../../../page/login.html","_top"); 
+							window.open("../../page/login.html","_top"); 
 						});
 					}else{
 						_this.errMsg(data.message);
 					}
+				}else{
+					def.resolve(data);
 				}
 			}
 		},

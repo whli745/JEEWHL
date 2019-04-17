@@ -98,7 +98,7 @@ $(function () {
 		//pagination:false,
 		mainSearch: searchValues,
 		searchParams: function () {
-			var temp = {};
+			var temp = {parentId:""};
 			return temp;
 		},
 		columns: [{

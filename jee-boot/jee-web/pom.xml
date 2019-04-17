@@ -30,12 +30,12 @@
         </dependency>
         <dependency>
             <groupId>com.whli.jee</groupId>
-            <artifactId>jee-system</artifactId>
+            <artifactId>jee-system-controller</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.whli.jee</groupId>
-            <artifactId>jee-job</artifactId>
+            <artifactId>jee-job-controller</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 

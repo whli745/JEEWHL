@@ -48,9 +48,9 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter{
         }
 
         //获取前台传递的token
-        String token = request.getHeader(SysConstants.AUTHORIZATION);
+        String token = request.getHeader(SysConstants.AUTHORIZATION).trim();
 
-        if (StringUtils.isNotBlank(token)){
+        if (StringUtils.isBlank(token)){
             getReturnJson(response);
             return false;
         }
@@ -61,7 +61,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter{
         }
 
         String loginUserId = WebUtils.getLoginUserId();
-        if (StringUtils.isNotBlank(loginUserId)){
+        if (StringUtils.isBlank(loginUserId)){
             getReturnJson(response);
             return false;
         }

@@ -1,6 +1,7 @@
 package com.whli.jee.system.service.impl;
 
 import com.whli.jee.core.exception.BusinessException;
+import com.whli.jee.core.util.BeanUtils;
 import com.whli.jee.core.web.dao.IBaseDao;
 import com.whli.jee.core.web.service.impl.BaseServiceImpl;
 import com.whli.jee.system.dao.ISysDictDao;
@@ -13,32 +14,55 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- *
  * @author whli
  * @version 1.0
  * @since 1.0
- * */
+ */
 @Service("sysDictService")
 public class SysDictServiceImpl extends BaseServiceImpl<SysDict> implements ISysDictService {
 
-	@Autowired
-	private ISysDictDao sysDictDao;
+    @Autowired
+    private ISysDictDao sysDictDao;
 
-	@Override
-	public IBaseDao<SysDict> getDao() {
-		return sysDictDao;
-	}
+    @Override
+    public IBaseDao<SysDict> getDao() {
+        return sysDictDao;
+    }
 
-	@Override
-	public List<SysDict> findByParentValue(String value) {
-		if(StringUtils.isBlank(value)){
-			throw  new BusinessException("-02060201","父字典值不能为空！");
-		}
-		return sysDictDao.findByParentValue(value);
-	}
+    @Override
+    public List<SysDict> findByParentValue(String value) {
+        if (StringUtils.isBlank(value)) {
+            throw new BusinessException("-02060201", "父字典值不能为空！");
+        }
+        return sysDictDao.findByParentValue(value);
+    }
 
-	@Override
-	public SysDict findByParentIdAndSort(SysDict entity) {
-		return sysDictDao.findByParentIdAndSort(entity);
-	}
+    @Override
+    public SysDict findByParentIdAndSort(SysDict entity) {
+        return sysDictDao.findByParentIdAndSort(entity);
+    }
+
+    @Override
+    public SysDict findByValue(String value) {
+        if (StringUtils.isBlank(value)) {
+            throw new BusinessException("请选择需要查询的数据！");
+        }
+        SysDict entity = sysDictDao.findByNo(value);
+        if (BeanUtils.isNull(entity)) {
+            throw new BusinessException("查询的数据不存在或已删除！");
+        }
+        return entity;
+    }
+
+    @Override
+    public SysDict findByName(String name) {
+        if (StringUtils.isBlank(name)) {
+            throw new BusinessException("请选择需要查询的数据！");
+        }
+        SysDict entity = sysDictDao.findByName(name);
+        if (BeanUtils.isNull(entity)) {
+            throw new BusinessException("查询的数据不存在或已删除！");
+        }
+        return entity;
+    }
 }

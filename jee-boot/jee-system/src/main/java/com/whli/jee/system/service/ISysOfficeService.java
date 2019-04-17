@@ -1,7 +1,6 @@
 package com.whli.jee.system.service;
 
 import com.whli.jee.core.web.service.IBaseService;
-import com.whli.jee.system.entity.SysDict;
 import com.whli.jee.system.entity.SysOffice;
 
 /**
@@ -18,4 +17,6 @@ public interface ISysOfficeService extends IBaseService<SysOffice> {
      * @return
      */
     public SysOffice findByParentIdAndSort(SysOffice entity);
+
+    public SysOffice findByName(String name);
 }
