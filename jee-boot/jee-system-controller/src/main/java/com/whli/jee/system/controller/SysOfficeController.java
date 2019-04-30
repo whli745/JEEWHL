@@ -39,10 +39,10 @@ public class SysOfficeController extends BaseController<SysOffice> {
      * @return
      * @throws Exception
      */
-    @PostMapping(value = "/findByName")
+    @PostMapping(value = "/getByName")
     @ApiOperation("根据组织架构名称查询")
-    public SysOffice findByName(@RequestBody SysOffice entity, HttpServletRequest req) throws Exception {
-        return sysOfficeService.findByName(entity.getName());
+    public SysOffice getByName(@RequestBody SysOffice entity, HttpServletRequest req) throws Exception {
+        return sysOfficeService.getByName(entity.getName());
     }
 
     /**
@@ -50,10 +50,10 @@ public class SysOfficeController extends BaseController<SysOffice> {
      * @param entity
      * @return
      */
-    @PostMapping(value = "/findByParentIdAndSort")
+    @PostMapping(value = "/getByParentIdAndSort")
     @ApiOperation("查询同级别下是否存在相同序号")
-    public SysOffice findByParentIdAndSort(@RequestBody SysOffice entity){
-        return sysOfficeService.findByParentIdAndSort(entity);
+    public SysOffice getByParentIdAndSort(@RequestBody SysOffice entity){
+        return sysOfficeService.getByParentIdAndSort(entity);
     }
 }
 

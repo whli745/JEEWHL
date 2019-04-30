@@ -34,9 +34,7 @@ public class XMLUtils {
         }
     }
 
-    public XMLUtils(){
-
-    }
+    private XMLUtils(){}
 
     /**
      * 设定全局Document

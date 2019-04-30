@@ -37,7 +37,7 @@
 	</sql>
 
     <!-- 增加 -->
-    <insert id="add" parameterType="com.whli.jee.system.entity.SysUser">
+    <insert id="save" parameterType="com.whli.jee.system.entity.SysUser">
         INSERT INTO ts_sys_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="entity.id != null">
@@ -223,7 +223,7 @@
     </delete>
 
     <!-- 根据主键查询 -->
-    <select id="findByPK" resultMap="RM_SysUser">
+    <select id="getByPK" resultMap="RM_SysUser">
         SELECT
         <include refid="columns"/>
         <![CDATA[
@@ -234,7 +234,7 @@
     </select>
 
     <!-- 根据ID查询 -->
-    <select id="findByPKs" resultMap="RM_SysUser">
+    <select id="listByPKs" resultMap="RM_SysUser">
         SELECT <include refid="columns" />
         FROM ts_sys_user
         WHERE
@@ -245,7 +245,7 @@
     </select>
 
     <!-- 根据编码查询 -->
-    <select id="findByNo" resultMap="RM_SysUser">
+    <select id="getByNo" resultMap="RM_SysUser">
         SELECT
         <include refid="columns"/>
         <![CDATA[
@@ -256,7 +256,7 @@
     </select>
 
     <!-- 根据名称查询 -->
-    <select id="findByName" resultMap="RM_SysUser">
+    <select id="getByName" resultMap="RM_SysUser">
         SELECT
         <include refid="columns"/>
         <![CDATA[
@@ -266,7 +266,7 @@
 	    ]]>
     </select>
 
-    <sql id="findByPageWhere">
+    <sql id="listByPageWhere">
         <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
         <where>
             <if test="entity.id != null and entity.id !=''">
@@ -327,39 +327,39 @@
     	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
     	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
     -->
-    <select id="findByPage" resultMap="RM_SysUser">
+    <select id="listByPage" resultMap="RM_SysUser">
         SELECT
         <include refid="columns"/>
         FROM ts_sys_user
-        <include refid="findByPageWhere"/>
+        <include refid="listByPageWhere"/>
         ORDER BY login_name
     </select>
 
     <!-- 查询所有数据 -->
-    <select id="findAll" resultMap="RM_SysUser">
+    <select id="listAll" resultMap="RM_SysUser">
         SELECT
         <include refid="columns"/>
         FROM ts_sys_user
-        <include refid="findByPageWhere"/>
+        <include refid="listByPageWhere"/>
         ORDER BY login_name
     </select>
 
     <!-- 依据登录用户名查询用户 -->
-    <select id="findByLoginNameOrEmailOrPhone" resultMap="RM_SysUser">
+    <select id="getByLoginNameOrEmailOrPhone" resultMap="RM_SysUser">
         SELECT
         <include refid="columns"/>
         FROM ts_sys_user WHERE login_name = #{loginName} OR email = #{loginName} OR phone = #{loginName}
     </select>
 
     <!-- 依据用户绑定邮箱查询用户 -->
-    <select id="findByEmail" resultMap="RM_SysUser">
+    <select id="getByEmail" resultMap="RM_SysUser">
         SELECT
         <include refid="columns"/>
         FROM ts_sys_user WHERE email = #{email}
     </select>
 
     <!-- 依据用户绑定邮箱查询用户 -->
-    <select id="findByPhone" resultMap="RM_SysUser">
+    <select id="getByPhone" resultMap="RM_SysUser">
         SELECT
         <include refid="columns"/>
         FROM ts_sys_user WHERE phone = #{phone}

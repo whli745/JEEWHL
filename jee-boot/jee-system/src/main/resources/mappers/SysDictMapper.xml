@@ -25,14 +25,13 @@
     <!-- 用于select查询公用抽取的列 -->
     <sql id="columns">
 	    <![CDATA[
-
 		ts_sys_dict_id,parent_id,value,name,sort,create_by,create_date,update_by,update_date,remark,enable,edit
 
         ]]>
 	</sql>
 
     <!-- 增加 -->
-    <insert id="add" parameterType="com.whli.jee.system.entity.SysDict">
+    <insert id="save" parameterType="com.whli.jee.system.entity.SysDict">
         INSERT INTO ts_sys_dict
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="entity.id != null">
@@ -173,7 +172,7 @@
     </delete>
 
     <!-- 根据主键查询 -->
-    <select id="findByPK" resultMap="RM_SysDict">
+    <select id="getByPK" resultMap="RM_SysDict">
         SELECT
         <include refid="columns"/>
         <![CDATA[
@@ -184,7 +183,7 @@
     </select>
 
     <!-- 根据ID查询 -->
-    <select id="findByPKs" resultMap="RM_SysDict">
+    <select id="listByPKs" resultMap="RM_SysDict">
         SELECT <include refid="columns" />
         FROM ts_sys_dict
         WHERE
@@ -195,18 +194,18 @@
     </select>
 
     <!-- 根据编码查询 -->
-    <select id="findByNo" resultMap="RM_SysDict">
+    <select id="getByValue" resultMap="RM_SysDict">
         SELECT
         <include refid="columns"/>
         <![CDATA[
 		    FROM ts_sys_dict
 	        WHERE
-		        value = #{no}
+		        value = #{value}
 	    ]]>
     </select>
 
     <!-- 根据名称查询 -->
-    <select id="findByName" resultMap="RM_SysDict">
+    <select id="getByName" resultMap="RM_SysDict">
         SELECT
         <include refid="columns"/>
         <![CDATA[
@@ -216,7 +215,7 @@
 	    ]]>
     </select>
 
-    <sql id="findByPageWhere">
+    <sql id="listByPageWhere">
         <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
         <where>
             <if test="entity.id != null and entity.id !=''">
@@ -262,16 +261,16 @@
     	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
     	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
     -->
-    <select id="findByPage" resultMap="RM_SysDict">
+    <select id="listByPage" resultMap="RM_SysDict">
         SELECT
         <include refid="columns"/>
         FROM ts_sys_dict
-        <include refid="findByPageWhere"/>
+        <include refid="listByPageWhere"/>
         ORDER BY sort
     </select>
 
     <!-- 查询所有数据 -->
-    <select id="findAll" resultMap="RM_SysDict">
+    <select id="listAll" resultMap="RM_SysDict">
         SELECT
         <include refid="columns"/>
         FROM ts_sys_dict
@@ -316,7 +315,7 @@
         ORDER BY sort
     </select>
 
-    <select id="findByParentValue" resultMap="RM_SysDict">
+    <select id="listByParentValue" resultMap="RM_SysDict">
         SELECT
         <include refid="columns"/>
         FROM ts_sys_dict
@@ -325,7 +324,7 @@
     </select>
 
     <!-- 依据父ID及序号查询菜单 -->
-    <select id="findByParentIdAndSort" parameterType="com.whli.jee.system.entity.SysMenu" resultMap="RM_SysDict">
+    <select id="getByParentIdAndSort" parameterType="com.whli.jee.system.entity.SysMenu" resultMap="RM_SysDict">
         SELECT * FROM ts_sys_dict WHERE 1=1
         <if test="entity.parentId != null">
             AND parent_id = #{entity.parentId}

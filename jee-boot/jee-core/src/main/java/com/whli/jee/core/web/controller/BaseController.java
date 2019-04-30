@@ -33,13 +33,13 @@ public abstract class BaseController<T extends BaseEntity> {
      * @return
      * @throws Exception
      */
-    @PostMapping("/findByPage")
+    @PostMapping("/listByPage")
     @ApiOperation("分页查询")
-    public ResponseBean findByPage(@RequestBody T entity, HttpServletRequest req) throws Exception{
+    public ResponseBean listByPage(@RequestBody T entity, HttpServletRequest req) throws Exception{
         ResponseBean responseBean = new ResponseBean();
         if (entity != null) {
             Page<T> page = new Page<T>(entity.getCurrentPage(),entity.getPageSize());
-            page = getService().findByPage(entity,page);
+            page = getService().listByPage(entity,page);
 
             responseBean.setSucceed(true);
             responseBean.setCount(page.getTotal());
@@ -55,13 +55,14 @@ public abstract class BaseController<T extends BaseEntity> {
      * @return
      * @throws Exception
      */
-    @PostMapping(value = "/add")
+    @PostMapping(value = "/save")
     @ApiOperation("新增")
-    public ResponseBean add(@RequestBody T entity, HttpServletRequest req) throws Exception{
+    public ResponseBean save(@RequestBody T entity, HttpServletRequest req) throws Exception{
         ResponseBean responseBean = new ResponseBean();
-        int rows = getService().add(entity);
+        int rows = getService().save(entity);
         if (rows > 0) {
             responseBean.setSucceed(true);
+            responseBean.setResults("1");
             responseBean.setMessage("新增成功！");
         }
         return responseBean;
@@ -81,6 +82,7 @@ public abstract class BaseController<T extends BaseEntity> {
         int rows = getService().update(entity);
         if (rows > 0) {
             responseBean.setSucceed(true);
+            responseBean.setResults("1");
             responseBean.setMessage("更新成功！");
         }
         return responseBean;
@@ -99,6 +101,7 @@ public abstract class BaseController<T extends BaseEntity> {
         ResponseBean responseBean = new ResponseBean();
         getService().deleteMore(entity);
         responseBean.setSucceed(true);
+        responseBean.setResults("1");
         responseBean.setMessage("删除成功！");
         return responseBean;
     };
@@ -110,10 +113,10 @@ public abstract class BaseController<T extends BaseEntity> {
      * @return
      * @throws Exception
      */
-    @PostMapping(value = "/findByPK")
+    @PostMapping(value = "/getByPK")
     @ApiOperation("根据主键查询")
-    public T findByPK(@RequestBody T entity, HttpServletRequest req) throws Exception{
-        return getService().findByPK(entity.getId());
+    public T getByPK(@RequestBody T entity, HttpServletRequest req) throws Exception{
+        return getService().getByPK(entity.getId());
     };
 
     /**
@@ -123,10 +126,10 @@ public abstract class BaseController<T extends BaseEntity> {
      * @return
      * @throws Exception
      */
-    @PostMapping(value = "/findByPKs")
+    @PostMapping(value = "/listByPKs")
     @ApiOperation("根据多个主键查询")
-    public List<T> findByPKs(@RequestBody T entity, HttpServletRequest req) throws Exception{
-        return getService().findByPKs(entity.getIds());
+    public List<T> listByPKs(@RequestBody T entity, HttpServletRequest req) throws Exception{
+        return getService().listByPKs(entity.getIds());
     };
 
     /**
@@ -136,17 +139,17 @@ public abstract class BaseController<T extends BaseEntity> {
      * @return
      * @throws Exception
      */
-    @PostMapping(value = "/findAll")
+    @PostMapping(value = "/listAll")
     @ApiOperation("查找所有结果（可带参数）")
-    public List<T> findAll(@RequestBody T entity, HttpServletRequest req) throws Exception{
-        return getService().findAll(entity);
+    public List<T> listAll(@RequestBody T entity, HttpServletRequest req) throws Exception{
+        return getService().listAll(entity);
     };
 
     /**
      * 导出Excel
      * @param response
      */
-    @PostMapping(value = "/exportExcel")
+    @GetMapping(value = "/exportExcel")
     @AuthorPermit
     @ApiOperation("导出Excel")
     public void exportExcel(T entity, HttpServletResponse response) throws Exception{
@@ -166,6 +169,7 @@ public abstract class BaseController<T extends BaseEntity> {
             int rows = getService().importExcel(file.getInputStream());
             if (rows > 0) {
                 responseBean.setSucceed(true);
+                responseBean.setResults("1");
                 responseBean.setMessage("导入成功！");
             }
         }

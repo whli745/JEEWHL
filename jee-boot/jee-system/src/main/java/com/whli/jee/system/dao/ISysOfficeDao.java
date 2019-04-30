@@ -19,5 +19,5 @@ public interface ISysOfficeDao extends IBaseDao<SysOffice> {
      * @param entity
      * @return
      */
-    public SysOffice findByParentIdAndSort(@Param("entity") SysOffice entity);
+    SysOffice getByParentIdAndSort(@Param("entity") SysOffice entity);
 }

@@ -15,9 +15,16 @@ import org.springframework.stereotype.Repository;
 public interface ISysAreaDao extends IBaseDao<SysArea> {
 
     /**
-     * 根据父ID及排序查询菜单
+     * 根据父ID及排序查询区域
      * @param entity
      * @return
      */
-    public SysArea findByParentIdAndSort(@Param("entity") SysArea entity);
+    SysArea getByParentIdAndSort(@Param("entity") SysArea entity);
+
+    /**
+     * 依据区域code查询
+     * @param code
+     * @return
+     */
+    SysArea getByCode(@Param("code") String code);
 }

@@ -10,7 +10,7 @@ $(function () {
 			id: "comboSearchEnable",
 			field: "enable",
 			title: "启用",
-			comboUrl: "/system/sysDict/findByParentValue",
+			comboUrl: "/system/sysDict/listByParentValue",
 			comboData: {
 				value: "YES_NO"
 			},
@@ -136,7 +136,7 @@ $(function () {
 		],
 		tableId: "tb_data",
 		mainSearch: searchValues,
-		url: "/system/sysUser/findByPage",
+		url: "/system/sysUser/listByPage",
 		//pagination: false,
 		singleSelect:true,
 		searchParams: function () {
@@ -240,7 +240,7 @@ $(function () {
 					});
 					
 					JEE.confirmMsg("是否确认删除数据？", function(){
-						$.when(JEE.myAjax("/system/sysUser/deleteRoleByUser", {userId:users[0].id,roleIds: ids})).done(function(result){
+						$.when(JEE.myAjax("/system/sysUser/deleteRolesByUser", {userId:users[0].id,roleIds: ids})).done(function(result){
 							$("#tb_role").bootstrapTable("refresh");
 						});
 					});
@@ -249,7 +249,7 @@ $(function () {
 		],
 		tableId: "tb_role",
 		//mainSearch: searchValues,
-		url: "/system/sysRole/findByUser",
+		url: "/system/sysRole/listByUserId",
 		pagination: false,
 		//singleSelect:true,
 		searchParams: function () {
@@ -291,7 +291,7 @@ function showDialog(change) {
 				if (change == 'edit') {
 					data.id = $("#" + defaultTable).bootstrapTable('getSelections')[0].id;
 				}
-				var url = change == "edit" ? "/system/sysUser/update" : "/system/sysUser/add";
+				var url = change == "edit" ? "/system/sysUser/update" : "/system/sysUser/save";
 				$.when(JEE.myAjax(url, data)).done(function (result) {
 					if (result) {
 						$("#myModal").modal("hide");
@@ -313,7 +313,7 @@ function showDialog(change) {
 						required: true,
 						remote: {
 							type: "POST",
-							url: apiUrl+"/system/sysUser/findByNo",
+							url: apiUrl+"/system/sysUser/getByNo",
 							contentType: "application/json;charset=UTF-8",
 							data: {
 								loginName: function(){
@@ -352,7 +352,7 @@ function showDialog(change) {
 						email:true,
 						remote: {
 							type: "POST",
-							url: apiUrl+"/system/sysUser/findByEmail",
+							url: apiUrl+"/system/sysUser/getByEmail",
 							contentType: "application/json;charset=UTF-8",
 							data: {
 								email: function(){
@@ -375,7 +375,7 @@ function showDialog(change) {
 					id: "comboOffice",
 					field: "officeId",
 					title: "部门",
-					comboUrl: "/system/sysOffice/findAll",
+					comboUrl: "/system/sysOffice/listAll",
 					comboId: "id",
 					comboText: "name"
 				},
@@ -391,7 +391,7 @@ function showDialog(change) {
 						maxlength: 11,
 						remote: {
 							type: "POST",
-							url: apiUrl+"/system/sysUser/findByPhone",
+							url: apiUrl+"/system/sysUser/getByPhone",
 							contentType: "application/json;charset=UTF-8",
 							data: {
 								phone: function(){
@@ -449,7 +449,7 @@ function showSubDialog(change) {
 				}
 				
 				data.id = $("#tb_data").bootstrapTable('getSelections')[0] ? $("#tb_data").bootstrapTable('getSelections')[0].id : -1;
-				var url = "/system/sysUser/grantUser";
+				var url = "/system/sysUser/grantRolesByUser";
 				$.when(JEE.myAjax(url, data)).done(function (result) {
 					if (result) {
 						$("#myModal").modal("hide");
@@ -465,7 +465,7 @@ function showSubDialog(change) {
 					id: "comboRole",
 					field: "roleIds",
 					title: "角色",
-					comboUrl: "/system/sysRole/findAll",
+					comboUrl: "/system/sysRole/listAll",
 					comboId: "id",
 					comboText: "name",
 					multiple: true
@@ -486,39 +486,7 @@ function showUploadDialog(change) {
 			formId: "dataForm",
 			btnClick: function (data) {
 				var form = new FormData(document.getElementById("dataForm"));
-				$.ajax({  
-				   type: "POST",  
-				   url:apiUrl+"/system/sysUser/importExcel",  
-				   data:form, 
-				   // 下面三个参数要指定，如果不指定，会报一个JQuery的错误 
-				   cache: false,
-				   contentType: false,
-				   processData: false,
-				   async: false,  
-				   success: function(data) {
-					   if(data && data.results){
-						   if (data.message) {
-						   		layer.msg(data.message, {
-						   			icon: 6,
-						   			time: 1000
-						   		});
-						   	}
-					    } else {
-						   	if("-10005" == data.code){
-						   		JEE.confirmMsg(data.message,function(){
-						   			window.open("../../../ui/login.html","_top"); 
-						   		});
-						   	}else{
-						   		layer.msg(data.message, {
-						   			icon: 5,
-						   			time: 1000
-						   		});
-						   	}
-						}
-						$("#myModal").modal("hide");
-						$("#tb_data").bootstrapTable("refresh");
-				   }  
-			   });
+				JEE.uploadFile("/system/sysUser/importExcel",form);
 			}
 		}],
 		modalForm: {

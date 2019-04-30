@@ -12,10 +12,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ImportResource("classpath:spring/spring-config.xml")
 @MapperScan("com.**.dao")
 @EnableTransactionManagement
-public class SystemApplicationStart {
+public class OaApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SystemApplicationStart.class, args);
+        SpringApplication.run(OaApplication.class, args);
     }
-
 }

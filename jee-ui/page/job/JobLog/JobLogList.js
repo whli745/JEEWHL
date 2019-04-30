@@ -1,5 +1,5 @@
 $(function () {
-	var groupJson = JEE.getJson("/system/sysDict/findByParentValue", { value: "JOB_GROUP"}, "value", "name");
+	var groupJson = JEE.getJson("/system/sysDict/listByParentValue", { value: "JOB_GROUP"}, "value", "name");
 	
 	//定义搜索区域字段
 	var searchValues = [
@@ -12,7 +12,7 @@ $(function () {
 			id: "comboSearchJobGroup",
 			field: "jobGroup",
 			title: "任务组",
-			comboUrl: "/system/sysDict/findByParentValue",
+			comboUrl: "/system/sysDict/listByParentValue",
 			comboData: {
 				value: "JOB_GROUP"
 			},
@@ -32,7 +32,7 @@ $(function () {
 	JEE.initTable({
 		tableId: "tb_data",
 		mainSearch: searchValues,
-		url: "/scheduler/jobLog/findByPage",
+		url: "/scheduler/jobLog/listByPage",
 		searchParams: function () {
 			var temp = {};
 			return temp;

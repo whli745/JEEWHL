@@ -20,7 +20,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</sql>
 
 	<!-- 增加 -->
-	<insert id="add" parameterType="com.whli.jee.system.entity.SysRoleMenu">
+	<insert id="save" parameterType="com.whli.jee.system.entity.SysRoleMenu">
 		INSERT INTO tr_sys_role_menu
 		<trim prefix="(" suffix=")" suffixOverrides="," >
 			<if test="entity.roleId != null">
@@ -83,7 +83,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		]]>
 	</delete>
 
-	<select id="findByRoleIdAndMenuId" resultMap="RM_SysRoleMenu">
+	<select id="getByRoleIdAndMenuId" resultMap="RM_SysRoleMenu">
 		SELECT <include refid="columns" />
 		<![CDATA[
 		    FROM tr_sys_role_menu
@@ -93,7 +93,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    ]]>
 	</select>
     
-    <select id="findByPK" resultMap="RM_SysRoleMenu">
+    <select id="getByPK" resultMap="RM_SysRoleMenu">
 		SELECT <include refid="columns" />
 	    <![CDATA[
 		    FROM tr_sys_role_menu
@@ -104,11 +104,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<!-- 根据ID查询 -->
-	<select id="findByPKs" resultMap="RM_SysRoleMenu">
+	<select id="listByPKs" resultMap="RM_SysRoleMenu">
 
 	</select>
 	
-	<sql id="findByPageWhere">
+	<sql id="listByPageWhere">
 		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
 		<where>	      				
 	       <if test="entity.roleId != null and entity.roleId !=''">
@@ -124,17 +124,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
     	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
     -->
-    <select id="findByPage" resultMap="RM_SysRoleMenu">
+    <select id="listByPage" resultMap="RM_SysRoleMenu">
     	SELECT <include refid="columns" />
 	    FROM tr_sys_role_menu
-		<include refid="findByPageWhere"/>
+		<include refid="listByPageWhere"/>
     </select>
 
 		<!-- 查询所有数据 -->
-	<select id="findAll" resultMap="RM_SysRoleMenu">
+	<select id="listAll" resultMap="RM_SysRoleMenu">
 		SELECT *
 		FROM tr_sys_role_menu
-		<include refid="findByPageWhere"/>
+		<include refid="listByPageWhere"/>
 	</select>
 </mapper>
 

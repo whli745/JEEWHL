@@ -14,6 +14,8 @@ public class ReflectUtils
 {
   public static final Logger logger = LoggerFactory.getLogger(ReflectUtils.class);
 
+  private ReflectUtils(){}
+
   public static Field[] getFields(Object target) {
     if (target == null) {
       return null;

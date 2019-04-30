@@ -21,5 +21,5 @@ public interface ISysRoleMenuService extends IBaseService<SysRoleMenu> {
      * @return
      */
     @Transactional
-    public int grantByRole(String roleId, List<String> menuIds);
+    int grantMenusByRole(String roleId, List<String> menuIds);
 }

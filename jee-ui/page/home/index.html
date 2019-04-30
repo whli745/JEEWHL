@@ -415,7 +415,7 @@
         //固定左边菜单的高度
         $('#sidebar').height($(window).height()- 80);
         //菜单
-        $('.nav-list').bootstrapMenu({url:'/system/sysMenu/menuTree',param:{parentId:0}});
+        $('.nav-list').bootstrapMenu({url:'/system/sysMenu/listMenusByUserIdAndParentId',param:{parentId:0}});
         
         $("#logOut").on("click",function(){
         	$.when(JEE.myAjax("/logout")).done(function(result){

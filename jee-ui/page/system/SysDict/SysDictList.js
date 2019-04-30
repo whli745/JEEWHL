@@ -20,7 +20,7 @@ $(function () {
 			id: "comboSearchEnable",
 			field: "enable",
 			title: "启用",
-			comboUrl: "/system/sysDict/findByParentValue",
+			comboUrl: "/system/sysDict/listByParentValue",
 			comboData: {
 				value: "YES_NO"
 			},
@@ -107,7 +107,7 @@ $(function () {
 		],
 		tableId: "tb_data",
 		mainSearch: searchValues,
-		url: "/system/sysDict/findByPage",
+		url: "/system/sysDict/listByPage",
 		//pagination:false,
 		treeView: true,
 		//treeField: 'value',
@@ -180,7 +180,7 @@ function showDialog(change) {
 				if (change == 'edit') {
 					data.id = $("#" + defaultTable).bootstrapTable('getSelections')[0].id;
 				}
-				var url = change == "edit" ? "/system/sysDict/update" : "/system/sysDict/add";
+				var url = change == "edit" ? "/system/sysDict/update" : "/system/sysDict/save";
 				$.when(JEE.myAjax(url, data)).done(function (result) {
 					if (result) {
 						$("#myModal").modal("hide");
@@ -197,7 +197,7 @@ function showDialog(change) {
 					field: "parentId",
 					title: "父级字典",
 					disable: false,
-					comboUrl: "/system/sysDict/findAll",
+					comboUrl: "/system/sysDict/listAll",
 					comboId: "id",
 					comboText: "name"
 				},
@@ -224,7 +224,7 @@ function showDialog(change) {
 						required: true,
 						remote: {
 							type: "POST",
-							url: apiUrl+"/system/sysDict/findByParentIdAndSort",
+							url: apiUrl+"/system/sysDict/getByParentIdAndSort",
 							data: {
 								parentId: function(){
 									return $("#comboParentId").val();

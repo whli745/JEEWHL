@@ -34,7 +34,7 @@ $(function () {
 			id: "comboSearchEnable",
 			field: "enable",
 			title: "启用",
-			comboUrl: "/system/sysDict/findByParentValue",
+			comboUrl: "/system/sysDict/listByParentValue",
 			comboData: {
 				value: "YES_NO"
 			},
@@ -108,7 +108,7 @@ $(function () {
 		],
 		tableId: "tb_data",
 		mainSearch: searchValues,
-		url: "/system/sysArea/findByPage",
+		url: "/system/sysArea/listByPage",
 		searchParams: function () {
 			var temp = {};
 			return temp;
@@ -160,7 +160,7 @@ function showDialog(change, formData) {
 				if (change == 'edit') {
 					data.id = $("#" + defaultTable).bootstrapTable('getSelections')[0].id;
 				}
-				var url = change == "edit" ? "/system/sysArea/update" : "/system/sysArea/add";
+				var url = change == "edit" ? "/system/sysArea/update" : "/system/sysArea/save";
 				$.when(JEE.myAjax(url, data)).done(function (result) {
 					if (result) {
 						$("#myModal").modal("hide");
@@ -176,7 +176,7 @@ function showDialog(change, formData) {
 					id: "comboParentId",
 					field: "parentId",
 					title: "父级区域",
-					comboUrl: "/system/sysArea/findAll",
+					comboUrl: "/system/sysArea/listAll",
 					comboId: "id",
 					comboText: "name"
 				},

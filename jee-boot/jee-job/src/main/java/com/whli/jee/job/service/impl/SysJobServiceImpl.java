@@ -37,7 +37,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJob> implements ISysJo
     }
 
     @Override
-    public int add(SysJob entity) {
+    public int save(SysJob entity) {
         String jobName = entity.getJobName(),
                 jobGroup = entity.getJobGroup(),
                 cronExpression = entity.getCronExpression(),

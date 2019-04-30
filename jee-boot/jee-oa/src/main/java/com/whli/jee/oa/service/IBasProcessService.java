@@ -19,19 +19,19 @@ public interface IBasProcessService {
      * 分页查询流程定义
      * @return
      */
-    public List findByPage(BasProcess entity);
+    List listByPage(BasProcess entity);
 
     /**
      * 分页查询流程定义
      * @return
      */
-    public List findAll();
+    List listAll();
 
     /**
      * 获取所有流程定义的总数
      * @return
      */
-    public int getCount(BasProcess entity);
+    int getCount(BasProcess entity);
 
     /**
      * 删除流程定义
@@ -39,14 +39,14 @@ public interface IBasProcessService {
      * @return
      */
     @Transactional
-    public int deleteProcess(BasProcess entity);
+    int deleteProcess(BasProcess entity);
 
     /**
      * 导入流程定义
      * @return
      */
     @Transactional
-    public int importExcel(String name,String key,InputStream stream);
+    int importExcel(String name,String key,InputStream stream);
 
     /**
      * 查询资源文件
@@ -54,7 +54,7 @@ public interface IBasProcessService {
      * @param resourceType
      * @param response
      */
-    public void findResourceByDeployment(String processDefinitionId,String resourceType, HttpServletResponse response);
+    public void getResourceByDeployment(String processDefinitionId,String resourceType, HttpServletResponse response);
 
     /**
      * 激活流程定义
@@ -62,7 +62,7 @@ public interface IBasProcessService {
      * @return
      */
     @Transactional
-    public int activateProcessDefinition(BasProcess entity);
+    int activateProcessDefinition(BasProcess entity);
 
     /**
      * 挂起流程定义
@@ -70,5 +70,5 @@ public interface IBasProcessService {
      * @return
      */
     @Transactional
-    public int suspendProcessDefinition(BasProcess entity);
+    int suspendProcessDefinition(BasProcess entity);
 }

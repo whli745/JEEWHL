@@ -21,12 +21,14 @@ public interface ISysDictDao extends IBaseDao<SysDict> {
      * @param value
      * @return
      */
-    public List<SysDict> findByParentValue(@Param("value") String value);
+    List<SysDict> listByParentValue(@Param("value") String value);
 
     /**
      * 根据父ID及排序查询菜单
      * @param entity
      * @return
      */
-    public SysDict findByParentIdAndSort(@Param("entity") SysDict entity);
+    SysDict getByParentIdAndSort(@Param("entity") SysDict entity);
+
+    SysDict getByValue(@Param("value") String value);
 }

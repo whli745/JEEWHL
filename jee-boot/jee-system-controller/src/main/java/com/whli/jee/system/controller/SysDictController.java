@@ -40,10 +40,10 @@ public class SysDictController extends BaseController<SysDict> {
      * @return
      * @throws Exception
      */
-    @PostMapping(value = "/findByValue")
+    @PostMapping(value = "/getByValue")
     @ApiOperation("根据字典值查询")
-    public SysDict findByValue(@RequestBody SysDict entity, HttpServletRequest req) throws Exception {
-        return sysDictService.findByValue(entity.getValue());
+    public SysDict getByValue(@RequestBody SysDict entity, HttpServletRequest req) throws Exception {
+        return sysDictService.getByValue(entity.getValue());
     }
 
     /**
@@ -53,10 +53,10 @@ public class SysDictController extends BaseController<SysDict> {
      * @return
      * @throws Exception
      */
-    @PostMapping(value = "/findByName")
+    @PostMapping(value = "/getByName")
     @ApiOperation("根据字典名称查询")
-    public SysDict findByName(@RequestBody SysDict entity, HttpServletRequest req) throws Exception {
-        return sysDictService.findByName(entity.getName());
+    public SysDict getByName(@RequestBody SysDict entity, HttpServletRequest req) throws Exception {
+        return sysDictService.getByName(entity.getName());
     }
 
     /**
@@ -64,10 +64,10 @@ public class SysDictController extends BaseController<SysDict> {
      *
      * @return
      */
-    @PostMapping(value = "/findByParentValue")
+    @PostMapping(value = "/listByParentValue")
     @ApiOperation("根据父字典值查询")
-    public List<SysDict> findByParentValue(@RequestBody SysDict entity, HttpServletRequest req) throws Exception {
-        return sysDictService.findByParentValue(entity.getValue());
+    public List<SysDict> listByParentValue(@RequestBody SysDict entity, HttpServletRequest req) throws Exception {
+        return sysDictService.listByParentValue(entity.getValue());
     }
 
     /**
@@ -75,10 +75,10 @@ public class SysDictController extends BaseController<SysDict> {
      * @param entity
      * @return
      */
-    @PostMapping(value = "/findByParentIdAndSort")
+    @PostMapping(value = "/getByParentIdAndSort")
     @ApiOperation("查询同级别下序号是否存在")
-    public SysDict findByParentIdAndSort(@RequestBody SysDict entity){
-        return sysDictService.findByParentIdAndSort(entity);
+    public SysDict getByParentIdAndSort(@RequestBody SysDict entity){
+        return sysDictService.getByParentIdAndSort(entity);
     }
 }
 

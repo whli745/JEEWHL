@@ -4,7 +4,7 @@
 //页面加载完成执行
 $(function () {
 	//获取所有的菜单
-	var targetJson = JEE.getJson("/system/sysDict/findByParentValue", {
+	var targetJson = JEE.getJson("/system/sysDict/listByParentValue", {
 		value: "MENU_TYPE"
 	}, "value", "name");
 	
@@ -19,7 +19,7 @@ $(function () {
 			id: "comboSearchEnable",
 			field: "enable",
 			title: "启用",
-			comboUrl: "/system/sysDict/findByParentValue",
+			comboUrl: "/system/sysDict/listByParentValue",
 			comboData: {
 				value: "YES_NO"
 			},
@@ -93,7 +93,7 @@ $(function () {
 			}
 		],
 		tableId: "tb_data",
-		url: "/system/sysMenu/findByPage",
+		url: "/system/sysMenu/listByPage",
 		treeView: true,
 		//pagination:false,
 		mainSearch: searchValues,
@@ -172,7 +172,7 @@ function showDialog(change) {
 				if (change == 'edit') {
 					data.id = $("#" + defaultTable).bootstrapTable('getSelections')[0].id;
 				}
-				var url = change == "edit" ? "/system/sysMenu/update" : "/system/sysMenu/add";
+				var url = change == "edit" ? "/system/sysMenu/update" : "/system/sysMenu/save";
 				$.when(JEE.myAjax(url, data)).done(function (result) {
 					if (result) {
 						$("#myModal").modal("hide");
@@ -189,7 +189,7 @@ function showDialog(change) {
 					field: "parentId",
 					title: "上级菜单",
 					disable: false,
-					comboUrl: "/system/sysMenu/findAll",
+					comboUrl: "/system/sysMenu/listAll",
 					comboId: "id",
 					comboText: "name"
 				},
@@ -209,7 +209,7 @@ function showDialog(change) {
 						required: true,
 						remote: {
 							type: "POST",
-							url: apiUrl+"/system/sysMenu/findByParentIdAndSort",
+							url: apiUrl+"/system/sysMenu/getByParentIdAndSort",
 							data: {
 								parentId: function(){
 									return $("#comboParentId").val();
@@ -236,7 +236,7 @@ function showDialog(change) {
 					id: "comboTarget",
 					field: "target",
 					title: "目标",
-					comboUrl: "/system/sysDict/findByParentValue",
+					comboUrl: "/system/sysDict/listByParentValue",
 					comboData: {
 						value: "MENU_TYPE"
 					},

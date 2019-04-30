@@ -20,7 +20,7 @@ $(function () {
 			id: "comboSearchEnable",
 			field: "enable",
 			title: "启用",
-			comboUrl: "/system/sysDict/findByParentValue",
+			comboUrl: "/system/sysDict/listByParentValue",
 			comboData: {
 				value: "YES_NO"
 			},
@@ -96,7 +96,7 @@ $(function () {
 		],
 		tableId: "tb_data",
 		mainSearch: searchValues,
-		url: "/system/sysRole/findByPage",
+		url: "/system/sysRole/listByPage",
 		//pagination: false,
 		singleSelect:true,
 		searchParams: function () {
@@ -159,7 +159,7 @@ $(function () {
 			array.push(nodes[i].id);
 	 　　}
 		
-		JEE.myAjax("/system/sysRole/grantByRole",{id:selectRole.id,menuIds:array});
+		JEE.myAjax("/system/sysRole/grantMenusByRole",{id:selectRole.id,menuIds:array});
 	});
 	
 	initZtree();
@@ -181,7 +181,7 @@ function showDialog(change) {
 				if (change == 'edit') {
 					data.id = $("#" + defaultTable).bootstrapTable('getSelections')[0].id;
 				}
-				var url = change == "edit" ? "/system/sysRole/update" : "/system/sysRole/add";
+				var url = change == "edit" ? "/system/sysRole/update" : "/system/sysRole/save";
 				$.when(JEE.myAjax(url, data)).done(function (result) {
 					if (result) {
 						$("#myModal").modal("hide");
@@ -203,7 +203,7 @@ function showDialog(change) {
 						required: true,
 						remote: {
 							type: "POST",
-							url: apiUrl+"/system/sysRole/findByNo",
+							url: apiUrl+"/system/sysRole/getByNo",
 							contentType: "application/json;charset=UTF-8",
 							data: {
 								no: function(){
@@ -247,5 +247,5 @@ function showDialog(change) {
 }
 
 function initZtree(data){
-	JEE.getZTree("menuTree","/system/sysMenu/findByTree",data);
+	JEE.getZTree("menuTree","/system/sysMenu/listMenuTreesByRoleId",data);
 }

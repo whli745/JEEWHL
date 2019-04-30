@@ -27,7 +27,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</sql>
 
 	<!-- 增加 -->
-	<insert id="add" parameterType="com.whli.jee.system.entity.SysRole">
+	<insert id="save" parameterType="com.whli.jee.system.entity.SysRole">
 		INSERT INTO ts_sys_role
 		<trim prefix="(" suffix=")" suffixOverrides="," >
 			<if test="entity.id != null">
@@ -139,7 +139,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</delete>
 
 	<!-- 根据ID查询 -->
-    <select id="findByPK" resultMap="RM_SysRole">
+    <select id="getByPK" resultMap="RM_SysRole">
 		SELECT <include refid="columns" />
 	    <![CDATA[
 		    FROM ts_sys_role
@@ -149,7 +149,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<!-- 根据ID查询 -->
-	<select id="findByPKs" resultMap="RM_SysRole">
+	<select id="listByPKs" resultMap="RM_SysRole">
 		SELECT <include refid="columns" />
 		FROM ts_sys_role
 		WHERE
@@ -160,7 +160,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<!-- 根据编码查询 -->
-	<select id="findByNo" resultMap="RM_SysRole">
+	<select id="getByNo" resultMap="RM_SysRole">
 		SELECT <include refid="columns" />
 		<![CDATA[
 		    FROM ts_sys_role
@@ -170,7 +170,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<!-- 根据名称查询 -->
-	<select id="findByName" resultMap="RM_SysRole">
+	<select id="getByName" resultMap="RM_SysRole">
 		SELECT <include refid="columns" />
 		<![CDATA[
 		    FROM ts_sys_role
@@ -179,7 +179,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    ]]>
 	</select>
 	
-	<sql id="findByPageWhere">
+	<sql id="listByPageWhere">
 		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
 		<where>	      				
 	       	<if test="entity.id != null and entity.id !=''">
@@ -216,22 +216,22 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
     	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
     -->
-    <select id="findByPage" resultMap="RM_SysRole">
+    <select id="listByPage" resultMap="RM_SysRole">
     	SELECT <include refid="columns" />
 	    FROM ts_sys_role
-		<include refid="findByPageWhere"/>
+		<include refid="listByPageWhere"/>
 		ORDER BY no
     </select>
 
 		<!-- 查询所有数据 -->
-	<select id="findAll" resultMap="RM_SysRole">
+	<select id="listAll" resultMap="RM_SysRole">
 		SELECT <include refid="columns" />
 		FROM ts_sys_role
-		<include refid="findByPageWhere"/>
+		<include refid="listByPageWhere"/>
 		ORDER BY no
 	</select>
 
-	<select id="findRolesByUserId" resultMap="RM_SysRole">
+	<select id="listByUserId" resultMap="RM_SysRole">
 		SELECT a.* FROM ts_sys_role a,tr_sys_user_role b
 		WHERE a.ts_sys_role_id = b.ts_sys_role_id AND b.ts_sys_user_id = #{userId}
 		ORDER BY no

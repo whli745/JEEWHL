@@ -1,6 +1,6 @@
 $(function () {
 	
-	var typeJson = JEE.getJson("/system/sysDict/findByParentValue", { value: "OPERATION_TYPE"}, "value", "name");
+	var typeJson = JEE.getJson("/system/sysDict/listByParentValue", { value: "OPERATION_TYPE"}, "value", "name");
 	
 	//定义搜索区域字段
 	var searchValues = [
@@ -8,7 +8,7 @@ $(function () {
 			id: "textSearchType",
 			field: "type",
 			title: "操作类型",
-			comboUrl: "/system/sysDict/findByParentValue",
+			comboUrl: "/system/sysDict/listByParentValue",
 			comboData: { value: "OPERATION_TYPE"},
 			comboId: "value",
 			comboText: "name"
@@ -51,7 +51,7 @@ $(function () {
 	JEE.initTable({
 		tableId: "tb_data",
 		mainSearch: searchValues,
-		url: "/system/sysLog/findByPage",
+		url: "/system/sysLog/listByPage",
 		searchParams: function () {
 			var temp = {};
 			return temp;

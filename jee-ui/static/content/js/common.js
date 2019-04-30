@@ -520,17 +520,24 @@ common.prototype.initIcon = function (selector) {
  * @param {Object} method 请求方式(get,post)
  * @param {Object} async 是否异步
  */
-common.prototype.myAjax = function (url, data, contentType, method, async) {
+common.prototype.myAjax = function (url, data, contentType, type, async) {
 	var def = $.Deferred();
 	var _this = this;
 	
 	if (url.indexOf("http") == -1 &&  url.indexOf("https") == -1) {
 		url = apiUrl + url;
 	}
-	var myType = method ? method : "post";
-	var myData = data ? JSON.stringify(data) : JSON.stringify({});
+	var myType = type ? type : "post";
 	var myContentType = contentType ? contentType : "json";
+	var myData = '';
+	if(myContentType === "json"){
+		myData = data ? JSON.stringify(data) : JSON.stringify({});
+	}else {
+		myData = data;
+	}
+	
 	var myAsync = async === false ? false : true;
+
 	$.ajax({
 		url: url,
 		type: myType,
@@ -700,7 +707,7 @@ common.prototype.getButtonByUser = function () {
 	var _this = this;
 	var reponse;
 	var url = window.document.location.pathname;
-	$.when(_this.myAjax("/system/sysMenu/getButtons", {
+	$.when(_this.myAjax("/system/sysMenu/listButtonsByUserIdAndParentUrl", {
 		href: url.substring(url.lastIndexOf("/") + 1)
 	},null,null,false)).done(function (results) {
 		reponse = results.map(function (item) {
@@ -774,6 +781,48 @@ common.prototype.getZTree = function(el,url,otherParam){
 			$.fn.zTree.init($("#"+el), setting,data);
 		}
 	})
+}
+
+common.prototype.uploadFile = function(url,data){
+	var _this = this;
+	if (url.indexOf("http") == -1 &&  url.indexOf("https") == -1) {
+		url = apiUrl + url;
+	}
+	
+	$.ajax({  
+	   type: "POST",  
+	   url: url,  
+	   data: data, 
+	   // 下面三个参数要指定，如果不指定，会报一个JQuery的错误 
+	   cache: false,
+	   contentType: false,
+	   processData: false,
+	   async: false,  
+	   success: function(data) {
+		   if (data instanceof Array) {
+		   	def.resolve(data);
+		   } else {
+		   	if(data.succeed){
+		   		if (data.message) {
+		   			_this.successMsg(data.message);
+		   		}
+		   		def.resolve(data.results ? data.results : "true");
+		   	}else if(data.message){
+		   		if("-10005" == data.code){
+		   			_this.confirmMsg(data.message,function(){
+		   				window.open("../../page/login.html","_top"); 
+		   			});
+		   		}else{
+		   			_this.errMsg(data.message);
+		   		}
+		   	}else{
+		   		def.resolve(data);
+		   	}
+		   }
+			$("#myModal").modal("hide");
+			$("#tb_data").bootstrapTable("refresh");
+	   }  
+	});
 }
 
 var JEE = new common();

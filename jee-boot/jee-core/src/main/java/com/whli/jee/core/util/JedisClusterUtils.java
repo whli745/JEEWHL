@@ -19,6 +19,7 @@ public class JedisClusterUtils {
     private static final String SUCCESS_STATUS_OK = "OK";
     private static final Long SUCCESS_STATUS_LONG = 1L;
 
+    private JedisClusterUtils(){}
 
     /**
      * @Desc 获取单例JedisPool

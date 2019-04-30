@@ -29,12 +29,13 @@ public class BasProcessController {
      * @return
      * @throws Exception
      */
-    @PostMapping("/findByPage")
+    @PostMapping("/listByPage")
     public ResponseBean findByPage(@RequestBody BasProcess entity) throws Exception{
         ResponseBean responseBean = new ResponseBean();
         int count = processService.getCount(entity);
-        List processes = processService.findByPage(entity);
+        List processes = processService.listByPage(entity);
         if (processes != null && processes.size() > 0){
+            responseBean.setSucceed(true);
             responseBean.setCount(count);
             responseBean.setResults(processes);
         }
@@ -46,11 +47,12 @@ public class BasProcessController {
      * @return
      * @throws Exception
      */
-    @PostMapping("/findAll")
+    @PostMapping("/listAll")
     public ResponseBean findAll() throws Exception{
         ResponseBean responseBean = new ResponseBean();
-        List<BasProcess> processes = processService.findAll();
+        List<BasProcess> processes = processService.listAll();
         if (processes != null && processes.size() > 0){
+            responseBean.setSucceed(true);
             responseBean.setResults(processes);
         }
         return responseBean;
@@ -66,7 +68,8 @@ public class BasProcessController {
         ResponseBean responseBean = new ResponseBean();
         int rows = processService.deleteProcess(entity);
         if (rows > 0){
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
+            responseBean.setResults("1");
             responseBean.setMessage("删除流程定义成功！");
         }
         return responseBean;
@@ -82,18 +85,19 @@ public class BasProcessController {
         if (StringUtils.isNotBlank(name) && StringUtils.isNotBlank(key) && file != null){
             int rows = processService.importExcel(name,key,file.getInputStream());
             if (rows > 0) {
-                responseBean.setResults(true);
+                responseBean.setSucceed(true);
+                responseBean.setResults("1");
                 responseBean.setMessage("导入流程定义成功！");
             }
         }
         return responseBean;
     }
 
-    @GetMapping(value = "/findResource")
-    public void findResourceByDeployment(@RequestParam("processDefinitionId") String processDefinitionId,
+    @GetMapping(value = "/getResource")
+    public void getResourceByDeployment(@RequestParam("processDefinitionId") String processDefinitionId,
                                          @RequestParam("resourceType") String resourceType,
                                          HttpServletResponse response){
-        processService.findResourceByDeployment(processDefinitionId,resourceType,response);
+        processService.getResourceByDeployment(processDefinitionId,resourceType,response);
     }
 
     /**
@@ -106,7 +110,8 @@ public class BasProcessController {
         ResponseBean responseBean = new ResponseBean();
         int rows = processService.activateProcessDefinition(entity);
         if (rows > 0){
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
+            responseBean.setResults("1");
             responseBean.setMessage("激活流程成功！");
         }
         return responseBean;
@@ -122,7 +127,8 @@ public class BasProcessController {
         ResponseBean responseBean = new ResponseBean();
         int rows = processService.suspendProcessDefinition(entity);
         if (rows > 0){
-            responseBean.setResults(true);
+            responseBean.setSucceed(true);
+            responseBean.setResults("1");
             responseBean.setMessage("挂起流程成功！");
         }
         return responseBean;

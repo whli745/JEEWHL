@@ -58,7 +58,7 @@ $(function () {
 		],
 		tableId: "tb_data",
 		mainSearch: searchValues,
-		url: oaUrl+"/activiti/basProcess/findByPage",
+		url: oaUrl+"/activiti/basProcess/listByPage",
 		//pagination: false,
 		showRefresh:true,
 		searchParams: function () {
@@ -81,7 +81,7 @@ $(function () {
 				title: "XML资源",
 				formatter: function(val,row,index){
 					return [
-						'<a href="'+oaUrl+'/activiti/basProcess/findResource'+
+						'<a href="'+oaUrl+'/activiti/basProcess/getResource'+
 						'?resourceType=xml&processDefinitionId='+row.id+'"'+
 						'target="_blank">'+val+'</a>'
 					].join("");
@@ -92,7 +92,7 @@ $(function () {
 				title: "图片资源",
 				formatter: function(val,row,index){
 					return [
-						'<a href="'+oaUrl+'/activiti/basProcess/findResource'+
+						'<a href="'+oaUrl+'/activiti/basProcess/getResource'+
 						'?resourceType=image&processDefinitionId='+row.id+'"'+ 
 						'target="_blank">'+val+'</a>'
 					].join("");
@@ -122,39 +122,7 @@ function showUploadDialog(change) {
 			formId: "dataForm",
 			btnClick: function (data) {
 				var form = new FormData(document.getElementById("dataForm"));
-				$.ajax({  
-				   type: "POST",  
-				   url:oaUrl+"/activiti/basProcess/importProcess",  
-				   data:form, 
-				   // 下面三个参数要指定，如果不指定，会报一个JQuery的错误 
-				   cache: false,
-				   contentType: false,
-				   processData: false,
-				   async: false,  
-				   success: function(data) {
-					   if(data && data.results){
-						   if (data.message) {
-						   		layer.msg(data.message, {
-						   			icon: 6,
-						   			time: 1000
-						   		});
-						   	}
-					    } else {
-						   	if("-10005" == data.code){
-						   		JEE.confirmMsg(data.message,function(){
-						   			window.open("../../../ui/login.html","_top"); 
-						   		});
-						   	}else{
-						   		layer.msg(data.message, {
-						   			icon: 5,
-						   			time: 1000
-						   		});
-						   	}
-						}
-						$("#myModal").modal("hide");
-						$("#tb_data").bootstrapTable("refresh");
-				   }  
-			   });
+				JEE.uploadFile(oaUrl+"/activiti/basProcess/importProcess",form);
 			}
 		}],
 		modalForm: {

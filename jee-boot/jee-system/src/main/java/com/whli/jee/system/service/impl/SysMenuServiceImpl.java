@@ -35,8 +35,8 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
     }
 
     @Override
-    public int add(SysMenu entity) {
-        int rows = super.add(entity);
+    public int save(SysMenu entity) {
+        int rows = super.save(entity);
         if ("TAB".equals(entity.getTarget())){
             List<SysMenu> buttons = new ArrayList<SysMenu>();
             //新增按钮
@@ -66,7 +66,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
             delBtn.setName("删除");
             delBtn.setTarget("BUTTON");
             buttons.add(delBtn);
-            super.addMore(buttons);
+            super.saveMore(buttons);
         }
 
         return rows;
@@ -75,7 +75,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
     @Override
     public void delete(SysMenu entity) {
         super.delete(entity);
-        List<SysMenu> menus = sysMenuDao.findByParentId(entity.getId());
+        List<SysMenu> menus = sysMenuDao.listByParentId(entity.getId());
         if (CollectionUtils.isNotEmpty(menus)){
             for (SysMenu menu : menus){
                 delete(menu);
@@ -85,7 +85,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
 
     @Override
     public void deleteMore(SysMenu entity) {
-        List<SysMenu> menus = sysMenuDao.findByPKs(entity.getIds());
+        List<SysMenu> menus = sysMenuDao.listByPKs(entity.getIds());
         if (CollectionUtils.isNotEmpty(menus)){
             for (SysMenu menu : menus){
                 delete(menu);
@@ -101,10 +101,10 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
      * @return
      */
     @Override
-    public List<SysMenu> findMenusByUserId(String userId, String parentId) {
+    public List<SysMenu> listMenusByUserIdAndParentId(String userId, String parentId) {
         List<SysMenu> menus = null;
         if (StringUtils.isNotBlank(userId)) {
-            menus = sysMenuDao.findMenusByUserId(userId, parentId);
+            menus = sysMenuDao.listMenusByUserIdAndParentId(userId, parentId);
             addChild(userId, menus);
         }
         return menus;
@@ -112,7 +112,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
 
     private void addChild(String userId, List<SysMenu> parents) {
         for (int i = 0, m = parents.size(); i < m; i++) {
-            List<SysMenu> childrens = sysMenuDao.findMenusByUserId(userId, parents.get(i).getId());
+            List<SysMenu> childrens = sysMenuDao.listMenusByUserIdAndParentId(userId, parents.get(i).getId());
             if (CollectionUtils.isNotEmpty(childrens)) {
                 parents.get(i).setMenus(childrens);
                 addChild(userId, childrens);
@@ -127,10 +127,10 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
      * @return
      */
     @Override
-    public List<SysMenu> findButtonsByParentUrlAndUserId(String userId, String parentUrl) {
+    public List<SysMenu> listButtonsByUserIdAndParentUrl(String userId, String parentUrl) {
         List<SysMenu> menus = null;
         if (StringUtils.isNotBlank(userId)) {
-            menus = sysMenuDao.findButtonsByParentUrlAndUserId(userId, parentUrl);
+            menus = sysMenuDao.listButtonsByUserIdAndParentUrl(userId, parentUrl);
         }
         return menus;
     }
@@ -141,10 +141,10 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
      * @return
      */
     @Override
-    public List<BaseTree> findByTree(String roleId) {
+    public List<BaseTree> listMenuTreesByRoleId(String roleId) {
         List<BaseTree> trees = new ArrayList<BaseTree>();
 
-        List<SysMenu> sysMenus = sysMenuDao.findByParentId("");
+        List<SysMenu> sysMenus = sysMenuDao.listByParentId("");
         if (CollectionUtils.isNotEmpty(sysMenus)) {
             for (SysMenu sysMenu : sysMenus) {
                 BaseTree tree = new BaseTree();
@@ -166,13 +166,13 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
     private void addChildrenNode(BaseTree parent,String roleId){
         parent.setOpen(true);
         if(StringUtils.isNotBlank(roleId)){
-            SysRoleMenu roleMenu = sysRoleMenuDao.findByRoleIdAndMenuId(roleId,parent.getId());
+            SysRoleMenu roleMenu = sysRoleMenuDao.getByRoleIdAndMenuId(roleId,parent.getId());
             if (roleMenu != null){
                 parent.setChecked(true);
             }
         }
 
-        List<SysMenu> childMenus = sysMenuDao.findByParentId(parent.getId());
+        List<SysMenu> childMenus = sysMenuDao.listByParentId(parent.getId());
         if (CollectionUtils.isNotEmpty(childMenus)) {
             parent.setIsParent(true);
             for (SysMenu childMenu : childMenus){
@@ -192,7 +192,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
      * @return
      */
     @Override
-    public SysMenu findByParentIdAndSort(SysMenu entity){
-        return sysMenuDao.findByParentIdAndSort(entity);
+    public SysMenu getByParentIdAndSort(SysMenu entity){
+        return sysMenuDao.getByParentIdAndSort(entity);
     }
 }

@@ -43,10 +43,10 @@ public class SysUserController extends BaseController<SysUser> {
      *
      * @return
      */
-    @PostMapping(value = "/findByNo")
+    @PostMapping(value = "/getByNo")
     @ApiOperation("根据用户登录名查询")
-    public SysUser findByNo(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
-        return sysUserService.findByNo(entity.getLoginName());
+    public SysUser getByNo(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
+        return sysUserService.getByNo(entity.getLoginName());
     }
 
     /**
@@ -54,10 +54,10 @@ public class SysUserController extends BaseController<SysUser> {
      * @param entity
      * @return
      */
-    @PostMapping(value = "/findByEmail")
+    @PostMapping(value = "/getByEmail")
     @ApiOperation("根据用户邮箱查询")
-    public SysUser findByEmail(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
-        return sysUserService.findByEmail(entity.getEmail());
+    public SysUser getByEmail(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
+        return sysUserService.getByEmail(entity.getEmail());
     };
 
     /**
@@ -65,10 +65,10 @@ public class SysUserController extends BaseController<SysUser> {
      * @param entity
      * @return
      */
-    @PostMapping(value = "/findByPhone")
+    @PostMapping(value = "/getByPhone")
     @ApiOperation("根据用户联系方式查询")
-    public SysUser findByPhone(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
-        return sysUserService.findByPhone(entity.getPhone());
+    public SysUser getByPhone(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
+        return sysUserService.getByPhone(entity.getPhone());
     };
 
     /**
@@ -76,10 +76,10 @@ public class SysUserController extends BaseController<SysUser> {
      *
      * @return
      */
-    @PostMapping(value = "/findByName")
+    @PostMapping(value = "/getByName")
     @ApiOperation("根据用户姓名查询")
-    public SysUser findByName(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
-        return sysUserService.findByName(entity.getName());
+    public SysUser getByName(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
+        return sysUserService.getByName(entity.getName());
     }
 
     /**
@@ -87,10 +87,10 @@ public class SysUserController extends BaseController<SysUser> {
      *
      * @return
      */
-    @PostMapping(value = "/findByLoginNameOrEmailOrPhone")
+    @PostMapping(value = "/getByLoginNameOrEmailOrPhone")
     @ApiOperation("根据用户名或邮箱或联系方式查询")
-    public SysUser findByLoginNameOrEmailOrPhone(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
-        return sysUserService.findByLoginNameOrEmailOrPhone(entity.getLoginName());
+    public SysUser getByLoginNameOrEmailOrPhone(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
+        return sysUserService.getByLoginNameOrEmailOrPhone(entity.getLoginName());
     }
 
 
@@ -100,11 +100,11 @@ public class SysUserController extends BaseController<SysUser> {
      * @param entity
      * @return
      */
-    @PostMapping(value = "/grantUser")
+    @PostMapping(value = "/grantRolesByUser")
     @ApiOperation("给用户授权角色")
-    public ResponseBean grantUser(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
+    public ResponseBean grantRolesByUser(@RequestBody SysUser entity, HttpServletRequest req) throws Exception {
         ResponseBean responseBean = new ResponseBean();
-        int rows = sysUserService.grantByUser(entity.getId(),entity.getRoleIds());
+        int rows = sysUserService.grantRolesByUser(entity.getId(),entity.getRoleIds());
         if (rows > 0){
             responseBean.setSucceed(true);
             responseBean.setMessage("授权用户成功！");
@@ -119,11 +119,11 @@ public class SysUserController extends BaseController<SysUser> {
      * @return
      * @throws Exception
      */
-    @PostMapping(value = "/deleteRoleByUser")
+    @PostMapping(value = "/deleteRolesByUser")
     @ApiOperation("删除用户的角色")
-    public ResponseBean deleteRoleByUser(@RequestBody SysUserRole entity, HttpServletRequest req) throws Exception {
+    public ResponseBean deleteRolesByUser(@RequestBody SysUserRole entity, HttpServletRequest req) throws Exception {
         ResponseBean responseBean = new ResponseBean();
-        sysUserRoleService.deleteByUser(entity);
+        sysUserRoleService.deleteRolesByUser(entity);
         responseBean.setSucceed(true);
         responseBean.setMessage("删除角色成功！");
         return responseBean;

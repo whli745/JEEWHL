@@ -1,10 +1,5 @@
 package com.whli.jee.job.base;
 
-import java.io.PrintWriter;
-import java.io.Serializable;
-import java.io.StringWriter;
-import java.util.Date;
-
 import com.whli.jee.job.entity.JobLog;
 import com.whli.jee.job.service.IJobLogService;
 import org.quartz.Job;
@@ -13,6 +8,11 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.PrintWriter;
+import java.io.Serializable;
+import java.io.StringWriter;
+import java.util.Date;
 
 /**
  * <p>类功能<p>
@@ -57,7 +57,7 @@ public abstract class BaseAbstractJob implements Job, Serializable {
         Date endTime =new Date();
         logger.info("总耗时(秒)："+((endTime.getTime()-startTime.getTime())/1000));
         jobLog.setDuration((endTime.getTime()-startTime.getTime())/1000);
-        jobLogService.add(jobLog);
+        jobLogService.save(jobLog);
     }
 
     public abstract boolean processJob();

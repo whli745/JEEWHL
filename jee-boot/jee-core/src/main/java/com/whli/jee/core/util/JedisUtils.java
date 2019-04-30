@@ -17,6 +17,7 @@ public class JedisUtils {
     private static final String SUCCESS_STATUS_OK = "OK";
     private static final Long SUCCESS_STATUS_LONG = 1L;
 
+    private JedisUtils(){}
 
     /**
      * @Desc 获取单例JedisPool

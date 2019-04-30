@@ -28,28 +28,16 @@ public class SysAreaServiceImpl extends BaseServiceImpl<SysArea> implements ISys
     }
 
     @Override
-    public SysArea findByParentIdAndSort(SysArea entity) {
-        return sysAreaDao.findByParentIdAndSort(entity);
+    public SysArea getByParentIdAndSort(SysArea entity) {
+        return sysAreaDao.getByParentIdAndSort(entity);
     }
 
     @Override
-    public SysArea findByCode(String code) {
+    public SysArea getByCode(String code) {
         if (StringUtils.isBlank(code)) {
             throw new BusinessException("请选择需要查询的数据！");
         }
-        SysArea entity = sysAreaDao.findByNo(code);
-        if (BeanUtils.isNull(entity)) {
-            throw new BusinessException("查询的数据不存在或已删除！");
-        }
-        return entity;
-    }
-
-    @Override
-    public SysArea findByName(String name) {
-        if (StringUtils.isBlank(name)) {
-            throw new BusinessException("请选择需要查询的数据！");
-        }
-        SysArea entity = sysAreaDao.findByName(name);
+        SysArea entity = sysAreaDao.getByCode(code);
         if (BeanUtils.isNull(entity)) {
             throw new BusinessException("查询的数据不存在或已删除！");
         }

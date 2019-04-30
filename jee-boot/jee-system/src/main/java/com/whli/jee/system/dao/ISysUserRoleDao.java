@@ -18,5 +18,5 @@ public interface ISysUserRoleDao extends IBaseDao<SysUserRole> {
      * 根据角色删除对应菜单关系
      * @param entity
      */
-    public void deleteByUser(@Param("entity") SysUserRole entity);
+    void deleteRolesByUser(@Param("entity") SysUserRole entity);
 }

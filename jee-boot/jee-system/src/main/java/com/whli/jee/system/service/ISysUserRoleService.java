@@ -17,5 +17,5 @@ public interface ISysUserRoleService extends IBaseService<SysUserRole> {
      * @param entity
      */
     @Transactional
-    public void deleteByUser(SysUserRole entity);
+    void deleteRolesByUser(SysUserRole entity);
 }

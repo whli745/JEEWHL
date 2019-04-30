@@ -10,6 +10,9 @@ import java.util.Map;
  * Created by whli on 2017/11/22.
  */
 public class WordUtils {
+
+    private WordUtils(){}
+
     /**
      * @Desc：使用velocity模板生成word文件
      * @Author：whli

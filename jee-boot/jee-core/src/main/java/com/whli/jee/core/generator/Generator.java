@@ -1,4 +1,4 @@
-package com.whli.jee.core.generatorcode;
+package com.whli.jee.core.generator;
 
 import java.util.List;
 

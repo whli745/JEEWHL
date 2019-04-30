@@ -21,5 +21,5 @@ public interface ISysRoleDao extends IBaseDao<SysRole> {
      * @param userId
      * @return
      */
-    public List<SysRole> findRolesByUserId(@Param("userId") String userId);
+    List<SysRole> listByUserId(@Param("userId") String userId);
 }
