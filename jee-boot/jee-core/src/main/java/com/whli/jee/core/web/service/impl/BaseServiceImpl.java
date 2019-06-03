@@ -30,14 +30,14 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements IBaseServ
      * @return
      */
     @Override
-    public int add(T entity){
+    public int save(T entity){
         if(BeanUtils.isNull(entity)){
             throw new BusinessException("新增数据不能为空！");
         }
         entity.setId(BeanUtils.getUUID());
         entity.setCreateBy(WebUtils.getLoginName());
         entity.setCreateDate(new Date());
-        return getDao().add(entity);
+        return getDao().save(entity);
     }
 
     /**
@@ -46,19 +46,19 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements IBaseServ
      * @return
      */
     @Override
-    public int addMore(List<T> entities){
+    public int saveMore(List<T> entities){
         if(CollectionUtils.isEmpty(entities)){
             throw new BusinessException("新增数据不能为空！");
         }
-        int rows = 0;
-        for(T entity:entities){
+
+        entities.stream().forEach(entity -> {
             entity.setId(BeanUtils.getUUID());
             entity.setCreateBy(WebUtils.getLoginName());
             entity.setCreateDate(new Date());
-            getDao().add(entity);
-            rows++;
-        }
-        return rows;
+            getDao().save(entity);
+        });
+
+        return 1;
     }
 
     /**
@@ -86,14 +86,14 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements IBaseServ
         if(CollectionUtils.isEmpty(entities)){
             throw new BusinessException("修改数据不能为空！");
         }
-        int rows = 0;
-        for(T entity:entities){
+
+        entities.stream().forEach(entity -> {
             entity.setUpdateBy(WebUtils.getLoginName());
             entity.setUpdateDate(new Date());
             getDao().update(entity);
-            rows++;
-        }
-        return rows;
+        });
+
+        return 1;
     }
 
     /**
@@ -127,11 +127,11 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements IBaseServ
      * @return
      */
     @Override
-    public T findByPK(String id){
+    public T getByPK(String id){
         if(StringUtils.isBlank(id)){
             throw new BusinessException("请选择需要查询的数据！");
         }
-        T entity = getDao().findByPK(id);
+        T entity = getDao().getByPK(id);
         if(BeanUtils.isNull(entity)){
             throw  new BusinessException("查询的数据不存在或已删除！");
         }
@@ -139,11 +139,11 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements IBaseServ
     }
 
     @Override
-    public List<T> findByPKs(List<String> ids) {
+    public List<T> listByPKs(List<String> ids) {
         if (CollectionUtils.isEmpty(ids)){
             throw new BusinessException("请选择需要查询的数据！");
         }
-        List<T> entities = getDao().findByPKs(ids);
+        List<T> entities = getDao().listByPKs(ids);
         if (CollectionUtils.isEmpty(entities)){
             throw  new BusinessException("查询的数据不存在或已删除！");
         }
@@ -152,11 +152,11 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements IBaseServ
     }
 
     @Override
-    public T findByNo(String no) {
+    public T getByNo(String no) {
         if(StringUtils.isBlank(no)){
             throw new BusinessException("请选择需要查询的数据！");
         }
-        T entity = getDao().findByNo(no);
+        T entity = getDao().getByNo(no);
         if(BeanUtils.isNull(entity)){
             throw  new BusinessException("查询的数据不存在或已删除！");
         }
@@ -164,11 +164,11 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements IBaseServ
     }
 
     @Override
-    public T findByName(String name) {
+    public T getByName(String name) {
         if(StringUtils.isBlank(name)){
             throw new BusinessException("请选择需要查询的数据！");
         }
-        T entity = getDao().findByName(name);
+        T entity = getDao().getByName(name);
         if(BeanUtils.isNull(entity)){
             throw  new BusinessException("查询的数据不存在或已删除！");
         }
@@ -182,8 +182,8 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements IBaseServ
      * @return
      */
     @Override
-    public Page<T> findByPage(T entity, Page<T> page){
-        List<T> records = getDao().findByPage(entity,page);
+    public Page<T> listByPage(T entity, Page<T> page){
+        List<T> records = getDao().listByPage(entity,page);
         if (page == null){
             page = new Page<T>();
         }
@@ -197,8 +197,8 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements IBaseServ
      * @return
      */
     @Override
-    public List<T> findAll(T entity){
-        return getDao().findAll(entity);
+    public List<T> listAll(T entity){
+        return getDao().listAll(entity);
     }
 
     /**

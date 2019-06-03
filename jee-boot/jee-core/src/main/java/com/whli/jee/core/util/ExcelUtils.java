@@ -33,6 +33,8 @@ public class ExcelUtils {
     private final static String EXCEL2003L = ".xls";
     private final static String EXCEL2007U = ".xlsx";
 
+    private ExcelUtils(){}
+
     /**
      * 导出Excel
      * @param response
@@ -64,10 +66,13 @@ public class ExcelUtils {
         }
 
         //创建Excel数据
-        for (int i = 0;i < dataMaps.size();i++){
+        int dataSize = dataMaps.size();
+        for (int i = 0; i < dataSize; i++){
             HSSFRow dataRow = sheet.createRow(i+1);
             Map<String,Object> data = dataMaps.get(i);
-            for (int j = 0;j < keys.size();j++){
+
+            int keySize = keys.size();
+            for (int j = 0; j < keySize; j++){
                 //获取整列的宽
                 int cellWidth = sheet.getColumnWidth(j);
                 //创建行的新列
@@ -163,6 +168,8 @@ public class ExcelUtils {
         if (workbook == null || headers == null || headers.length == 0){
             throw new BusinessException("-01080604","未找到需要导入的文件！");
         }
+        int headLength = headers.length;
+
         //获取类字段
         Field[] fields = c.getDeclaredFields();
         Map<String,Field> fieldMaps = new HashMap<String,Field>();
@@ -171,22 +178,25 @@ public class ExcelUtils {
         }
 
         List<T> objects = new ArrayList<T>();
+
+        int sheetNums = workbook.getNumberOfSheets();
         //读取Excel
-        for (int i = 0; i <workbook.getNumberOfSheets(); i++) {
+        for (int i = 0; i < sheetNums; i++) {
             Sheet sheet = workbook.getSheetAt(i);
             if (sheet == null) {
                 continue;
             }
-
+            int firstRowNum = sheet.getFirstRowNum();
+            int lastRowNum = sheet.getLastRowNum();
             // 循环读取行
-            for (int j = sheet.getFirstRowNum() + 1; j <= sheet.getLastRowNum() ; j++) {
+            for (int j = firstRowNum + 1; j <= lastRowNum; j++) {
                 Row row = sheet.getRow(j);
                 if (row == null){
                     continue;
                 }
                 T entity = c.newInstance();
                 //循环读取列
-                for (int m = 0; m < headers.length; m++){
+                for (int m = 0; m < headLength; m++){
                     Cell cell = row.getCell(m);
                     String key = headers[m];
                     Field field = fieldMaps.get(key);

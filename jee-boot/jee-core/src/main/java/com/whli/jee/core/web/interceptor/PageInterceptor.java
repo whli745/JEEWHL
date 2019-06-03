@@ -249,7 +249,7 @@ public class PageInterceptor implements Interceptor {
         sqlId = sqlId.toLowerCase();
 
         if (sqlId.indexOf("add") != -1 || sqlId.indexOf("insert") != -1 || sqlId.indexOf("create") != -1
-                || sqlId.indexOf("new ") != -1){
+                || sqlId.indexOf("new ") != -1 || sqlId.indexOf("save ") != -1){
             type = "ADD";
         }else if (sqlId.indexOf("update") != -1 || sqlId.indexOf("modify") != -1){
             type = "UPDATE";

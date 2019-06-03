@@ -30,36 +30,24 @@ public class SysDictServiceImpl extends BaseServiceImpl<SysDict> implements ISys
     }
 
     @Override
-    public List<SysDict> findByParentValue(String value) {
+    public List<SysDict> listByParentValue(String value) {
         if (StringUtils.isBlank(value)) {
             throw new BusinessException("-02060201", "父字典值不能为空！");
         }
-        return sysDictDao.findByParentValue(value);
+        return sysDictDao.listByParentValue(value);
     }
 
     @Override
-    public SysDict findByParentIdAndSort(SysDict entity) {
-        return sysDictDao.findByParentIdAndSort(entity);
+    public SysDict getByParentIdAndSort(SysDict entity) {
+        return sysDictDao.getByParentIdAndSort(entity);
     }
 
     @Override
-    public SysDict findByValue(String value) {
+    public SysDict getByValue(String value) {
         if (StringUtils.isBlank(value)) {
             throw new BusinessException("请选择需要查询的数据！");
         }
-        SysDict entity = sysDictDao.findByNo(value);
-        if (BeanUtils.isNull(entity)) {
-            throw new BusinessException("查询的数据不存在或已删除！");
-        }
-        return entity;
-    }
-
-    @Override
-    public SysDict findByName(String name) {
-        if (StringUtils.isBlank(name)) {
-            throw new BusinessException("请选择需要查询的数据！");
-        }
-        SysDict entity = sysDictDao.findByName(name);
+        SysDict entity = sysDictDao.getByValue(value);
         if (BeanUtils.isNull(entity)) {
             throw new BusinessException("查询的数据不存在或已删除！");
         }

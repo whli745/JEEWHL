@@ -23,7 +23,7 @@ public interface ISysUserService extends IBaseService<SysUser> {
      * @Params [loginName, password]
      * @Return java.lang.String
      */
-    public SysUser login(String loginName, String password);
+    SysUser login(String loginName, String password);
 
     /**
      * @Desc 用户退出登录
@@ -33,14 +33,14 @@ public interface ISysUserService extends IBaseService<SysUser> {
      * @Params [token]
      * @Return java.lang.String
      */
-    public boolean logout(HttpServletRequest request);
+    boolean logout(HttpServletRequest request);
 
     /**
      * 由登录用户名查询用户
      * @param loginName
      * @return
      */
-    public SysUser findByLoginNameOrEmailOrPhone(String loginName);
+    SysUser getByLoginNameOrEmailOrPhone(String loginName);
 
 
     /**
@@ -48,14 +48,14 @@ public interface ISysUserService extends IBaseService<SysUser> {
      * @param email
      * @return
      */
-    public SysUser findByEmail(String email);
+    SysUser getByEmail(String email);
 
     /**
      * 由邮箱查询用户
      * @param phone
      * @return
      */
-    public SysUser findByPhone(String phone);
+    SysUser getByPhone(String phone);
 
     /**
      * @Desc 授权用户角色权限
@@ -66,7 +66,7 @@ public interface ISysUserService extends IBaseService<SysUser> {
      * @Return void
      */
     @Transactional
-    public int grantByUser(String userId, List<String> roleIds);
+    int grantRolesByUser(String userId, List<String> roleIds);
 
     /**
      * 重置密码
@@ -74,5 +74,5 @@ public interface ISysUserService extends IBaseService<SysUser> {
      * @return
      */
     @Transactional
-    public int resetPassword(SysUser entity);
+    int resetPassword(SysUser entity);
 }

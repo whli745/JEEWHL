@@ -9,7 +9,6 @@ import com.whli.jee.system.service.ISysUserRoleService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 /**
  * @author whli
@@ -28,20 +27,11 @@ public class SysUserRoleServiceImpl extends BaseServiceImpl<SysUserRole> impleme
     }
 
     @Override
-    public int add(SysUserRole entity) {
-        return super.add(entity);
-    }
-
-    @Override
-    public void deleteByUser(SysUserRole entity) {
+    public void deleteRolesByUser(SysUserRole entity) {
         if (StringUtils.isBlank(entity.getUserId())) {
-            throw new BusinessException("-02060801", "请选择需要删除角色的用户！");
+            throw new BusinessException("请选择需要删除角色的用户！");
         }
-
-        if(CollectionUtils.isEmpty(entity.getRoleIds())){
-            throw new BusinessException("-02060802", "请选择至少一条需要删除的角色！");
-        }
-        sysUserRoleDao.deleteByUser(entity);
+        sysUserRoleDao.deleteRolesByUser(entity);
     }
 
 

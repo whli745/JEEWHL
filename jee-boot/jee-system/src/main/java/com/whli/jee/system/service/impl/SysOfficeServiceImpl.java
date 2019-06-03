@@ -26,12 +26,7 @@ public class SysOfficeServiceImpl extends BaseServiceImpl<SysOffice> implements 
 	}
 
 	@Override
-	public SysOffice findByParentIdAndSort(SysOffice entity) {
-		return sysOfficeDao.findByParentIdAndSort(entity);
-	}
-
-	@Override
-	public SysOffice findByName(String name) {
-		return null;
+	public SysOffice getByParentIdAndSort(SysOffice entity) {
+		return sysOfficeDao.getByParentIdAndSort(entity);
 	}
 }

@@ -27,7 +27,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</sql>
 
 	<!-- 增加 -->
-	<insert id="add" parameterType="com.whli.jee.job.entity.JobLog">
+	<insert id="save" parameterType="com.whli.jee.job.entity.JobLog">
 		INSERT INTO tl_job_log
 		<trim prefix="(" suffix=")" suffixOverrides="," >
 			<if test="entity.id != null">
@@ -90,7 +90,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</insert>
 
 	<!-- 批量增加 -->
-	<insert id="addMore" parameterType="java.util.List">
+	<insert id="saveMore" parameterType="java.util.List">
 		INSERT INTO tl_job_log
 			(
 				tl_job_log_id,
@@ -202,7 +202,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</delete>
 
 	<!-- 根据主键查询 -->
-    <select id="findByPK" resultMap="RM_JobLog">
+    <select id="getByPK" resultMap="RM_JobLog">
 		SELECT <include refid="columns" />
 	    <![CDATA[
 		    FROM tl_job_log 
@@ -212,7 +212,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<!-- 根据ID查询 -->
-	<select id="findByPKs" resultMap="RM_JobLog">
+	<select id="listByPKs" resultMap="RM_JobLog">
 		SELECT <include refid="columns" />
 		FROM tl_job_log
 		WHERE
@@ -223,7 +223,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 根据编码查询 -->
-	<select id="findByNo" resultMap="RM_JobLog">
+	<select id="getByNo" resultMap="RM_JobLog">
 		SELECT <include refid="columns" />
 		<![CDATA[
 		    FROM tl_job_log
@@ -233,7 +233,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<!-- 根据名称查询 -->
-	<select id="findByName" resultMap="RM_JobLog">
+	<select id="getByName" resultMap="RM_JobLog">
 		SELECT <include refid="columns" />
 		<![CDATA[
 		    FROM tl_job_log
@@ -242,7 +242,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    ]]>
 	</select>
 	
-	<sql id="findByPageWhere">
+	<sql id="listByPageWhere">
 		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
 		<where>	      				
 			<if test="entity.id != null and entity.id !=''">
@@ -279,18 +279,18 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
     	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
     -->
-    <select id="findByPage" resultMap="RM_JobLog">
+    <select id="listByPage" resultMap="RM_JobLog">
     	SELECT <include refid="columns" />
 	    FROM tl_job_log 
-		<include refid="findByPageWhere"/>
+		<include refid="listByPageWhere"/>
 		ORDER BY date_time DESC
     </select>
 
 	<!-- 查询所有数据 -->
-	<select id="findAll" resultMap="RM_JobLog">
+	<select id="listAll" resultMap="RM_JobLog">
 		SELECT <include refid="columns" />
 		FROM tl_job_log
-		<include refid="findByPageWhere"/>
+		<include refid="listByPageWhere"/>
 	</select>
 	
 </mapper>

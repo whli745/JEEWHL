@@ -43,10 +43,10 @@ public class SysMenuController extends BaseController<SysMenu> {
      * @return
      * @throws Exception
      */
-    @PostMapping(value = "/findByName")
+    @PostMapping(value = "/getByName")
     @ApiOperation("根据系统菜单名称查询")
-    public SysMenu findByName(@RequestBody SysMenu entity, HttpServletRequest req) throws Exception {
-        return sysMenuService.findByName(entity.getName());
+    public SysMenu getByName(@RequestBody SysMenu entity, HttpServletRequest req) throws Exception {
+        return sysMenuService.getByName(entity.getName());
     }
 
 
@@ -55,10 +55,10 @@ public class SysMenuController extends BaseController<SysMenu> {
      *
      * @return
      */
-    @PostMapping(value = "/findByTree")
+    @PostMapping(value = "/listMenuTreesByRoleId")
     @ApiOperation("根据角色ID树形展示菜单")
-    public List<BaseTree> findByTree(@RequestBody SysMenu entity, HttpServletRequest req) throws Exception {
-        return sysMenuService.findByTree(entity.getRoleId());
+    public List<BaseTree> listMenuTreesByRoleId(@RequestBody SysMenu entity, HttpServletRequest req) throws Exception {
+        return sysMenuService.listMenuTreesByRoleId(entity.getRoleId());
     }
 
     /**
@@ -68,11 +68,11 @@ public class SysMenuController extends BaseController<SysMenu> {
      * @param rq
      * @return
      */
-    @PostMapping(value = "/menuTree")
+    @PostMapping(value = "/listMenusByUserIdAndParentId")
     @ApiOperation("查询登录用户的授权菜单")
-    public List<SysMenu> menuTree(@RequestBody SysMenu entity, HttpServletRequest rq) throws Exception {
+    public List<SysMenu> listMenusByUserIdAndParentId(@RequestBody SysMenu entity, HttpServletRequest rq) throws Exception {
         //获取父菜单
-        List<SysMenu> sysMenus = sysMenuService.findMenusByUserId(WebUtils.getLoginUserId(), entity.getParentId());
+        List<SysMenu> sysMenus = sysMenuService.listMenusByUserIdAndParentId(WebUtils.getLoginUserId(), entity.getParentId());
         return sysMenus;
     }
 
@@ -83,11 +83,11 @@ public class SysMenuController extends BaseController<SysMenu> {
      * @param rq
      * @return
      */
-    @PostMapping(value = "/getButtons")
+    @PostMapping(value = "/listButtonsByUserIdAndParentUrl")
     @ApiOperation("查询菜单拥有的按钮")
-    public List<SysMenu> getButtons(@RequestBody SysMenu entity, HttpServletRequest rq) throws Exception {
+    public List<SysMenu> listButtonsByUserIdAndParentUrl(@RequestBody SysMenu entity, HttpServletRequest rq) throws Exception {
         //获取父菜单
-        List<SysMenu> buttons = sysMenuService.findButtonsByParentUrlAndUserId(WebUtils.getLoginUserId(), entity.getHref());
+        List<SysMenu> buttons = sysMenuService.listButtonsByUserIdAndParentUrl(WebUtils.getLoginUserId(), entity.getHref());
         return buttons;
     }
 
@@ -96,10 +96,10 @@ public class SysMenuController extends BaseController<SysMenu> {
      * @param entity
      * @return
      */
-    @PostMapping(value = "/findByParentIdAndSort")
+    @PostMapping(value = "/getByParentIdAndSort")
     @ApiOperation("查询同级别下是否存在相同序号")
-    public SysMenu findByParentIdAndSort(@RequestBody SysMenu entity){
-        return sysMenuService.findByParentIdAndSort(entity);
+    public SysMenu getByParentIdAndSort(@RequestBody SysMenu entity){
+        return sysMenuService.getByParentIdAndSort(entity);
     }
 }
 

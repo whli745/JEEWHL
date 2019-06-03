@@ -1,9 +1,9 @@
 $(function () {
-	var groupJson = JEE.getJson("/system/sysDict/findByParentValue", {
+	var groupJson = JEE.getJson("/system/sysDict/listByParentValue", {
 		value: "JOB_GROUP"
 	}, "value", "name");
 
-	var statusJson = JEE.getJson("/system/sysDict/findByParentValue", {
+	var statusJson = JEE.getJson("/system/sysDict/listByParentValue", {
 		value: "JOB_STATUS"
 	}, "value", "name");
 
@@ -18,7 +18,7 @@ $(function () {
 			id: "comboSearchJobGroup",
 			field: "jobGroup",
 			title: "任务分组",
-			comboUrl: "/system/sysDict/findByParentValue",
+			comboUrl: "/system/sysDict/listByParentValue",
 			comboData: {
 				value: "JOB_GROUP"
 			},
@@ -29,7 +29,7 @@ $(function () {
 			id: "comboSearchState",
 			field: "state",
 			title: "任务状态",
-			comboUrl: "/system/sysDict/findByParentValue",
+			comboUrl: "/system/sysDict/listByParentValue",
 			comboData: {
 				value: "JOB_STATUS"
 			},
@@ -184,7 +184,7 @@ $(function () {
 		],
 		tableId: "tb_data",
 		mainSearch: searchValues,
-		url: "/scheduler/job/findByPage",
+		url: "/scheduler/job/listByPage",
 		searchParams: function () {
 			var temp = {};
 			return temp;
@@ -278,7 +278,7 @@ function showDialog(change, formData) {
 				if (change == 'edit') {
 					data.id = $("#" + defaultTable).bootstrapTable('getSelections')[0].id;
 				}
-				var url = change == "edit" ? jobUrl+"/scheduler/job/update" : jobUrl+"/scheduler/job/add";
+				var url = change == "edit" ? jobUrl+"/scheduler/job/update" : jobUrl+"/scheduler/job/save";
 				$.when(JEE.myAjax(url, data)).done(function (result) {
 					if (result) {
 						$("#myModal").modal("hide");
@@ -300,7 +300,7 @@ function showDialog(change, formData) {
 						required: true,
 						remote: {
 							type: "POST",
-							url: jobUrl+"/scheduler/job/findByName",
+							url: jobUrl+"/scheduler/job/getByName",
 							contentType: "application/json;charset=UTF-8",
 							data: {
 								jobName: function(){
@@ -324,7 +324,7 @@ function showDialog(change, formData) {
 					field: "jobGroup",
 					title: "任务分组",
 					defaultValue: 'DEFAULT',
-					comboUrl: "/system/sysDict/findByParentValue",
+					comboUrl: "/system/sysDict/listByParentValue",
 					comboData: {
 						value: "JOB_GROUP"
 					},

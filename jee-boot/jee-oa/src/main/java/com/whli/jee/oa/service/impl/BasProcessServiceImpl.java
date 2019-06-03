@@ -31,7 +31,7 @@ public class BasProcessServiceImpl implements IBasProcessService {
     private RepositoryService repositoryService;
 
     @Override
-    public List findByPage(BasProcess entity) {
+    public List listByPage(BasProcess entity) {
         List<ProcessDefinition> processes = new ArrayList<ProcessDefinition>();
         List processList = new ArrayList();
 
@@ -58,7 +58,7 @@ public class BasProcessServiceImpl implements IBasProcessService {
     }
 
     @Override
-    public List findAll() {
+    public List listAll() {
         List<ProcessDefinition> processes = repositoryService.createProcessDefinitionQuery()
                 .latestVersion().list();
         return transToBasProcess(processes);
@@ -111,7 +111,7 @@ public class BasProcessServiceImpl implements IBasProcessService {
     }
 
     @Override
-    public void findResourceByDeployment(String processDefinitionId, String resourceType, HttpServletResponse response) {
+    public void getResourceByDeployment(String processDefinitionId, String resourceType, HttpServletResponse response) {
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(processDefinitionId).singleResult();
 

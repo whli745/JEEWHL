@@ -21,7 +21,7 @@ public interface ISysMenuDao extends IBaseDao<SysMenu> {
      * @param parentId
      * @return
      */
-    public List<SysMenu> findMenusByUserId(@Param("userId") String userId, @Param("parentId") String parentId);
+    List<SysMenu> listMenusByUserIdAndParentId(@Param("userId") String userId, @Param("parentId") String parentId);
 
     /**
      * 根据登录用户查询按钮
@@ -29,18 +29,18 @@ public interface ISysMenuDao extends IBaseDao<SysMenu> {
      * @param parentUrl
      * @return
      */
-    public List<SysMenu> findButtonsByParentUrlAndUserId(@Param("userId") String userId, @Param("parentUrl") String parentUrl);
+    List<SysMenu> listButtonsByUserIdAndParentUrl(@Param("userId") String userId, @Param("parentUrl") String parentUrl);
 
     /**
      * 根据父ID查询菜单
      * @return
      */
-    public List<SysMenu> findByParentId(@Param("parentId") String parentId);
+    List<SysMenu> listByParentId(@Param("parentId") String parentId);
 
     /**
      * 根据父ID及排序查询菜单
      * @param entity
      * @return
      */
-    public SysMenu findByParentIdAndSort(@Param("entity") SysMenu entity);
+    SysMenu getByParentIdAndSort(@Param("entity") SysMenu entity);
 }

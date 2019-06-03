@@ -19,21 +19,21 @@ public interface ISysUserDao extends IBaseDao<SysUser> {
      * @param loginName
      * @return
      */
-    public SysUser findByLoginNameOrEmailOrPhone(@Param("loginName") String loginName);
+    SysUser getByLoginNameOrEmailOrPhone(@Param("loginName") String loginName);
 
     /**
      * 由邮箱查询用户
      * @param email
      * @return
      */
-    public SysUser findByEmail(@Param("email") String email);
+    SysUser getByEmail(@Param("email") String email);
 
     /**
      * 由邮箱查询用户
      * @param phone
      * @return
      */
-    public SysUser findByPhone(@Param("phone") String phone);
+    SysUser getByPhone(@Param("phone") String phone);
 
     /**
      * 重置密码
@@ -41,5 +41,5 @@ public interface ISysUserDao extends IBaseDao<SysUser> {
      * @param password
      * @return
      */
-    public int resetPassword(@Param("id") String id, @Param("password") String password);
+    int resetPassword(@Param("id") String id, @Param("password") String password);
 }

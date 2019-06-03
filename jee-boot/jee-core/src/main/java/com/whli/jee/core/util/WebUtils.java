@@ -22,6 +22,8 @@ import java.net.UnknownHostException;
  */
 public class WebUtils {
 
+    private WebUtils(){}
+
     /**
      * 获取登录用户名
      * @return string

@@ -40,10 +40,10 @@ public class SysAreaController extends BaseController<SysArea> {
      * @return
      * @throws Exception
      */
-    @PostMapping(value = "/findByCode")
+    @PostMapping(value = "/getByCode")
     @ApiOperation("根据区域编码查询")
-    public SysArea findByCode(@RequestBody SysArea entity, HttpServletRequest req) throws Exception {
-        return sysAreaService.findByCode(entity.getCode());
+    public SysArea getByCode(@RequestBody SysArea entity, HttpServletRequest req) throws Exception {
+        return sysAreaService.getByCode(entity.getCode());
     }
 
     /**
@@ -53,10 +53,10 @@ public class SysAreaController extends BaseController<SysArea> {
      * @return
      * @throws Exception
      */
-    @PostMapping(value = "/findByName")
+    @PostMapping(value = "/getByName")
     @ApiOperation("根据区域名称查询")
-    public SysArea findByName(@RequestBody SysArea entity, HttpServletRequest req) throws Exception {
-        return sysAreaService.findByName(entity.getName());
+    public SysArea getByName(@RequestBody SysArea entity, HttpServletRequest req) throws Exception {
+        return sysAreaService.getByName(entity.getName());
     }
 
     /**
@@ -64,10 +64,10 @@ public class SysAreaController extends BaseController<SysArea> {
      * @param entity
      * @return
      */
-    @PostMapping(value = "/findByParentIdAndSort")
+    @PostMapping(value = "/getByParentIdAndSort")
     @ApiOperation("查询同级别下序号是否存在")
-    public SysArea findByParentIdAndSort(@RequestBody SysArea entity) throws Exception{
-        return sysAreaService.findByParentIdAndSort(entity);
+    public SysArea getByParentIdAndSort(@RequestBody SysArea entity) throws Exception{
+        return sysAreaService.getByParentIdAndSort(entity);
     }
 }
 

@@ -17,16 +17,14 @@ public interface ISysDictService extends IBaseService<SysDict> {
      * @param value
      * @return
      */
-    public List<SysDict> findByParentValue(String value);
+    List<SysDict> listByParentValue(String value);
 
     /**
      * 根据父ID及排序查询菜单
      * @param entity
      * @return
      */
-    public SysDict findByParentIdAndSort(SysDict entity);
+    SysDict getByParentIdAndSort(SysDict entity);
 
-    public SysDict findByValue(String value);
-
-    public SysDict findByName(String name);
+    SysDict getByValue(String value);
 }

@@ -42,31 +42,31 @@ public class SysRoleController extends BaseController<SysRole> {
      * 根据编码查询entity
      * @return
      */
-    @PostMapping(value = "/findByNo")
+    @PostMapping(value = "/getByNo")
     @ApiOperation("根据角色编码查询")
-    public SysRole findByNo(@RequestBody SysRole entity, HttpServletRequest req) throws Exception {
-        return sysRoleService.findByNo(entity.getNo());
+    public SysRole getByNo(@RequestBody SysRole entity, HttpServletRequest req) throws Exception {
+        return sysRoleService.getByNo(entity.getNo());
     }
 
     /**
      * 根据名称查询entity
      * @return
      */
-    @PostMapping(value = "/findByName")
+    @PostMapping(value = "/getByName")
     @ApiOperation("根据角色名称查询")
-    public SysRole findByName(@RequestBody SysRole entity, HttpServletRequest req) throws Exception {
-        return sysRoleService.findByName(entity.getName());
+    public SysRole getByName(@RequestBody SysRole entity, HttpServletRequest req) throws Exception {
+        return sysRoleService.getByName(entity.getName());
     }
 
     /**
      * 授权角色菜单
      * @return
      */
-    @PostMapping(value = "/grantByRole")
+    @PostMapping(value = "/grantMenusByRole")
     @ApiOperation("给角色授权菜单")
-    public ResponseBean grantByRole(@RequestBody SysRole entity, HttpServletRequest req) throws Exception {
+    public ResponseBean grantMenusByRole(@RequestBody SysRole entity, HttpServletRequest req) throws Exception {
         ResponseBean responseBean = new ResponseBean();
-        int rows = sysRoleMenuService.grantByRole(entity.getId(),entity.getMenuIds());
+        int rows = sysRoleMenuService.grantMenusByRole(entity.getId(),entity.getMenuIds());
         if (rows > 0){
             responseBean.setSucceed(true);
             responseBean.setMessage("授权菜单成功！");
@@ -74,11 +74,11 @@ public class SysRoleController extends BaseController<SysRole> {
         return responseBean;
     }
 
-    @PostMapping(value = "/findByUser")
+    @PostMapping(value = "/listByUserId")
     @ApiOperation("查询登录用户拥有的角色")
-    public ResponseBean findRolesByUserId(@RequestBody SysRole entity, HttpServletRequest req) throws Exception{
+    public ResponseBean listByUserId(@RequestBody SysRole entity, HttpServletRequest req) throws Exception{
         ResponseBean responseBean = new ResponseBean();
-        List<SysRole> roles = sysRoleService.findRolesByUserId(entity.getUserId());
+        List<SysRole> roles = sysRoleService.listByUserId(entity.getUserId());
         if (CollectionUtils.isNotEmpty(roles)){
             responseBean.setSucceed(true);
             responseBean.setResults(roles);

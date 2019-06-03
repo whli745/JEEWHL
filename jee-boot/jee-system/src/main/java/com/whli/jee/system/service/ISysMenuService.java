@@ -19,7 +19,7 @@ public interface ISysMenuService extends IBaseService<SysMenu> {
      * @param parentId
      * @return
      */
-    public List<SysMenu> findMenusByUserId(String userId, String parentId);
+    List<SysMenu> listMenusByUserIdAndParentId(String userId, String parentId);
 
     /**
      * 根据登录用户查询按钮
@@ -27,25 +27,23 @@ public interface ISysMenuService extends IBaseService<SysMenu> {
      * @param parentUrl
      * @return
      */
-    public List<SysMenu> findButtonsByParentUrlAndUserId(String userId, String parentUrl);
+    List<SysMenu> listButtonsByUserIdAndParentUrl(String userId, String parentUrl);
 
 
     /**
-     * @Desc 以树形式展示菜单
+     * @Desc 根据角色以树形式展示菜单
      * @Author whli
      * @Version 1.0
      * @Date 2018/6/3 15:19
      * @Params [parentId]
-     * @Return java.util.List<com.whli.jee.core.web.entity.BaseTree>
+     * @Return
      */
-    public List<BaseTree> findByTree(String roleId);
+    List<BaseTree> listMenuTreesByRoleId(String roleId);
 
     /**
      * 查询同级别下是否存在同序号
      * @param entity
      * @return
      */
-    public SysMenu findByParentIdAndSort(SysMenu entity);
-
-    public SysMenu findByName(String name);
+    SysMenu getByParentIdAndSort(SysMenu entity);
 }

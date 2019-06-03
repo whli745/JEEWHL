@@ -16,7 +16,5 @@ public interface ISysOfficeService extends IBaseService<SysOffice> {
      * @param entity
      * @return
      */
-    public SysOffice findByParentIdAndSort(SysOffice entity);
-
-    public SysOffice findByName(String name);
+    SysOffice getByParentIdAndSort(SysOffice entity);
 }

@@ -105,7 +105,7 @@ $(function () {
 		],
 		tableId: "tb_data",
 		mainSearch: searchValues,
-		url: oaUrl+"/activiti/basModel/findByPage",
+		url: oaUrl+"/activiti/basModel/listByPage",
 		//pagination: false,
 		showRefresh:true,
 		searchParams: function () {

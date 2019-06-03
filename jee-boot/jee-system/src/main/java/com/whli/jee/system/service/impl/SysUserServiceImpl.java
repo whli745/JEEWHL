@@ -1,7 +1,5 @@
 package com.whli.jee.system.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionLikeType;
 import com.whli.jee.core.cache.RedisConfig;
 import com.whli.jee.core.constant.SysConstants;
 import com.whli.jee.core.exception.BusinessException;
@@ -23,12 +21,8 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author whli
@@ -44,8 +38,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
     private ISysUserRoleDao sysUserRoleDao;
     @Autowired
     private ISysRoleService sysRoleService;
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Override
     public IBaseDao<SysUser> getDao() {
@@ -53,36 +45,36 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
     }
 
     @Override
-    public int add(SysUser entity) {
+    public int save(SysUser entity) {
         if (StringUtils.isBlank(entity.getLoginName()) || StringUtils.isBlank(entity.getEmail())
                 || StringUtils.isBlank(entity.getPhone())){
             throw new BusinessException("用户名、邮箱、联系方式不能为空！");
         }
 
-        SysUser temp = findByLoginNameOrEmailOrPhone(entity.getLoginName());
+        SysUser temp = getByLoginNameOrEmailOrPhone(entity.getLoginName());
         if (BeanUtils.isNotNull(temp)) {
             throw new BusinessException("【"+entity.getLoginName()+"】该用户已存在！");
         }
 
-        temp = findByLoginNameOrEmailOrPhone(entity.getEmail());
+        temp = getByLoginNameOrEmailOrPhone(entity.getEmail());
         if (BeanUtils.isNotNull(temp)) {
             throw new BusinessException("【"+entity.getEmail()+"】邮箱已被其他用户绑定！");
         }
 
-        temp = findByLoginNameOrEmailOrPhone(entity.getPhone());
+        temp = getByLoginNameOrEmailOrPhone(entity.getPhone());
         if (BeanUtils.isNotNull(temp)) {
             throw new BusinessException("【"+entity.getPhone()+"】联系方式已被其他用户绑定！");
         }
 
         entity.setEnable(1);
         entity.setPassword(PwdUtils.md5Encode("123456", entity.getLoginName()));
-        int rows = super.add(entity);
+        int rows = super.save(entity);
         //设置默认角色USER
         if (rows > 0){
             SysUserRole userRole = new SysUserRole();
             userRole.setRoleId("2");
             userRole.setUserId(entity.getId());
-            sysUserRoleDao.add(userRole);
+            sysUserRoleDao.save(userRole);
         }
 
         return rows;
@@ -93,7 +85,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
         if (entity == null || entity.getId() == null){
             throw new BusinessException("修改数据不能为空！");
         }
-        SysUser user = sysUserDao.findByPK(entity.getId());
+        SysUser user = sysUserDao.getByPK(entity.getId());
         user.setEnable(0);
         sysUserDao.update(user);
     }
@@ -103,7 +95,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
         if (entity == null || CollectionUtils.isEmpty(entity.getIds())){
             throw new BusinessException("修改数据不能为空！");
         }
-        List<SysUser> users = sysUserDao.findByPKs(entity.getIds());
+        List<SysUser> users = sysUserDao.listByPKs(entity.getIds());
         for (SysUser user : users){
             user.setEnable(0);
             sysUserDao.update(user);
@@ -124,7 +116,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
             throw new BusinessException("用户名或密码不能为空！");
         }
 
-        SysUser sysUser = findByLoginNameOrEmailOrPhone(loginName);
+        SysUser sysUser = getByLoginNameOrEmailOrPhone(loginName);
         if (BeanUtils.isNull(sysUser)){
             throw new BusinessException("用户名或密码错误！");
         }
@@ -178,20 +170,20 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
      * @return
      */
     @Override
-    public SysUser findByLoginNameOrEmailOrPhone(String loginName) {
+    public SysUser getByLoginNameOrEmailOrPhone(String loginName) {
         SysUser currentUser = null;
         if (StringUtils.isNotBlank(loginName)) {
-            currentUser = sysUserDao.findByLoginNameOrEmailOrPhone(loginName);
+            currentUser = sysUserDao.getByLoginNameOrEmailOrPhone(loginName);
         }
         return currentUser;
     }
 
     @Override
-    public SysUser findByEmail(String email) {
+    public SysUser getByEmail(String email) {
         if(StringUtils.isBlank(email)){
             throw new BusinessException("请选择需要查询的数据！");
         }
-        SysUser entity = sysUserDao.findByEmail(email);
+        SysUser entity = sysUserDao.getByEmail(email);
         if(BeanUtils.isNull(entity)){
             throw  new BusinessException("查询的数据不存在或已删除！");
         }
@@ -199,11 +191,11 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
     }
 
     @Override
-    public SysUser findByPhone(String phone) {
+    public SysUser getByPhone(String phone) {
         if(StringUtils.isBlank(phone)){
             throw new BusinessException("请选择需要查询的数据！");
         }
-        SysUser entity = sysUserDao.findByPhone(phone);
+        SysUser entity = sysUserDao.getByPhone(phone);
         if(BeanUtils.isNull(entity)){
             throw  new BusinessException("查询的数据不存在或已删除！");
         }
@@ -211,7 +203,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
     }
 
     @Override
-    public int grantByUser(String userId, List<String> roleIds) {
+    public int grantRolesByUser(String userId, List<String> roleIds) {
 
         if (StringUtils.isBlank(userId)){
             throw new BusinessException("请选择需要授权的用户！");
@@ -224,13 +216,13 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
                 SysUserRole userRole = new SysUserRole();
                 userRole.setRoleId(roleId);
                 userRole.setUserId(userId);
-                List<SysUserRole> sysUserRoles = sysUserRoleDao.findAll(userRole);
+                List<SysUserRole> sysUserRoles = sysUserRoleDao.listAll(userRole);
                 if (CollectionUtils.isNotEmpty(sysUserRoles)){
-                    SysRole role = sysRoleService.findByPK(roleId);
+                    SysRole role = sysRoleService.getByPK(roleId);
                     throw new BusinessException("角色【"+role.getName()+"】已存在！");
                 }
                 userRoles.add(userRole);
-                sysUserRoleDao.add(userRole);
+                sysUserRoleDao.save(userRole);
                 rows++;
             }
         }
@@ -249,7 +241,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
             throw new BusinessException("请选择需要重置密码的用户！");
         }
         for (String id : entity.getIds()){
-            SysUser user = findByPK(id);
+            SysUser user = getByPK(id);
             sysUserDao.resetPassword(id,PwdUtils.md5Encode("123456",user.getLoginName()));
             rows++;
         }
@@ -266,7 +258,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
                     "no","name","email","phone"});
             if (CollectionUtils.isNotEmpty(users)){
                 for (SysUser entity : users){
-                    rows += this.add(entity);
+                    rows += this.save(entity);
                 }
 
             }
@@ -304,16 +296,16 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
                     user.setPhone("13000000000");
                     List<SysUser> lines = new ArrayList<SysUser>();
                     lines.add(user);
-                    try {
-                        CollectionLikeType type = objectMapper.getTypeFactory().constructCollectionLikeType(List.class,Map.class);
-                        return objectMapper.readValue(objectMapper.writeValueAsString(lines),type);
-                    } catch (IOException e) {
-                        throw new BusinessException(e.getMessage());
-                    }
+                    return JacksonUtils.jsonToPojo(JacksonUtils.pojoToJsonIgnoreNull(lines),List.class);
                 }
             });
         } catch (Exception e) {
             throw new BusinessException("导出用户模板错误："+e.getMessage());
         }
+    }
+
+    @Override
+    public void exportExcel(SysUser entity, HttpServletResponse response) {
+        super.exportExcel(entity, response);
     }
 }

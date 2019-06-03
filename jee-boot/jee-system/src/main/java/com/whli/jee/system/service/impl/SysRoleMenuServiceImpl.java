@@ -31,7 +31,7 @@ public class SysRoleMenuServiceImpl extends BaseServiceImpl<SysRoleMenu> impleme
     }
 
     @Override
-    public int grantByRole(String roleId, List<String> menuIds) {
+    public int grantMenusByRole(String roleId, List<String> menuIds) {
         if (StringUtils.isBlank(roleId)) {
             throw new BusinessException("-02060601", "请选择需要授权的角色！");
         }
@@ -48,6 +48,6 @@ public class SysRoleMenuServiceImpl extends BaseServiceImpl<SysRoleMenu> impleme
             }
         }
 
-        return addMore(sysRoleMenus);
+        return saveMore(sysRoleMenus);
     }
 }

@@ -1,4 +1,4 @@
-package com.whli.jee.core.generatorcode;
+package com.whli.jee.core.generator;
 
 import cn.org.rapid_framework.generator.GeneratorFacade;
 import com.whli.jee.core.util.XMLUtils;

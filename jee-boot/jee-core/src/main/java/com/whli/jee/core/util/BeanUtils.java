@@ -9,6 +9,8 @@ import java.util.UUID;
  */
 public class BeanUtils {
 
+    private BeanUtils(){}
+
     /**
      * @Desc：<em>获取UUID</em>
      * @Author：whli

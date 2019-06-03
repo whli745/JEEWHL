@@ -16,6 +16,8 @@ public class DateUtils {
     public static final String DEFAULT_SLASH = "yyyy/MM/dd";
     public static final String DEFAULT_SLASH_YYYY_MM_DD_HH_MM_SS = "yyyy/MM/dd HH:mm:ss";
 
+    private DateUtils(){}
+
     /**
      * 将日期转换为字符串
      * @param date 日期

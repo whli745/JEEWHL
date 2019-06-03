@@ -12,6 +12,8 @@ import java.security.NoSuchAlgorithmException;
  */
 public class PwdUtils {
 
+    private PwdUtils(){}
+
     /**
      * @Desc：<em>SHA-1加密</em>
      * @Author：whli

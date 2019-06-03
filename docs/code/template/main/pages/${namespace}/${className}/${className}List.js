@@ -83,7 +83,7 @@ $(function () {
 		],
 		tableId: "tb_data",
 		mainSearch: searchValues,
-		url: "/${namespace}/${classNameLower}/findByPage",
+		url: "/${namespace}/${classNameLower}/listByPage",
 		searchParams: function () {
 			var temp = {};
 			return temp;
@@ -127,7 +127,7 @@ function showDialog(change, formData) {
 				if (change == 'edit') {
 					data.id = $("#" + defaultTable).bootstrapTable('getSelections')[0].id;
 				}
-				var url = change == "edit" ? "/${namespace}/${classNameLower}/update" : "/${namespace}/${classNameLower}/add";
+				var url = change == "edit" ? "/${namespace}/${classNameLower}/update" : "/${namespace}/${classNameLower}/save";
 				$.when(JEE.myAjax(url, data)).done(function (result) {
 					if (result) {
 						$("#myModal").modal("hide");
