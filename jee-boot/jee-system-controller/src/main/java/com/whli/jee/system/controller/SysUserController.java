@@ -1,8 +1,8 @@
 package com.whli.jee.system.controller;
 
-import com.whli.jee.core.web.controller.BaseController;
+import com.whli.jee.core.web.controller.BaseImportAndExportController;
 import com.whli.jee.core.web.entity.ResponseBean;
-import com.whli.jee.core.web.service.IBaseService;
+import com.whli.jee.core.web.service.IBaseImportAndExportService;
 import com.whli.jee.system.entity.SysUser;
 import com.whli.jee.system.entity.SysUserRole;
 import com.whli.jee.system.service.ISysUserRoleService;
@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping(value = "/system/sysUser")
 @Api(description = "系统用户API")
-public class SysUserController extends BaseController<SysUser> {
+public class SysUserController extends BaseImportAndExportController<SysUser> {
 
     @Autowired
     private ISysUserService sysUserService;
@@ -34,7 +34,7 @@ public class SysUserController extends BaseController<SysUser> {
 
 
     @Override
-    public IBaseService<SysUser> getService() {
+    public IBaseImportAndExportService<SysUser> getService() {
         return sysUserService;
     }
 

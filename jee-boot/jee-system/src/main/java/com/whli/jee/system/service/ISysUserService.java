@@ -1,6 +1,6 @@
 package com.whli.jee.system.service;
 
-import com.whli.jee.core.web.service.IBaseService;
+import com.whli.jee.core.web.service.IBaseImportAndExportService;
 import com.whli.jee.system.entity.SysUser;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +13,7 @@ import java.util.List;
  * @version 1.0
  * @since 1.0
  * */
-public interface ISysUserService extends IBaseService<SysUser> {
+public interface ISysUserService extends IBaseImportAndExportService<SysUser> {
 
     /**
      * @Desc 用户登录

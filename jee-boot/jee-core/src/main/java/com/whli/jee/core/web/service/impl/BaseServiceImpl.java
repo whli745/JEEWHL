@@ -3,16 +3,14 @@ package com.whli.jee.core.web.service.impl;
 
 import com.whli.jee.core.exception.BusinessException;
 import com.whli.jee.core.page.Page;
-import com.whli.jee.core.util.*;
+import com.whli.jee.core.util.BeanUtils;
+import com.whli.jee.core.util.WebUtils;
 import com.whli.jee.core.web.dao.IBaseDao;
 import com.whli.jee.core.web.entity.BaseEntity;
 import com.whli.jee.core.web.service.IBaseService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -199,44 +197,6 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements IBaseServ
     @Override
     public List<T> listAll(T entity){
         return getDao().listAll(entity);
-    }
-
-    /**
-     * 导出Excel
-     * @param response
-     */
-    @Override
-    public void exportExcel(T entity, HttpServletResponse response) {
-
-    }
-
-    /**
-     * 导入Excel
-     * @param file
-     * @return
-     */
-    @Override
-    public int importExcel(File file) {
-        return 0;
-    }
-
-    /**
-     * 导入Excel
-     * @param stream
-     * @return
-     */
-    @Override
-    public int importExcel(InputStream stream) {
-        return 0;
-    }
-
-    /**
-     * 导入模板
-     * @param response
-     */
-    @Override
-    public void exportTemplate(T entity, HttpServletResponse response) {
-
     }
 
 }
