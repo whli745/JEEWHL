@@ -1,20 +1,21 @@
 package com.whli.jee.core.web.service.impl;
 
 
-import com.whli.jee.core.exception.BusinessException;
 import com.whli.jee.core.page.Page;
 import com.whli.jee.core.util.BeanUtils;
 import com.whli.jee.core.util.WebUtils;
 import com.whli.jee.core.web.dao.IBaseDao;
 import com.whli.jee.core.web.entity.BaseEntity;
 import com.whli.jee.core.web.service.IBaseService;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.CollectionUtils;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
 /**
+ * 通用service实现
  * Created by whli on 2017/10/29.
  */
 public abstract class BaseServiceImpl<T extends BaseEntity> implements IBaseService<T> {
@@ -29,9 +30,6 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements IBaseServ
      */
     @Override
     public int save(T entity){
-        if(BeanUtils.isNull(entity)){
-            throw new BusinessException("新增数据不能为空！");
-        }
         entity.setId(BeanUtils.getUUID());
         entity.setCreateBy(WebUtils.getLoginName());
         entity.setCreateDate(new Date());
@@ -45,17 +43,12 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements IBaseServ
      */
     @Override
     public int saveMore(List<T> entities){
-        if(CollectionUtils.isEmpty(entities)){
-            throw new BusinessException("新增数据不能为空！");
-        }
-
         entities.stream().forEach(entity -> {
             entity.setId(BeanUtils.getUUID());
             entity.setCreateBy(WebUtils.getLoginName());
             entity.setCreateDate(new Date());
             getDao().save(entity);
         });
-
         return 1;
     }
 
@@ -66,9 +59,6 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements IBaseServ
      */
     @Override
     public int update(T entity){
-        if(BeanUtils.isNull(entity)){
-            throw new BusinessException("修改数据不能为空！");
-        }
         entity.setUpdateBy(WebUtils.getLoginName());
         entity.setUpdateDate(new Date());
         return getDao().update(entity);
@@ -81,10 +71,6 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements IBaseServ
      */
     @Override
     public int updateMore(List<T> entities){
-        if(CollectionUtils.isEmpty(entities)){
-            throw new BusinessException("修改数据不能为空！");
-        }
-
         entities.stream().forEach(entity -> {
             entity.setUpdateBy(WebUtils.getLoginName());
             entity.setUpdateDate(new Date());
@@ -100,9 +86,6 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements IBaseServ
      */
     @Override
     public void delete(T entity){
-        if(StringUtils.isBlank(entity.getId())){
-            throw new BusinessException("请选择需要删除的数据！");
-        }
         getDao().delete(entity.getId());
     }
 
@@ -113,9 +96,6 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements IBaseServ
      */
     @Override
     public void deleteMore(T entity){
-        if(CollectionUtils.isEmpty(entity.getIds())){
-            throw new BusinessException("请选择需要删除的数据！");
-        }
         getDao().deleteMore(entity.getIds());
     }
 
@@ -126,51 +106,22 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements IBaseServ
      */
     @Override
     public T getByPK(String id){
-        if(StringUtils.isBlank(id)){
-            throw new BusinessException("请选择需要查询的数据！");
-        }
-        T entity = getDao().getByPK(id);
-        if(BeanUtils.isNull(entity)){
-            throw  new BusinessException("查询的数据不存在或已删除！");
-        }
-        return entity;
+        return getDao().getByPK(id);
     }
 
     @Override
     public List<T> listByPKs(List<String> ids) {
-        if (CollectionUtils.isEmpty(ids)){
-            throw new BusinessException("请选择需要查询的数据！");
-        }
-        List<T> entities = getDao().listByPKs(ids);
-        if (CollectionUtils.isEmpty(entities)){
-            throw  new BusinessException("查询的数据不存在或已删除！");
-        }
-
-        return entities;
+        return getDao().listByPKs(ids);
     }
 
     @Override
     public T getByNo(String no) {
-        if(StringUtils.isBlank(no)){
-            throw new BusinessException("请选择需要查询的数据！");
-        }
-        T entity = getDao().getByNo(no);
-        if(BeanUtils.isNull(entity)){
-            throw  new BusinessException("查询的数据不存在或已删除！");
-        }
-        return entity;
+        return getDao().getByNo(no);
     }
 
     @Override
     public T getByName(String name) {
-        if(StringUtils.isBlank(name)){
-            throw new BusinessException("请选择需要查询的数据！");
-        }
-        T entity = getDao().getByName(name);
-        if(BeanUtils.isNull(entity)){
-            throw  new BusinessException("查询的数据不存在或已删除！");
-        }
-        return entity;
+        return getDao().getByName(name);
     }
 
     /**
@@ -199,4 +150,41 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements IBaseServ
         return getDao().listAll(entity);
     }
 
+    /**
+     * 导出Excel
+     * @param response
+     */
+    @Override
+    public void exportExcel(T entity, HttpServletResponse response) {
+
+    }
+
+    /**
+     * 导入Excel
+     * @param file
+     * @return
+     */
+    @Override
+    public int importExcel(File file) {
+        return 0;
+    }
+
+    /**
+     * 导入Excel
+     * @param stream
+     * @return
+     */
+    @Override
+    public int importExcel(InputStream stream) {
+        return 0;
+    }
+
+    /**
+     * 导入模板
+     * @param response
+     */
+    @Override
+    public void exportTemplate(T entity, HttpServletResponse response) {
+
+    }
 }

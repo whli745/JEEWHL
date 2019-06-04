@@ -5,6 +5,9 @@ import com.whli.jee.core.page.Page;
 import com.whli.jee.core.web.entity.BaseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -87,4 +90,32 @@ public interface IBaseService<T extends BaseEntity> {
      * 查询所有
      */
     List<T> listAll(T entity);
+
+    /**
+     * 导出Excel
+     * @param response
+     */
+    @Transactional
+    void exportExcel(T entity, HttpServletResponse response);
+
+    /**
+     * 导入Excel
+     * @return
+     */
+    @Transactional
+    int importExcel(File file);
+
+    /**
+     * 导入Excel
+     * @return
+     */
+    @Transactional
+    int importExcel(InputStream stream);
+
+    /**
+     * 导入模板
+     * @param response
+     */
+    @Transactional
+    void exportTemplate(T entity, HttpServletResponse response);
 }

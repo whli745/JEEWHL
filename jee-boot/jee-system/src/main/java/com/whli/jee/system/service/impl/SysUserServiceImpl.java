@@ -5,7 +5,7 @@ import com.whli.jee.core.constant.SysConstants;
 import com.whli.jee.core.exception.BusinessException;
 import com.whli.jee.core.util.*;
 import com.whli.jee.core.web.dao.IBaseDao;
-import com.whli.jee.core.web.service.impl.BaseImportAndExportServiceImpl;
+import com.whli.jee.core.web.service.impl.BaseServiceImpl;
 import com.whli.jee.system.dao.ISysUserDao;
 import com.whli.jee.system.dao.ISysUserRoleDao;
 import com.whli.jee.system.entity.SysRole;
@@ -33,7 +33,7 @@ import java.util.Map;
  * @since 1.0
  */
 @Service(value = "sysUserService")
-public class SysUserServiceImpl extends BaseImportAndExportServiceImpl<SysUser> implements ISysUserService{
+public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISysUserService, com.whli.jee.core.web.service.IBaseService<SysUser> {
 
     @Autowired
     private ISysUserDao sysUserDao;
