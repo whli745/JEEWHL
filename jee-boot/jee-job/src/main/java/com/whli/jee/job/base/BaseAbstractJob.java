@@ -42,7 +42,7 @@ public abstract class BaseAbstractJob implements Job, Serializable {
 
         logger.info("【"+name+"】 任务运行开始！");
         try {
-            boolean flag = processJob();
+            boolean flag = processJob(context);
             if (flag){
                 logger.info("【"+name+"】 任务运行成功！");
                 jobLog.setMsg("【"+name+"】 任务运行成功！");
@@ -60,5 +60,5 @@ public abstract class BaseAbstractJob implements Job, Serializable {
         jobLogService.save(jobLog);
     }
 
-    public abstract boolean processJob();
+    public abstract boolean processJob(JobExecutionContext context);
 }
