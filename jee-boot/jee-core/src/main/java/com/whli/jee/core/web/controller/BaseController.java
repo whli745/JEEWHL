@@ -40,10 +40,9 @@ public abstract class BaseController<T extends BaseEntity> {
         if (entity != null) {
             Page<T> page = new Page<T>(entity.getCurrentPage(),entity.getPageSize());
             page = getService().listByPage(entity,page);
-
-            responseBean.setSucceed(true);
+            responseBean.setCode("0");
             responseBean.setCount(page.getTotal());
-            responseBean.setResults(page.getPageRecords());
+            responseBean.setData(page.getPageRecords());
         }
         return responseBean;
     };
@@ -61,8 +60,7 @@ public abstract class BaseController<T extends BaseEntity> {
         ResponseBean responseBean = new ResponseBean();
         int rows = getService().save(entity);
         if (rows > 0) {
-            responseBean.setSucceed(true);
-            responseBean.setResults("1");
+            responseBean.setCode("0");
             responseBean.setMessage("新增成功！");
         }
         return responseBean;
@@ -81,8 +79,7 @@ public abstract class BaseController<T extends BaseEntity> {
         ResponseBean responseBean = new ResponseBean();
         int rows = getService().update(entity);
         if (rows > 0) {
-            responseBean.setSucceed(true);
-            responseBean.setResults("1");
+            responseBean.setCode("0");
             responseBean.setMessage("更新成功！");
         }
         return responseBean;
@@ -100,8 +97,7 @@ public abstract class BaseController<T extends BaseEntity> {
     public ResponseBean delete(@RequestBody T entity, HttpServletRequest req) throws Exception{
         ResponseBean responseBean = new ResponseBean();
         getService().deleteMore(entity);
-        responseBean.setSucceed(true);
-        responseBean.setResults("1");
+        responseBean.setCode("0");
         responseBean.setMessage("删除成功！");
         return responseBean;
     };
@@ -168,8 +164,7 @@ public abstract class BaseController<T extends BaseEntity> {
         if (file != null){
             int rows = getService().importExcel(file.getInputStream());
             if (rows > 0) {
-                responseBean.setSucceed(true);
-                responseBean.setResults("1");
+                responseBean.setCode("0");
                 responseBean.setMessage("导入成功！");
             }
         }

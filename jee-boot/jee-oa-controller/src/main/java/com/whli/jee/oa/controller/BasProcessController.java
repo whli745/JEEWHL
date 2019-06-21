@@ -35,9 +35,9 @@ public class BasProcessController {
         int count = processService.getCount(entity);
         List processes = processService.listByPage(entity);
         if (processes != null && processes.size() > 0){
-            responseBean.setSucceed(true);
-            responseBean.setCount(count);
-            responseBean.setResults(processes);
+            responseBean.setCode("0");
+            responseBean.setCount(processes.size());
+            responseBean.setData(processes);
         }
         return responseBean;
     }
@@ -52,8 +52,8 @@ public class BasProcessController {
         ResponseBean responseBean = new ResponseBean();
         List<BasProcess> processes = processService.listAll();
         if (processes != null && processes.size() > 0){
-            responseBean.setSucceed(true);
-            responseBean.setResults(processes);
+            responseBean.setCode("0");
+            responseBean.setData(processes);
         }
         return responseBean;
     }
@@ -68,8 +68,7 @@ public class BasProcessController {
         ResponseBean responseBean = new ResponseBean();
         int rows = processService.deleteProcess(entity);
         if (rows > 0){
-            responseBean.setSucceed(true);
-            responseBean.setResults("1");
+            responseBean.setCode("0");
             responseBean.setMessage("删除流程定义成功！");
         }
         return responseBean;
@@ -85,8 +84,7 @@ public class BasProcessController {
         if (StringUtils.isNotBlank(name) && StringUtils.isNotBlank(key) && file != null){
             int rows = processService.importExcel(name,key,file.getInputStream());
             if (rows > 0) {
-                responseBean.setSucceed(true);
-                responseBean.setResults("1");
+                responseBean.setCode("0");
                 responseBean.setMessage("导入流程定义成功！");
             }
         }
@@ -110,8 +108,7 @@ public class BasProcessController {
         ResponseBean responseBean = new ResponseBean();
         int rows = processService.activateProcessDefinition(entity);
         if (rows > 0){
-            responseBean.setSucceed(true);
-            responseBean.setResults("1");
+            responseBean.setCode("0");
             responseBean.setMessage("激活流程成功！");
         }
         return responseBean;
@@ -127,8 +124,7 @@ public class BasProcessController {
         ResponseBean responseBean = new ResponseBean();
         int rows = processService.suspendProcessDefinition(entity);
         if (rows > 0){
-            responseBean.setSucceed(true);
-            responseBean.setResults("1");
+            responseBean.setCode("0");
             responseBean.setMessage("挂起流程成功！");
         }
         return responseBean;

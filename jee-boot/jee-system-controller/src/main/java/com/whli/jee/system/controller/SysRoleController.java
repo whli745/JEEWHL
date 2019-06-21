@@ -68,7 +68,7 @@ public class SysRoleController extends BaseController<SysRole> {
         ResponseBean responseBean = new ResponseBean();
         int rows = sysRoleMenuService.grantMenusByRole(entity.getId(),entity.getMenuIds());
         if (rows > 0){
-            responseBean.setSucceed(true);
+            responseBean.setCode("0");
             responseBean.setMessage("授权菜单成功！");
         }
         return responseBean;
@@ -80,8 +80,8 @@ public class SysRoleController extends BaseController<SysRole> {
         ResponseBean responseBean = new ResponseBean();
         List<SysRole> roles = sysRoleService.listByUserId(entity.getUserId());
         if (CollectionUtils.isNotEmpty(roles)){
-            responseBean.setSucceed(true);
-            responseBean.setResults(roles);
+            responseBean.setCode("0");
+            responseBean.setData(roles);
         }
         return responseBean;
     }

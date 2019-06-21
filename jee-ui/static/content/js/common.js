@@ -1,9 +1,9 @@
-var common = function () {
+var common = function() {
 
 };
 
 //初始化表格
-common.prototype.initTable = function (options) {
+common.prototype.initTable = function(options) {
 	var _this = this;
 
 	var $table = $("#" + options.tableId);
@@ -19,16 +19,16 @@ common.prototype.initTable = function (options) {
 	var _onLoadSuccess = options.onLoadSuccess ? options.onLoadSuccess : null;
 	//点击表格行函数
 	var _onClickRow = options.onClickRow ? options.onClickRow : null;
-	
+
 	var _onCheck = options.onCheck ? options.onCheck : null;
-	
+
 	var _onUncheck = options.onUncheck ? options.onUncheck : null;
 
 	var _treeView = options.treeView ? options.treeView : false; //treeView视图字段
 	var _treeField = options.treeField ? options.treeField : "name";
 	var _treeId = options.treeId ? options.treeId : "id";
 	var _treeCollapseAll = options.treeCollapseAll ? options.treeCollapseAll : false; //是否全部展开
-	var _showRefresh = options.showRefresh == true ?  true: false;
+	var _showRefresh = options.showRefresh == true ? true : false;
 
 	//创建按钮工具栏
 	var _btnItems = options.btnItems ? options.btnItems : [];
@@ -36,24 +36,24 @@ common.prototype.initTable = function (options) {
 		_toolId = "#toolBar_" + options.tableId;
 		var $toolBar = $('<div id="toolBar_' + options.tableId + '" class="btn-group"></div>');
 		$toolBar.appendTo($table.parent());
-		
+
 		//获取用户关联的按钮
 		var re = _this.getButtonByUser();
-		
+
 		//过滤掉无效的定义按钮
-		if(re.length > 0){
-			_btnItems = _btnItems.filter(function(item){
-				return item.btnId && $.inArray(item.btnId,re) > -1;
+		if (re.length > 0) {
+			_btnItems = _btnItems.filter(function(item) {
+				return item.btnId && $.inArray(item.btnId, re) > -1;
 			})
 		}
-		
-		$.each(_btnItems, function (m, item) {
+
+		$.each(_btnItems, function(m, item) {
 			_this.initButton($toolBar, item);
 		})
 
 	}
 	var url = options.url;
-	if (url.indexOf("http") == -1 &&  url.indexOf("https") == -1) {
+	if (url.indexOf("http") == -1 && url.indexOf("https") == -1) {
 		url = apiUrl + url;
 	}
 
@@ -70,14 +70,14 @@ common.prototype.initTable = function (options) {
 		queryParamsType: '',
 		pageNumber: 1, //初始化加载第一页，默认第一页
 		pageSize: 10, //每页的记录行数（*）
-		pageList: [10, 25, 50, 100, 500,1000], //可供选择的每页的行数（*）
+		pageList: [10, 25, 50, 100, 500, 1000], //可供选择的每页的行数（*）
 		showRefresh: _showRefresh, //是否显示刷新按钮
 		showToggle: false, //是否显示详细视图和列表视图的切换按钮
 		clickToSelect: true, //是否启用点击选中行
 		singleSelect: _singleclick,
 		uniqueId: "id", //每一行的唯一标识，一般为主键列
 		undefinedText: '',
-		queryParams: function (params) {
+		queryParams: function(params) {
 			var temp = {};
 			//搜索框查询条件解析
 			if (options.mainSearch) {
@@ -85,7 +85,7 @@ common.prototype.initTable = function (options) {
 			}
 			temp.pageSize = options.pagination === false ? -1 : params.pageSize; //页面大小
 			temp.currentPage = params.pageNumber <= 0 ? 1 : params.pageNumber; //页码
-			
+
 			var newTemp = $.extend({}, options.searchParams(), temp)
 			return newTemp;
 		}, //传递参数（*）
@@ -94,36 +94,36 @@ common.prototype.initTable = function (options) {
 		treeId: _treeId,
 		treeCollapseAll: _treeCollapseAll, //是否全部展开
 		columns: options.columns,
-		onCheck: function (row, $element) {
+		onCheck: function(row, $element) {
 			if (_btnItems) {
 				_this.getButtonStatus(_btnItems);
 			}
-			if(_onCheck){
-				_onCheck(row,$element);
+			if (_onCheck) {
+				_onCheck(row, $element);
 			}
 		},
-		onUncheck: function (row, $element) {
+		onUncheck: function(row, $element) {
 			if (_btnItems) {
 				_this.getButtonStatus(_btnItems);
 			}
-			if(_onUncheck){
+			if (_onUncheck) {
 				_onUncheck(row, $element);
 			}
 		},
-		onLoadSuccess: function (data) {
+		onLoadSuccess: function(data) {
 			if (_onLoadSuccess) {
 				_onLoadSuccess(data);
 			}
 		},
-		onClickRow: function (row, $element, field) {
+		onClickRow: function(row, $element, field) {
 			if (_onClickRow) {
 				_onClickRow(row, $element, field);
 			}
 		},
-		responseHandler: function (res) {
+		responseHandler: function(res) {
 			return {
-				total: res && res.results ? res.count : 0, //总页数,前面的key必须为"total"
-				rows: res && res.results ? res.results : [] //行数据，前面的key要与之前设置的dataField的值一致.
+				total: res && res.data ? res.count : 0, //总页数,前面的key必须为"total"
+				rows: res && res.data ? res.data : [] //行数据，前面的key要与之前设置的dataField的值一致.
 			};
 		}
 	});
@@ -137,7 +137,7 @@ common.prototype.initTable = function (options) {
  * 初始化查询区域
  * @param {Object} options
  */
-common.prototype.initSearch = function (options) {
+common.prototype.initSearch = function(options) {
 	var _this = this;
 	var $panel = $("#searchPanel");
 
@@ -156,7 +156,7 @@ common.prototype.initSearch = function (options) {
 		var $fromGroup = $('<div class="form-group" id="fromGroup' + i + '"></div>');
 
 		//组合搜索条件
-		$.each(options.searchValues, function (m, item) {
+		$.each(options.searchValues, function(m, item) {
 			var cols = $fromGroup.find("div").length;
 			if (cols == 4) {
 				i += 1;
@@ -181,7 +181,7 @@ common.prototype.initSearch = function (options) {
 			'<button type="button" id="btn_reset" class="btn btn-sm btn-light">重置</button></div>');
 		$btnFromGroup.appendTo($form);
 
-		$("#btn_search").on("click", function () {
+		$("#btn_search").on("click", function() {
 			if (Object.keys(rules).length > 0) {
 				//手动验证表单
 				if ($("#noFrom").valid()) {
@@ -192,7 +192,7 @@ common.prototype.initSearch = function (options) {
 			}
 		});
 
-		$("#btn_reset").on("click", function () {
+		$("#btn_reset").on("click", function() {
 			$panel.find("input").val("");
 			$panel.find("input[type='checkbox']").attr("checked", false);
 			$panel.find("select").val("").trigger("change");
@@ -206,7 +206,7 @@ common.prototype.initSearch = function (options) {
  * 初始化弹窗
  * @param {Object} options 弹窗属性
  */
-common.prototype.initDialog = function (options) {
+common.prototype.initDialog = function(options) {
 	var _this = this;
 
 	var $modal = $("#" + options.modalId);
@@ -244,7 +244,7 @@ common.prototype.initDialog = function (options) {
 	var $modalFooter = $('<div class="modal-footer"></div>');
 	$modalFooter.appendTo($modalContent);
 	if (options.btnItems) {
-		$.each(options.btnItems, function (index, item) {
+		$.each(options.btnItems, function(index, item) {
 			_this.initButton($modalFooter, item, formItems)
 		});
 	}
@@ -262,12 +262,12 @@ common.prototype.initDialog = function (options) {
  * @param {Object} formItems 表单控件Json数组
  * @param {Object} modalBody modal body
  */
-common.prototype.initForm = function ($el, modalForm) {
+common.prototype.initForm = function($el, modalForm) {
 	var _this = this;
 	//定义表单
 	var $form = $('<form autocomplete="off" class="form-horizontal" role="form" id="' + modalForm.formId + '"></form>');
-	if(modalForm.multipart){
-		$form.attr("enctype","multipart/form-data");
+	if (modalForm.multipart) {
+		$form.attr("enctype", "multipart/form-data");
 	}
 	$form.appendTo($el);
 	var rows = {};
@@ -282,7 +282,7 @@ common.prototype.initForm = function ($el, modalForm) {
 	var $formGroup = $('<div class="form-group" id="editFromGroup0"></div>');
 	$formGroup.appendTo($form);
 	//创建表单组件
-	$.each(modalForm.formItems, function (m, item) {
+	$.each(modalForm.formItems, function(m, item) {
 		if ($("#editFromGroup" + num).children("div").length == 2 || item.inCss) {
 			num += 1;
 			$formGroup = $('<div class="form-group" id="editFromGroup' + num + '"></div>');
@@ -307,7 +307,7 @@ common.prototype.initForm = function ($el, modalForm) {
  * @param {Object} _formGroup formGroup选择器
  * @param {Object} _formData 
  */
-common.prototype.getInput = function (item, _formGroup, _formData, inCss) {
+common.prototype.getInput = function(item, _formGroup, _formData, inCss) {
 	var _this = this;
 	var _inputCss = inCss ? 2 : 4;
 	var _labelCss = inCss ? 1 : 2;
@@ -362,15 +362,15 @@ common.prototype.getInput = function (item, _formGroup, _formData, inCss) {
 		var $input = $('<select class="form-control" style="width:150px;height: 34px;" id="' + item.id + '" name="' + item.field +
 			'"></select>');
 		$div.append($input);
-		
-		if(item.multiple){
-			$input.attr("multiple",true);
+
+		if (item.multiple) {
+			$input.attr("multiple", true);
 		}
 
 		if (item.comboUrl) {
 			var comboData = item.comboData ? item.comboData : {};
-			$.when(_this.myAjax(item.comboUrl, comboData)).done(function (data) {
-				_this.initSelect($input, data,item.comboId, item.comboText, defaultValue);
+			$.when(_this.myAjax(item.comboUrl, comboData)).done(function(data) {
+				_this.initSelect($input, data, item.comboId, item.comboText, defaultValue);
 			});
 		}
 		//自定义选择框事件
@@ -401,7 +401,7 @@ common.prototype.getInput = function (item, _formGroup, _formData, inCss) {
 			offColor: "danger",
 			size: "small",
 			state: defaultValue,
-			onSwitchChange: function (event, state) {
+			onSwitchChange: function(event, state) {
 				if (state == true) {
 					$input.attr("value", 1);
 				} else {
@@ -410,11 +410,43 @@ common.prototype.getInput = function (item, _formGroup, _formData, inCss) {
 			}
 		});
 		$input.attr("disabled", item.disable ? item.disable : false);
-	}else if (item.id.indexOf('file') > -1) {
+	} else if (item.id.indexOf('file') > -1) {
 		var $input = $('<input type="file" class="form-control" id="' + item.id + '" name="' + item.field + '"/>');
 		$div.append($input);
 
 		$input.attr("value", defaultValue);
+		$input.attr("disabled", item.disable ? item.disable : false);
+	}else if (item.id.indexOf('date') > -1){
+		var $input = $('<input type="text" class="form-control" id="' + item.id + '" name="' + item.field + '" readonly/>');
+		$div.append($input);
+		$input.attr("value", defaultValue);
+		
+		$input.datepicker({
+			language: 'zh-CN',
+			format: 'yyyy-mm-dd',
+			autoclose: true,
+			clearBtn: true,
+			todayBtn: "linked",
+			todayHighlight: true
+		});
+		$input.attr("disabled", item.disable ? item.disable : false);
+		
+	}else if (item.id.indexOf('time') > -1){
+		var $input = $('<input class="form-control" type="text" readonly id="' + item.id + '" name="' + item.field + '"/>');
+		$div.append($input);
+		$input.attr("value", defaultValue);
+		
+		$input.datetimepicker({
+			language: 'zh-CN',
+			format: 'yyyy-mm-dd hh:ii:ss',
+			weekStart: 1,
+			todayBtn:  true,
+			clearBtn: true,
+			autoclose: true,
+			todayHighlight: true,
+			startView: 2,
+			showMeridian: true
+		});
 		$input.attr("disabled", item.disable ? item.disable : false);
 	}
 }
@@ -424,12 +456,12 @@ common.prototype.getInput = function (item, _formGroup, _formData, inCss) {
  * @param {Object} $el 选择器标签
  * @param {Object} option 按钮属性
  */
-common.prototype.initButton = function ($el, option, data) {
+common.prototype.initButton = function($el, option, data) {
 	var _this = this;
 	var $btn = $('<button id="' + option.btnId + '" type="button" class="' + option.btnCss + '">' + option.btnText +
 		'</button>');
 	$el.append($btn);
-	$btn.on("click", function () {
+	$btn.on("click", function() {
 		if (option.formId) {
 			if (option.btnClick) {
 				//手动验证表单
@@ -440,7 +472,7 @@ common.prototype.initButton = function ($el, option, data) {
 								icon: 0,
 								title: "提示"
 							},
-							function () {
+							function() {
 								option.btnClick(_this.parseObject(data, 'field', 'id'))
 							});
 					} else {
@@ -456,7 +488,7 @@ common.prototype.initButton = function ($el, option, data) {
 							icon: 0,
 							title: "提示"
 						},
-						function () {
+						function() {
 							option.btnClick();
 						});
 				} else {
@@ -472,10 +504,10 @@ common.prototype.initButton = function ($el, option, data) {
  * @param {Object} form 表单选择器
  * @param {Object} rules 验证规则
  */
-common.prototype.initValidate = function (form, rules) {
+common.prototype.initValidate = function(form, rules) {
 	form.validate({
 		errorElement: "em",
-		errorPlacement: function (error, element) {
+		errorPlacement: function(error, element) {
 			// Add the `help-block` class to the error element
 			error.addClass("help-block");
 
@@ -485,10 +517,10 @@ common.prototype.initValidate = function (form, rules) {
 				error.insertAfter(element);
 			}
 		},
-		highlight: function (element, errorClass, validClass) {
+		highlight: function(element, errorClass, validClass) {
 			$(element).parent("div").addClass("has-error").removeClass("has-success");
 		},
-		unhighlight: function (element, errorClass, validClass) {
+		unhighlight: function(element, errorClass, validClass) {
 			$(element).parent("div").addClass("has-success").removeClass("has-error");
 		},
 		rules: rules
@@ -496,7 +528,7 @@ common.prototype.initValidate = function (form, rules) {
 }
 
 //初始化图标控件
-common.prototype.initIcon = function (selector) {
+common.prototype.initIcon = function(selector) {
 	$("#" + selector).iconpicker({
 		arrowPrevIconClass: 'glyphicon glyphicon-chevron-left',
 		arrowNextIconClass: 'glyphicon glyphicon-chevron-right',
@@ -520,23 +552,23 @@ common.prototype.initIcon = function (selector) {
  * @param {Object} method 请求方式(get,post)
  * @param {Object} async 是否异步
  */
-common.prototype.myAjax = function (url, data, contentType, type, async) {
+common.prototype.myAjax = function(url, data, contentType, type, async) {
 	var def = $.Deferred();
 	var _this = this;
-	
-	if (url.indexOf("http") == -1 &&  url.indexOf("https") == -1) {
+
+	if (url.indexOf("http") == -1 && url.indexOf("https") == -1) {
 		url = apiUrl + url;
 	}
 	var myType = type ? type : "post";
 	var myContentType = contentType ? contentType : "json";
 	var myData = '';
-	if(myContentType === "json"){
+	if (myContentType === "json") {
 		myData = data ? JSON.stringify(data) : JSON.stringify({});
-	}else {
+	} else {
 		myData = data;
 	}
-	
-	var myAsync = async === false ? false : true;
+
+	var myAsync = async ===false ? false : true;
 
 	$.ajax({
 		url: url,
@@ -545,29 +577,32 @@ common.prototype.myAjax = function (url, data, contentType, type, async) {
 		contentType: "application/" + myContentType + ";charset=UTF-8",
 		dataType: "json",
 		async: myAsync,
-		success: function (data) {
-			if (data instanceof Array) {
-				def.resolve(data);
+		success: function(res) {
+			if (res instanceof Array) {
+				def.resolve(res);
 			} else {
-				if(data.succeed){
-					if (data.message) {
-						_this.successMsg(data.message);
+				if (res.code) {
+					if (res.code === "0") {
+						if (res.message) {
+							_this.successMsg(res.message);
+						}
+						def.resolve(res.data ? res.data : "true");
+					} else {
+						if ("-10005" == res.code) {
+							_this.confirmMsg(res.message, function() {
+								window.open("../../page/login.html", "_top");
+							});
+						} else {
+							_this.errMsg(res.message);
+						}
 					}
-					def.resolve(data.results ? data.results : "true");
-				}else if(data.message){
-					if("-10005" == data.code){
-						_this.confirmMsg(data.message,function(){
-							window.open("../../page/login.html","_top"); 
-						});
-					}else{
-						_this.errMsg(data.message);
-					}
-				}else{
-					def.resolve(data);
+
+				} else {
+					def.resolve(res);
 				}
 			}
 		},
-		error: function (XMLHttpRequest, textStatus, errorThrown) {
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
 			_this.errMsg("请求错误");
 		}
 	});
@@ -583,10 +618,10 @@ common.prototype.myAjax = function (url, data, contentType, type, async) {
  * @param {Object} comboText select text字段
  * @param {Object} defaultValue select默认值
  */
-common.prototype.initSelect = function ($el, data, comboId, comboText, defaultValue) {
+common.prototype.initSelect = function($el, data, comboId, comboText, defaultValue) {
 	$el.empty();
 	$el.append('<option value="">请选择...</option>');
-	$.each(data, function (n, sitem) {
+	$.each(data, function(n, sitem) {
 		var $option = $("<option></option>");
 		if (sitem.parentId) {
 			$option.attr("parent", sitem.parentId);
@@ -608,13 +643,13 @@ common.prototype.initSelect = function ($el, data, comboId, comboText, defaultVa
  * @param {Object} key Json对象key字段
  * @param {Object} value Json对象value字段
  */
-common.prototype.getJson = function (url, data, key, value) {
+common.prototype.getJson = function(url, data, key, value) {
 	var _this = this;
 	var selectJson = {};
 	var data = data ? data : {};
-	$.when(_this.myAjax(url, data)).done(function (result) {
+	$.when(_this.myAjax(url, data)).done(function(result) {
 		if (result && result.length > 0) {
-			$.each(result, function (i, item) {
+			$.each(result, function(i, item) {
 				selectJson[item[key]] = item[value];
 			})
 		}
@@ -628,9 +663,9 @@ common.prototype.getJson = function (url, data, key, value) {
  * @param {Object} filed Json对象key字段
  * @param {Object} id Json对象value字段
  */
-common.prototype.parseObject = function (array, filed, id) {
+common.prototype.parseObject = function(array, filed, id) {
 	var newObj = {};
-	array.forEach(function (item, index) {
+	array.forEach(function(item, index) {
 		if (item[id].indexOf('radio') != -1) {
 			newObj[item[filed]] = $('input:radio[name="' + item[filed] + '"]:checked').val()
 		} else if (item[id].indexOf('txt') != -1) {
@@ -658,11 +693,11 @@ common.prototype.parseObject = function (array, filed, id) {
  * 判断按钮是否可用
  * @param {Object} btnValues 按钮Json数组
  */
-common.prototype.getButtonStatus = function (btnValues) {
-	$.each(btnValues, function (index, item) {
+common.prototype.getButtonStatus = function(btnValues) {
+	$.each(btnValues, function(index, item) {
 		if (item.otherOptions) {
 			var otherOption = true;
-			$.each(item.otherOptions, function (index1, item1) {
+			$.each(item.otherOptions, function(index1, item1) {
 				if (typeof item1 == 'boolean') {
 					alert(item1)
 					otherOption = otherOption && item1
@@ -672,20 +707,20 @@ common.prototype.getButtonStatus = function (btnValues) {
 					otherOption = otherOption && ($('#' + item1.id).bootstrapTable('getSelections').length >= item1.selectMinNum)
 				} else if (item1.textId) {
 					otherOption = otherOption && ($('#' + item1.textId).val() != '')
-				} else if(item1.isEdit){
+				} else if (item1.isEdit) {
 					var selects = $('#' + item1.id).bootstrapTable('getSelections');
-					$.each(selects,function(index2,item2){
-						console.log("item2.edit == "+item2.edit);
-						if(item2.edit != true && item2.edit != 1){
+					$.each(selects, function(index2, item2) {
+						console.log("item2.edit == " + item2.edit);
+						if (item2.edit != true && item2.edit != 1) {
 							otherOption = otherOption && false;
 							return;
 						}
 					});
 				} else if (item1.noSelect) {
 					var rows = $('#' + item1.id).bootstrapTable('getSelections')
-					rows.forEach(function (row, rowindex, rowarray) {
-						item1.noselect.forEach(function (list, number, array) {
-							list.nolist.forEach(function (select, selectindex, selectarray) {
+					rows.forEach(function(row, rowindex, rowarray) {
+						item1.noselect.forEach(function(list, number, array) {
+							list.nolist.forEach(function(select, selectindex, selectarray) {
 								if (row[list.title] == select) {
 									otherOption = otherOption && false
 									return;
@@ -703,18 +738,18 @@ common.prototype.getButtonStatus = function (btnValues) {
 /**
  * 由用户获取按钮权限
  */
-common.prototype.getButtonByUser = function () {
+common.prototype.getButtonByUser = function() {
 	var _this = this;
 	var reponse;
 	var url = window.document.location.pathname;
 	$.when(_this.myAjax("/system/sysMenu/listButtonsByUserIdAndParentUrl", {
 		href: url.substring(url.lastIndexOf("/") + 1)
-	},null,null,false)).done(function (results) {
-		reponse = results.map(function (item) {
+	}, null, null, false)).done(function(result) {
+		reponse = result.map(function(item) {
 			return item.href;
 		});
 	});
-	
+
 	return reponse;
 }
 
@@ -722,7 +757,7 @@ common.prototype.getButtonByUser = function () {
  * 成功提示框
  * @param {Object} successMsg  成功消息
  */
-common.prototype.successMsg = function (successMsg) {
+common.prototype.successMsg = function(successMsg) {
 	layer.msg(successMsg, {
 		icon: 6,
 		time: 1000
@@ -733,7 +768,7 @@ common.prototype.successMsg = function (successMsg) {
  * 错误提示框
  * @param {Object} errMsg  错误信息
  */
-common.prototype.errMsg = function (errMsg) {
+common.prototype.errMsg = function(errMsg) {
 	layer.msg(errMsg, {
 		icon: 5,
 		time: 1000
@@ -748,80 +783,82 @@ common.prototype.errMsg = function (errMsg) {
  * @param {Object} defaultTable  关联的表ID
  * @param {Object} defaultModal  关联的弹出窗ID
  */
-common.prototype.confirmMsg = function (confirmMsg, confirmFunction) {
+common.prototype.confirmMsg = function(confirmMsg, confirmFunction) {
 	var _this = this;
 	layer.confirm(confirmMsg, {
 			btn: ["确认", "取消"],
 			icon: 0,
 			title: "提示"
 		},
-		function () {
-			if(confirmFunction){
+		function() {
+			if (confirmFunction) {
 				confirmFunction();
 			}
 		});
 }
 
-common.prototype.getZTree = function(el,url,otherParam){
+common.prototype.getZTree = function(el, url, otherParam) {
 	var _this = this;
 	var setting = {
 		data: {
-            simpleData : {
-                enable : true//是否之用简单数据
-                //idKey : 'id', //对应json数据中的ID
-                //pIdKey : 'parentId' //对应json数据中的父ID
-            },
-        },
+			simpleData: {
+				enable: true //是否之用简单数据
+				//idKey : 'id', //对应json数据中的ID
+				//pIdKey : 'parentId' //对应json数据中的父ID
+			},
+		},
 		check: {
 			enable: true
 		}
 	}
-	$.when(_this.myAjax(url, otherParam)).done(function(data){
-		if(data){
-			$.fn.zTree.init($("#"+el), setting,data);
+	$.when(_this.myAjax(url, otherParam)).done(function(data) {
+		if (data) {
+			$.fn.zTree.init($("#" + el), setting, data);
 		}
 	})
 }
 
-common.prototype.uploadFile = function(url,data){
+common.prototype.uploadFile = function(url, data) {
 	var _this = this;
-	if (url.indexOf("http") == -1 &&  url.indexOf("https") == -1) {
+	if (url.indexOf("http") == -1 && url.indexOf("https") == -1) {
 		url = apiUrl + url;
 	}
-	
-	$.ajax({  
-	   type: "POST",  
-	   url: url,  
-	   data: data, 
-	   // 下面三个参数要指定，如果不指定，会报一个JQuery的错误 
-	   cache: false,
-	   contentType: false,
-	   processData: false,
-	   async: false,  
-	   success: function(data) {
-		   if (data instanceof Array) {
-		   	def.resolve(data);
-		   } else {
-		   	if(data.succeed){
-		   		if (data.message) {
-		   			_this.successMsg(data.message);
-		   		}
-		   		def.resolve(data.results ? data.results : "true");
-		   	}else if(data.message){
-		   		if("-10005" == data.code){
-		   			_this.confirmMsg(data.message,function(){
-		   				window.open("../../page/login.html","_top"); 
-		   			});
-		   		}else{
-		   			_this.errMsg(data.message);
-		   		}
-		   	}else{
-		   		def.resolve(data);
-		   	}
-		   }
+
+	$.ajax({
+		type: "POST",
+		url: url,
+		data: data,
+		// 下面三个参数要指定，如果不指定，会报一个JQuery的错误 
+		cache: false,
+		contentType: false,
+		processData: false,
+		async: false,
+		success: function(res) {
+			if (res instanceof Array) {
+				def.resolve(res);
+			} else {
+				if (res.code) {
+					if (res.code === "0") {
+						if (res.message) {
+							_this.successMsg(res.message);
+						}
+						def.resolve(res.data ? res.data : "true");
+					} else {
+						if ("-10005" == res.code) {
+							_this.confirmMsg(res.message, function() {
+								window.open("../../page/login.html", "_top");
+							});
+						} else {
+							_this.errMsg(res.message);
+						}
+					}
+				} else {
+					def.resolve(res);
+				}
+			}
 			$("#myModal").modal("hide");
 			$("#tb_data").bootstrapTable("refresh");
-	   }  
+		}
 	});
 }
 

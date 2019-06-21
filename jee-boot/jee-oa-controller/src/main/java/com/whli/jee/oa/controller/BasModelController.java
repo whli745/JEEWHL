@@ -34,8 +34,9 @@ public class BasModelController {
         int count = modelService.getCount(entity);
         List<BasModel> models = modelService.findByPage(entity);
         if (models != null && models.size() > 0){
+            responseBean.setCode("0");
             responseBean.setCount(count);
-            responseBean.setResults(models);
+            responseBean.setData(models);
         }
         return responseBean;
     }
@@ -50,7 +51,8 @@ public class BasModelController {
         ResponseBean responseBean = new ResponseBean();
         List<BasModel> models = modelService.findAll();
         if (models != null && models.size() > 0){
-            responseBean.setResults(models);
+            responseBean.setCode("0");
+            responseBean.setData(models);
         }
         return responseBean;
     }
@@ -63,7 +65,8 @@ public class BasModelController {
         ResponseBean responseBean = new ResponseBean();
         String modelId = modelService.addModel(entity);
         if (StringUtils.isNotEmpty(modelId)){
-            responseBean.setResults(modelId);
+            responseBean.setCode("0");
+            responseBean.setData(modelId);
         }
         return responseBean;
     }
@@ -73,7 +76,7 @@ public class BasModelController {
         ResponseBean responseBean = new ResponseBean();
         int modelId = modelService.deleteModel(entity);
         if (modelId > 0){
-            responseBean.setResults(true);
+            responseBean.setCode("0");
             responseBean.setMessage("删除流程模型成功！");
         }
         return responseBean;
@@ -87,7 +90,7 @@ public class BasModelController {
         ResponseBean responseBean = new ResponseBean();
         int rows = modelService.deployModel(entity);
         if (rows > 0){
-            responseBean.setResults(true);
+            responseBean.setCode("0");
             responseBean.setMessage("发布流程模型成功！");
         }
         return responseBean;

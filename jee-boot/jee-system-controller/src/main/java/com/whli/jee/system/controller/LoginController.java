@@ -36,7 +36,8 @@ public class LoginController {
     public ResponseBean login(String username, String password) throws Exception{
         ResponseBean responseBean = new ResponseBean();
         SysUser loginUser = sysUserService.login(username,password);
-        responseBean.setResults(loginUser);
+        responseBean.setCode("0");
+        responseBean.setData(loginUser);
         return responseBean;
     }
 
@@ -54,7 +55,8 @@ public class LoginController {
     public ResponseBean logout(HttpServletRequest request) throws Exception{
         ResponseBean responseBean = new ResponseBean();
         boolean flag = sysUserService.logout(request);
-        responseBean.setResults(flag);
+        responseBean.setCode("0");
+        responseBean.setData(flag);
         return responseBean;
     }
 }

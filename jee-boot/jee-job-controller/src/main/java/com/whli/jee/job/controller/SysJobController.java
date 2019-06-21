@@ -39,7 +39,7 @@ public class SysJobController extends BaseController<SysJob>{
         ResponseBean responseBean = new ResponseBean();
         Boolean rows = sysJobService.triggerJob(entity);
         if (rows) {
-            responseBean.setSucceed(true);
+            responseBean.setCode("0");
             responseBean.setMessage("立即执行定时任务成功！");
         }
         return responseBean;
@@ -56,7 +56,7 @@ public class SysJobController extends BaseController<SysJob>{
         ResponseBean responseBean = new ResponseBean();
         Boolean rows = sysJobService.resumeJob(entity);
         if (rows != null && rows) {
-            responseBean.setSucceed(true);
+            responseBean.setCode("0");
             responseBean.setMessage("恢复定时任务成功！");
         }
         return responseBean;
@@ -73,7 +73,7 @@ public class SysJobController extends BaseController<SysJob>{
         ResponseBean responseBean = new ResponseBean();
         Boolean rows = sysJobService.resumeAll();
         if (rows != null && rows) {
-            responseBean.setSucceed(true);
+            responseBean.setCode("0");
             responseBean.setMessage("恢复定时任务成功！");
         }
         return responseBean;
@@ -90,7 +90,7 @@ public class SysJobController extends BaseController<SysJob>{
         ResponseBean responseBean = new ResponseBean();
         Boolean rows = sysJobService.pauseJob(entity);
         if (rows != null && rows) {
-            responseBean.setSucceed(true);
+            responseBean.setCode("0");
             responseBean.setMessage("暂停定时任务成功！");
         }
         return responseBean;
@@ -107,7 +107,7 @@ public class SysJobController extends BaseController<SysJob>{
         ResponseBean responseBean = new ResponseBean();
         Boolean rows = sysJobService.pauseAll();
         if (rows != null && rows) {
-            responseBean.setSucceed(true);
+            responseBean.setCode("0");
             responseBean.setMessage("暂停定时任务成功！");
         }
         return responseBean;

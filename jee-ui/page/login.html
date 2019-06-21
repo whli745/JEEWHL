@@ -169,13 +169,13 @@
 						$.post(apiUrl + "/login", {
 							username: $("#loginName").val(),
 							password: $("#password").val()
-						}, function(data) {
-							if (!data.results) {
+						}, function(res) {
+							if (!res.data) {
 								$("#msg-error").css("visibility", "visible");
-								$("#msg-error span").text(data.message);
+								$("#msg-error span").text(res.message);
 								return;
 							}
-							var result = data.results;
+							var result = res.data;
 							sessionStorage.setItem("token", result.token);
 							sessionStorage.setItem("loginName", result.loginName);
 							sessionStorage.setItem("loginId", result.id);

@@ -106,7 +106,7 @@ public class SysUserController extends BaseController<SysUser> {
         ResponseBean responseBean = new ResponseBean();
         int rows = sysUserService.grantRolesByUser(entity.getId(),entity.getRoleIds());
         if (rows > 0){
-            responseBean.setSucceed(true);
+            responseBean.setCode("0");
             responseBean.setMessage("授权用户成功！");
         }
         return responseBean;
@@ -124,7 +124,7 @@ public class SysUserController extends BaseController<SysUser> {
     public ResponseBean deleteRolesByUser(@RequestBody SysUserRole entity, HttpServletRequest req) throws Exception {
         ResponseBean responseBean = new ResponseBean();
         sysUserRoleService.deleteRolesByUser(entity);
-        responseBean.setSucceed(true);
+        responseBean.setCode("0");
         responseBean.setMessage("删除角色成功！");
         return responseBean;
     }
@@ -140,7 +140,7 @@ public class SysUserController extends BaseController<SysUser> {
         ResponseBean responseBean = new ResponseBean();
         int rows = sysUserService.resetPassword(entity);
         if (rows > 0) {
-            responseBean.setSucceed(true);
+            responseBean.setCode("0");
             responseBean.setMessage("重置密码成功！");
         }
         return responseBean;

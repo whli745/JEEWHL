@@ -1,4 +1,4 @@
-package com.whli.jee.core.config;
+package com.whli.jee.main.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,10 +22,10 @@ public class Swagger2Config {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Spring Boot中使用Swagger2构建RESTFUL APIs")
-                .contact(new Contact("血嗜杀","",""))
+                .title("Main模块")
+                .contact(new Contact("whli","http://blog.whli745.com/","623374047@qq.com"))
                 .version("1.0")
-                .description("API描述")
+                .description("Main模块API描述")
                 .build();
     }
 
@@ -34,7 +34,7 @@ public class Swagger2Config {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com"))
+                .apis(RequestHandlerSelectors.basePackage("com.whli.jee"))
                 .paths(PathSelectors.any())
                 .build();
     }
